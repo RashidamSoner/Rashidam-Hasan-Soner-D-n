@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rashidam & Hasan Soner Düğün Davetiyesi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,153 +12,131 @@
         * {
             margin: 0;
             padding: 0;
-            box-shadow: none;
             box-sizing: border-box;
         }
         body {
-            background-color: #f5eedc;
+            background-color: #f4edd9;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            perspective: 1000px; /* 3D derinlik algısı için */
+            align-items: flex-start;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* SVG İLE SİYAH DOKU (NOISE EFFEKTİ) FİLTRESİ KAPLAMASI */
-        .textured-bg {
-            background-color: #1a1a1a;
-            background-image: linear-gradient(135deg, #242424 0%, #111111 100%);
+        /* PREMIUM DOKULU SİYAH ARKA PLAN */
+        .premium-black-bg {
+            background-color: #141414;
+            background-image: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 100%);
             position: relative;
         }
-        /* Kodla pürüzlü kağıt/deri dokusu verme */
-        .textured-bg::before {
+        .premium-black-bg::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0.12;
+            opacity: 0.15;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* GERÇEKÇİ 3D ZARF KUTUSU */
-        #envelope-container {
+        /* TAM EKRAN ZARF KATMANI */
+        #envelope-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 999;
+            z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 1s ease-in-out, opacity 1s ease;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s ease;
         }
-        #envelope-container.fade-away {
-            transform: scale(1.1) translateY(-30px);
+        #envelope-screen.open {
+            transform: translateY(-100vh);
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Telefon boyutuna uyumlu lüks dış zarf kılıfı */
-        .envelope {
-            position: relative;
-            width: 90%;
-            max-width: 420px;
-            height: 480px;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.7);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 60px;
-            border-radius: 4px;
-            border: 1px solid #333;
-            transform-style: preserve-3d;
-        }
-
-        /* Altın Köşe İşlemeleri */
-        .env-border {
+        /* İç Çerçeve */
+        .envelope-border {
             position: absolute;
-            top: 15px; bottom: 15px; left: 15px; right: 15px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            top: 20px; bottom: 20px; left: 20px; right: 20px;
+            border: 2px solid #c5a459;
             pointer-events: none;
+            opacity: 0.85;
+            z-index: 5;
         }
 
-        /* 3D YUKARI DOĞRU KATLANARAK AÇILAN ZARFÜSTÜ KAPAK */
-        .envelope-flap {
+        /* Metin Alanı */
+        .envelope-text {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 50%;
-            clip-path: polygon(0 0, 50% 100%, 100% 0); /* Üçgen zarf kapağı şekli */
-            transform-origin: top center;
-            transition: transform 1s ease-in-out;
-            z-index: 3;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border-bottom: 1px solid #d4af37;
-        }
-        /* Mühre basınca kapağın yukarı 180 derece takla atarak açılması */
-        .envelope.open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        /* Zarfın Ön Gövde Alt Üçgen Kesimi */
-        .envelope-pocket {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 60%;
-            clip-path: polygon(0 40%, 50% 0, 100% 40%, 100% 100%, 0 100%);
-            z-index: 2;
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        /* ZARF ÜZERİNDEKİ YAZILAR */
-        .envelope-text-group {
-            position: absolute;
-            top: 25%;
+            top: 22%;
             width: 100%;
             text-align: center;
-            z-index: 2;
-            padding: 0 25px;
+            padding: 0 30px;
+            z-index: 4;
         }
         .env-quote {
             font-family: 'Cinzel', serif;
             color: #c5a459;
             font-size: 0.75rem;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            font-weight: 400;
         }
         .env-names {
             font-family: 'Great Vibes', cursive;
             color: #e5c158;
-            font-size: 3.2rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            font-size: 3.4rem;
+            line-height: 1.2;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
 
-        /* HARİKA 3D ALTIN BALMUMU MÜHÜR */
-        .wax-seal {
+        /* ÜÇGEN ZARF KAPAKLARI (CSS GEOMETRİ) */
+        .flap-top {
             position: absolute;
-            top: 50%;
+            top: 20px; left: 20px; right: 20px;
+            height: calc(35% - 20px);
+            background: linear-gradient(to bottom right, #222 50%, #151515 50%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            border-bottom: 1px solid #c5a459;
+            z-index: 3;
+            transform-origin: top center;
+            transition: transform 0.8s ease;
+        }
+        .envelope-screen.open .flap-top {
+            transform: rotateX(110deg);
+        }
+
+        /* KUSURSUZ YUVARLAK BALMUMU MÜHÜR (Asla Uzamaz) */
+        .seal-container {
+            position: absolute;
+            top: 55%;
             left: 50%;
-            transform: translate(-50%, -40%);
+            transform: translate(-50%, -50%);
             width: 100px;
             height: 100px;
-            background: radial-gradient(circle, #f5d17a 0%, #b88d2a 70%, #7c5c11 100%);
-            border-radius: 51% 49% 53% 47% / 48% 52% 49% 51%; /* Doğal organik mühür yuvarlağı */
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.4);
-            z-index: 4;
+            z-index: 10;
             cursor: pointer;
+        }
+        .wax-seal {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #f7d584 0%, #b88d2a 70%, #75550b 100%);
+            border-radius: 50% !important; /* Kesin yuvarlak kalıp */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.4);
+            border: 2px solid #dfb74c;
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 2px solid #dfb74c;
-            transition: all 0.5s ease;
+            transition: transform 0.3s ease;
         }
-        .wax-seal:hover {
-            transform: translate(-50%, -40%) scale(1.05);
+        .seal-container:hover .wax-seal {
+            transform: scale(1.05);
         }
         .wax-seal-inner {
             width: 76px;
             height: 76px;
-            border: 2px dashed rgba(255,255,255,0.25);
+            border: 1px dashed rgba(255,255,255,0.3);
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -167,27 +145,23 @@
         .wax-seal-text {
             font-family: 'Cinzel', serif;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            text-shadow: 1px 2px 3px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+            text-shadow: 1px 2px 3px rgba(0,0,0,0.4);
         }
 
-        /* Mühür basılınca kırılma ve yok olma efekti */
-        .envelope.open .wax-seal {
-            opacity: 0;
-            transform: translate(-50%, -40%) scale(0.7);
-            pointer-events: none;
-        }
-
-        .hint-click {
+        .hint-text {
             position: absolute;
-            bottom: 35px;
+            bottom: 8%;
+            width: 100%;
+            text-align: center;
             color: #c5a459;
             font-family: 'Cinzel', serif;
             font-size: 0.75rem;
             letter-spacing: 3px;
-            z-index: 5;
-            animation: breathe 1.5s infinite;
+            z-index: 4;
+            animation: pulse 1.6s infinite;
         }
 
         /* ----------------------------------------------- */
@@ -197,7 +171,7 @@
             max-width: 450px;
             background: #fffdfa;
             min-height: 100vh;
-            padding: 50px 30px;
+            padding: 60px 25px 40px 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.05);
             text-align: center;
             border: 1px solid #ebdcb9;
@@ -218,9 +192,10 @@
         }
         .card-names {
             font-family: 'Great Vibes', cursive;
-            font-size: 3.6rem;
+            font-size: 3.8rem;
             color: #b89754;
-            margin: 25px 0;
+            margin: 20px 0;
+            line-height: 1.1;
         }
         .card-date-main {
             font-family: 'Cinzel', serif;
@@ -310,7 +285,7 @@
             background: linear-gradient(135deg, #a38953 0%, #7c6536 100%);
             color: #fff;
             text-decoration: none;
-            padding: 14px 40px;
+            padding: 15px 40px;
             font-family: 'Cinzel', serif;
             font-size: 0.75rem;
             letter-spacing: 2px;
@@ -327,10 +302,10 @@
             margin-top: 40px;
         }
 
-        @keyframes breathe {
-            0% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.03); }
-            100% { opacity: 0.4; transform: scale(1); }
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
         }
     </style>
 </head>
@@ -341,32 +316,27 @@
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
     </audio>
 
-    <!-- 3D DOKULU VE KATLANAN ZARF SİSTEMİ -->
-    <div id="envelope-container">
-        <div class="envelope textured-bg">
-            <div class="env-border"></div>
-            
-            <!-- Katlanan Üst Üçgen Kapak -->
-            <div class="envelope-flap textured-bg"></div>
-            
-            <!-- Sabit Alt Gövde Haznesi -->
-            <div class="envelope-pocket textured-bg"></div>
-            
-            <!-- Yazılar -->
-            <div class="envelope-text-group">
-                <div class="env-quote">İKİ KALP... TEK ÖMÜR... SONSUZ SEVGİ...</div>
-                <div class="env-names">Rashidam & Hasan Soner</div>
-            </div>
-            
-            <!-- Organik Balmumu Mühür -->
-            <div class="wax-seal" onclick="openLuxuryEnvelope()">
+    <!-- BAŞTAN AŞAĞI YENİLENEN TAM EKRAN LÜKS ZARF -->
+    <div id="envelope-screen" class="premium-black-bg">
+        <div class="envelope-border"></div>
+        <div class="flap-top"></div>
+        
+        <!-- Yazılar -->
+        <div class="envelope-text">
+            <div class="env-quote">İKİ KALP... TEK ÖMÜR... SONSUZ SEVGİ...</div>
+            <div class="env-names">Rashidam<br>&<br>Hasan Soner</div>
+        </div>
+        
+        <!-- KUSURSUZ GEOMETRİK MÜHÜR SİSTEMİ -->
+        <div class="seal-container" onclick="openPerfectEnvelope()">
+            <div class="wax-seal">
                 <div class="wax-seal-inner">
                     <div class="wax-seal-text">R&H</div>
                 </div>
             </div>
-            
-            <div class="hint-click">AÇMAK İÇİN MÜHRE DOKUNUN</div>
         </div>
+        
+        <div class="hint-text">AÇMAK İÇİN MÜHRE DOKUNUN</div>
     </div>
 
     <!-- ANA İÇ DAVETİYE SAYFASI -->
@@ -415,22 +385,16 @@
     </div>
 
     <script>
-        function openLuxuryEnvelope() {
-            const envelope = document.querySelector('.envelope');
-            const container = document.getElementById('envelope-container');
+        function openPerfectEnvelope() {
+            const screen = document.getElementById('envelope-screen');
             const music = document.getElementById('wedding-music');
             
-            // 1. Zarf kapağını yukarı doğru 180 derece katla
-            envelope.classList.add('open');
-            
-            // 2. Kapak açıldıktan hemen sonra zarfı pürüzsüzce ekrandan kaldır
-            setTimeout(() => {
-                container.classList.add('fade-away');
-                music.play().catch(e => console.log("Müzik engellendi."));
-            }, 1000);
+            // Zarfı pürüzsüzce yukarı kaydırarak aç
+            screen.classList.add('open');
+            music.play().catch(e => console.log("Müzik engellendi."));
         }
 
-        // 21 Ağustos 2026 Geri Sayımı
+        // Geri Sayım Scripti
         const target = new Date("August 21, 2026 19:00:00").getTime();
 
         setInterval(function() {
