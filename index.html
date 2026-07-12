@@ -6,7 +6,7 @@
     <title>Rashidam & Hasan Soner Düğün Davetiyesi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -25,17 +25,18 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* PREMIUM DOKULU SİYAH ARKA PLAN */
-        .premium-black-bg {
+        /* PREMIUM DOKULU ARKA PLAN */
+        .premium-dark-envelope {
             background-color: #141414;
-            background-image: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 100%);
+            background-image: linear-gradient(180deg, #1f1f1f 0%, #0d0d0d 100%);
             position: relative;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
         }
-        .premium-black-bg::before {
+        .premium-dark-envelope::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0.15;
+            opacity: 0.18;
             pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
@@ -46,9 +47,11 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 9999;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s ease;
+            padding: 60px 0 80px 0;
+            transition: transform 1.3s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.3s ease;
         }
         #envelope-screen.open {
             transform: translateY(-100vh);
@@ -56,131 +59,104 @@
             pointer-events: none;
         }
 
-        /* İç Çerçeve */
-        .envelope-border {
+        /* Altın Çerçeve */
+        .envelope-gold-frame {
             position: absolute;
             top: 20px; bottom: 20px; left: 20px; right: 20px;
-            border: 2px solid #c5a459;
+            border: 2px solid #d4af37;
+            border-image: linear-gradient(to bottom, #f3e0aa, #b89754, #8a7343) 1;
             pointer-events: none;
-            opacity: 0.85;
-            z-index: 5;
+            opacity: 0.7;
+            z-index: 2;
+        }
+
+        /* Doğal Derinlik Gölgeleri */
+        .envelope-flap-shadow {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(135deg, rgba(0,0,0,0) 47%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0) 53%);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .envelope-bottom-shadow {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(45deg, rgba(0,0,0,0) 47%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 53%);
+            pointer-events: none;
+            z-index: 3;
         }
 
         /* Metin Alanı */
-        .envelope-text {
-            position: absolute;
-            top: 22%;
-            width: 100%;
+        .envelope-header {
             text-align: center;
+            z-index: 5;
             padding: 0 30px;
-            z-index: 4;
+            margin-top: 30px;
         }
         .env-quote {
             font-family: 'Cinzel', serif;
             color: #c5a459;
             font-size: 0.75rem;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             margin-bottom: 25px;
-            font-weight: 400;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         .env-names {
             font-family: 'Great Vibes', cursive;
             color: #e5c158;
-            font-size: 3.4rem;
+            font-size: 3.6rem;
             line-height: 1.2;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.6);
         }
 
-        /* ÜÇGEN ZARF KAPAKLARI (CSS GEOMETRİ) */
-        .flap-top {
-            position: absolute;
-            top: 20px; left: 20px; right: 20px;
-            height: calc(35% - 20px);
-            background: linear-gradient(to bottom right, #222 50%, #151515 50%);
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            border-bottom: 1px solid #c5a459;
-            z-index: 3;
-            transform-origin: top center;
-            transition: transform 0.8s ease;
-        }
-        .envelope-screen.open .flap-top {
-            transform: rotateX(110deg);
-        }
-
-        /* KUSURSUZ YUVARLAK BALMUMU MÜHÜR (Asla Uzamaz) */
-        .seal-container {
-            position: absolute;
-            top: 55%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
+        /* GERÇEK GÖRSEL MÜHÜR YUVASI - KUSURSUZ YUVARLAK */
+        .seal-wrapper {
+            position: relative;
             z-index: 10;
             cursor: pointer;
+            width: 130px;
+            height: 130px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .wax-seal {
+        .seal-wrapper:hover {
+            transform: scale(1.08) rotate(2deg);
+        }
+        .real-image-seal {
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, #f7d584 0%, #b88d2a 70%, #75550b 100%);
-            border-radius: 50% !important; /* Kesin yuvarlak kalıp */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.4);
-            border: 2px solid #dfb74c;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s ease;
-        }
-        .seal-container:hover .wax-seal {
-            transform: scale(1.05);
-        }
-        .wax-seal-inner {
-            width: 76px;
-            height: 76px;
-            border: 1px dashed rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .wax-seal-text {
-            font-family: 'Cinzel', serif;
-            color: #fff;
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-shadow: 1px 2px 3px rgba(0,0,0,0.4);
+            object-fit: contain;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.6));
         }
 
         .hint-text {
-            position: absolute;
-            bottom: 8%;
-            width: 100%;
-            text-align: center;
-            color: #c5a459;
+            color: #b89754;
             font-family: 'Cinzel', serif;
             font-size: 0.75rem;
-            letter-spacing: 3px;
-            z-index: 4;
-            animation: pulse 1.6s infinite;
+            letter-spacing: 4px;
+            z-index: 5;
+            animation: softPulse 2s infinite ease-in-out;
         }
 
         /* ----------------------------------------------- */
-        /* ANA İÇ DAVETİYE SAYFASI (PREMIUM KART) */
+        /* İÇ DAVETİYE KARTI */
         .main-card {
             width: 100%;
             max-width: 450px;
-            background: #fffdfa;
+            background: #fffdfb;
             min-height: 100vh;
-            padding: 60px 25px 40px 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            padding: 65px 30px 50px 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.08);
             text-align: center;
             border: 1px solid #ebdcb9;
             position: relative;
         }
         .card-decor-line {
             position: absolute;
-            top: 20px; bottom: 20px; left: 20px; right: 20px;
-            border: 1px solid rgba(184, 151, 84, 0.25);
+            top: 22px; bottom: 22px; left: 22px; right: 22px;
+            border: 1px solid rgba(184, 151, 84, 0.3);
             pointer-events: none;
         }
         .card-headline {
@@ -188,21 +164,21 @@
             font-size: 0.8rem;
             letter-spacing: 4px;
             color: #8a7343;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         .card-names {
             font-family: 'Great Vibes', cursive;
-            font-size: 3.8rem;
+            font-size: 4rem;
             color: #b89754;
-            margin: 20px 0;
+            margin: 25px 0;
             line-height: 1.1;
         }
         .card-date-main {
             font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #61502f;
             letter-spacing: 3px;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
             font-weight: 600;
         }
 
@@ -210,28 +186,28 @@
         .counter-section {
             background-color: #faf6ee;
             border: 1px solid #f0e6cf;
-            border-radius: 6px;
-            padding: 20px 10px;
-            margin-bottom: 40px;
+            border-radius: 4px;
+            padding: 22px 10px;
+            margin-bottom: 45px;
         }
         .counter-title {
             font-family: 'Cinzel', serif;
             font-size: 0.7rem;
             letter-spacing: 3px;
             color: #8a7343;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
         .counter-grid {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 14px;
         }
         .counter-box {
             background: #fff;
             border: 1px solid #ebdcb9;
-            border-radius: 4px;
-            width: 62px;
-            height: 62px;
+            border-radius: 2px;
+            width: 64px;
+            height: 64px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -239,18 +215,19 @@
         }
         .counter-num {
             font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #61502f;
         }
         .counter-label {
-            font-size: 0.5rem;
+            font-size: 0.55rem;
             letter-spacing: 1px;
             color: #9c8863;
             text-transform: uppercase;
+            margin-top: 2px;
         }
 
-        /* DÜĞÜN BİLGİLERİ */
+        /* BİLGİ ALANI */
         .details-title {
             font-family: 'Cinzel', serif;
             font-size: 0.8rem;
@@ -261,16 +238,17 @@
         .details-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 25px;
             border-top: 1px solid #ebdcb9;
             border-bottom: 1px solid #ebdcb9;
-            padding: 25px 0;
-            margin-bottom: 40px;
+            padding: 30px 0;
+            margin-bottom: 45px;
         }
         .detail-item p {
             font-size: 0.85rem;
             color: #555;
-            margin-top: 3px;
+            margin-top: 4px;
+            line-height: 1.4;
         }
         .detail-item-title {
             font-family: 'Cinzel', serif;
@@ -282,64 +260,60 @@
         /* BUTON */
         .maps-action-btn {
             display: inline-block;
-            background: linear-gradient(135deg, #a38953 0%, #7c6536 100%);
+            background: linear-gradient(135deg, #c5a459 0%, #947533 100%);
             color: #fff;
             text-decoration: none;
-            padding: 15px 40px;
+            padding: 16px 45px;
             font-family: 'Cinzel', serif;
             font-size: 0.75rem;
             letter-spacing: 2px;
-            border-radius: 50px;
+            border-radius: 40px;
             font-weight: 600;
-            box-shadow: 0 5px 15px rgba(138, 115, 67, 0.3);
-            border: 1px solid #b3985d;
+            box-shadow: 0 6px 20px rgba(148, 117, 51, 0.3);
+            border: 1px solid #dfc482;
         }
 
         .card-footer {
             font-family: 'Great Vibes', cursive;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             color: #8a7343;
-            margin-top: 40px;
+            margin-top: 45px;
+            line-height: 1.2;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
+        @keyframes softPulse {
+            0% { opacity: 0.5; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.5; transform: scale(0.98); }
         }
     </style>
 </head>
 <body>
 
-    <!-- ARKA PLAN MÜZİĞİ -->
     <audio id="wedding-music" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
     </audio>
 
-    <!-- BAŞTAN AŞAĞI YENİLENEN TAM EKRAN LÜKS ZARF -->
-    <div id="envelope-screen" class="premium-black-bg">
-        <div class="envelope-border"></div>
-        <div class="flap-top"></div>
+    <!-- GERÇEK MÜHÜRLÜ PREMİUM ZARF EKRANI -->
+    <div id="envelope-screen" class="premium-dark-envelope">
+        <div class="envelope-gold-frame"></div>
+        <div class="envelope-flap-shadow"></div>
+        <div class="envelope-bottom-shadow"></div>
         
-        <!-- Yazılar -->
-        <div class="envelope-text">
+        <div class="envelope-header">
             <div class="env-quote">İKİ KALP... TEK ÖMÜR... SONSUZ SEVGİ...</div>
             <div class="env-names">Rashidam<br>&<br>Hasan Soner</div>
         </div>
         
-        <!-- KUSURSUZ GEOMETRİK MÜHÜR SİSTEMİ -->
-        <div class="seal-container" onclick="openPerfectEnvelope()">
-            <div class="wax-seal">
-                <div class="wax-seal-inner">
-                    <div class="wax-seal-text">R&H</div>
-                </div>
-            </div>
+        <!-- YÜKLEDİĞİNİZ GERÇEK MÜHÜR DOSYASI BURADA AÇILIYOR -->
+        <div class="seal-wrapper" onclick="openExclusiveEnvelope()">
+            <img src="muhur.png.PNG" alt="R&H Balmumu Mühür" class="real-image-seal">
         </div>
         
         <div class="hint-text">AÇMAK İÇİN MÜHRE DOKUNUN</div>
     </div>
 
-    <!-- ANA İÇ DAVETİYE SAYFASI -->
+    <!-- ANA İÇ DAVETİYE KARTI -->
     <div class="main-card">
         <div class="card-decor-line"></div>
 
@@ -385,31 +359,35 @@
     </div>
 
     <script>
-        function openPerfectEnvelope() {
+        function openExclusiveEnvelope() {
             const screen = document.getElementById('envelope-screen');
             const music = document.getElementById('wedding-music');
             
-            // Zarfı pürüzsüzce yukarı kaydırarak aç
             screen.classList.add('open');
-            music.play().catch(e => console.log("Müzik engellendi."));
+            music.play().catch(e => console.log("Müzik tarayıcı koruması nedeniyle dokunma sonrası başlatıldı."));
         }
 
-        // Geri Sayım Scripti
-        const target = new Date("August 21, 2026 19:00:00").getTime();
+        // Sayaç Düzenlemesi
+        const weddingDate = new Date("August 21, 2026 19:00:00").getTime();
 
-        setInterval(function() {
+        const timerInterval = setInterval(function() {
             const now = new Date().getTime();
-            const diff = target - now;
+            const timeDifference = weddingDate - now;
 
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            if (timeDifference < 0) {
+                clearInterval(timerInterval);
+                return;
+            }
 
-            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
-            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
-            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
-            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
     </script>
 </body>
