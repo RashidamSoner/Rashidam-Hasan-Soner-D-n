@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rashidam & Hasan Soner Düğün Davetiyesi</title>
-    <!-- Google Fonts şık yazı tipleri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -16,217 +15,386 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #fcfaf7;
+            background-color: #f5f0e6;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
 
-        /* 1. INTERAKTIF ZARF (KAPAK) KATMANI */
+        /* 1. GÖRSEL: SİYAH ZARF VE MÜHÜR KATMANI */
         #envelope-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #121212;
+            background-color: #171717;
             z-index: 999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
-            border: 15px solid #d4af37;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            border: 12px solid #d4af37;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
         }
         #envelope-layer.open {
             transform: translateY(-100%);
         }
+        .envelope-decor {
+            position: absolute;
+            top: 20px;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+        }
+        .envelope-quote {
+            font-family: 'Cinzel', serif;
+            color: #bfa15f;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
         .envelope-title {
             font-family: 'Great Vibes', cursive;
             color: #d4af37;
-            font-size: 3rem;
-            margin-bottom: 50px;
+            font-size: 3.2rem;
+            margin-bottom: 40px;
             text-align: center;
-            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-        /* Balmumu Mühür */
-        .seal-button {
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #c99e32 0%, #9e781d 100%);
-            border-radius: 50%;
-            border: 4px dashed #fff;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), inset 0 0 15px rgba(0,0,0,0.3);
+        
+        /* İnteraktif Kırılan Balmumu Mühür */
+        .seal-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        }
+        .seal-half {
+            position: absolute;
+            width: 65px;
+            height: 130px;
+            background: radial-gradient(circle, #d4af37 0%, #aa8422 100%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.8s ease-in-out, opacity 0.5s;
+            overflow: hidden;
+        }
+        .seal-left {
+            left: 0;
+            border-radius: 130px 0 0 130px;
+            border: 3px solid #d4af37;
+            border-right: none;
+        }
+        .seal-right {
+            right: 0;
+            border-radius: 0 130px 130px 0;
+            border: 3px solid #d4af37;
+            border-left: none;
+        }
+        .seal-text {
+            position: absolute;
+            top: 50%;
+            width: 130px;
+            text-align: center;
             color: #fff;
             font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
-            font-weight: bold;
-            transition: transform 0.3s;
-            position: relative;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transform: translateY(-50%);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
-        .seal-button:hover {
-            transform: scale(1.08);
+        .seal-left .seal-text { left: 0; }
+        .seal-right .seal-text { right: 0; }
+
+        /* Kırılma Efekti Tetiklendiğinde */
+        .seal-container.broken .seal-left {
+            transform: translateX(-60px) rotate(-15deg);
+            opacity: 0;
+        }
+        .seal-container.broken .seal-right {
+            transform: translateX(60px) rotate(15deg);
+            opacity: 0;
         }
         .seal-hint {
-            color: #d4af37;
-            margin-top: 25px;
+            color: #bfa15f;
+            margin-top: 30px;
             font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            letter-spacing: 3px;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
             animation: pulse 1.5s infinite;
         }
 
-        /* 2. ASIL DAVETİYE İÇERİK SAYFASI */
+        /* 2. GÖRSEL: İÇ SAYFA DÜZENİ */
         .main-card {
             max-width: 500px;
             margin: 0 auto;
+            background-color: #fcfaf5;
             min-height: 100vh;
-            background-color: #faf6f0;
-            border-left: 2px solid #eadecc;
-            border-right: 2px solid #eadecc;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 30px 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.08);
             text-align: center;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
-        .gold-border-inner {
-            border: 1px solid #d4af37;
-            padding: 40px 20px;
+        .wedding-img {
             width: 100%;
-            height: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            margin-top: 10px;
+        }
+        .wedding-headline {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: #8a7343;
+            margin: 25px 0 15px 0;
+        }
+        .main-names {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: #b89754;
+            letter-spacing: 2px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        .main-date-top {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: #8a7343;
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+
+        /* GERİ SAYIM SAYACI (Dinamik) */
+        .countdown-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: #8a7343;
+            margin-top: 30px;
+        }
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0 35px 0;
+        }
+        .countdown-box {
+            background: #fff;
+            border: 1px solid #ebdcb9;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
-        .tagline {
+        .countdown-num {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #61502f;
+        }
+        .countdown-label {
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            color: #9c8863;
+            text-transform: uppercase;
+        }
+
+        /* DÜĞÜN BİLGİLERİ ALANI */
+        .info-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: #8a7343;
+            margin-bottom: 20px;
+        }
+        .grid-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            border-top: 1px solid #ebdcb9;
+            border-bottom: 1px solid #ebdcb9;
+            padding: 25px 10px;
+            margin-bottom: 35px;
+        }
+        .info-block {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        .info-block-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #8a7343;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* HARİTA VE KONUM */
+        .location-box {
+            background: #fff;
+            border: 1px solid #ebdcb9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        .location-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #61502f;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .location-sub {
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 15px;
+        }
+        .maps-btn {
+            display: inline-block;
+            background-color: #8a7343;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 25px;
             font-family: 'Cinzel', serif;
             font-size: 0.75rem;
             letter-spacing: 2px;
-            color: #8c7647;
-            margin-bottom: 30px;
-        }
-        .names {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            color: #b38f43;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        .wedding-date {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            color: #333;
-            border-top: 1px solid #d4af37;
-            border-bottom: 1px solid #d4af37;
-            padding: 10px 35px;
-            margin: 25px 0;
-            letter-spacing: 1px;
-        }
-        .details-box {
-            margin: 20px 0;
-            font-size: 1rem;
-            color: #555;
-            line-height: 1.8;
-        }
-        .venue-title {
-            font-family: 'Cinzel', serif;
-            font-weight: 600;
-            color: #8c7647;
-            margin-top: 10px;
-        }
-        .invitation-text {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2rem;
-            color: #666;
-            margin: 35px 0;
-        }
-        
-        /* HARİTA BUTONU */
-        .maps-btn {
-            display: inline-block;
-            background-color: #b38f43;
-            color: #fff;
-            text-decoration: none;
-            padding: 14px 30px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
             border-radius: 4px;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(179, 143, 67, 0.3);
-            transition: background 0.3s, transform 0.2s;
+            font-weight: 600;
+            transition: background 0.3s;
         }
         .maps-btn:hover {
-            background-color: #947333;
-            transform: translateY(-2px);
+            background-color: #6b5832;
+        }
+        .footer-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #8a7343;
+            margin-top: 20px;
+            line-height: 1.4;
         }
 
-        /* Animasyonlar */
         @keyframes pulse {
-            0% { opacity: 0.6; }
+            0% { opacity: 0.5; }
             50% { opacity: 1; }
-            100% { opacity: 0.6; }
+            100% { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
 
-    <!-- SES DOSYASI (Arka plan müziği için telifsiz klasik müzik linki eklendi) -->
     <audio id="wedding-music" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
     </audio>
 
-    <!-- 1. ADIM: DIŞ ZARF KAPAK -->
-    <div id="envelope-layer" onclick="openEnvelope()">
-        <div class="envelope-title">Rashidam & Hasan Soner</div>
-        <div class="seal-button">R & H</div>
+    <div id="envelope-layer">
+        <div class="envelope-decor">✦ ⚜ ✦</div>
+        <div class="envelope-quote">İKİ KALP... TEK ÖMÜR... SONSUZ SEVGİ...</div>
+        <div class="envelope-title">Rashidam<br>&<br>Hasan Soner</div>
+        
+        <div class="seal-container" onclick="crackAndOpen()">
+            <div class="seal-half seal-left"><div class="seal-text">R&H</div></div>
+            <div class="seal-half seal-right"><div class="seal-text">R&H</div></div>
+        </div>
+        
         <div class="seal-hint">MÜHRE DOKUNUNUZ</div>
     </div>
 
-    <!-- 2. ADIM: İÇ DAVETİYE SAYFASI -->
     <div class="main-card">
-        <div class="gold-border-inner">
-            <div class="tagline">İKİ KALP • TEK ÖMÜR • SONSUZ SEVGİ</div>
-            
-            <div class="names">Rashidam<br>&<br>Hasan Soner</div>
-            
-            <div class="wedding-date">21 AĞUSTOS 2026</div>
-            
-            <div class="details-box">
-                <p><strong>CUMA</strong></p>
-                <p>Saat: 19:00</p>
-                <p class="venue-title">ALTINKUM SOSYAL TESİSLERİ</p>
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600" class="wedding-img" alt="Düğün">
+        
+        <div class="wedding-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
+        <div class="main-names">RASHIDAM<br>&<br>HASAN SONER</div>
+        <div class="main-date-top">21 AĞUSTOS 2026</div>
+        
+        <div class="countdown-title">✦ DÜĞÜNÜMÜZE KALAN SÜRE ✦</div>
+        <div class="countdown-container">
+            <div class="countdown-box"><div class="countdown-num" id="days">00</div><div class="countdown-label">Gün</div></div>
+            <div class="countdown-box"><div class="countdown-num" id="hours">00</div><div class="countdown-label">Saat</div></div>
+            <div class="countdown-box"><div class="countdown-num" id="minutes">00</div><div class="countdown-label">Dk</div></div>
+            <div class="countdown-box"><div class="countdown-num" id="seconds">00</div><div class="countdown-label">Sn</div></div>
+        </div>
+
+        <div class="info-section-title">✦ DÜĞÜN BİLGİLERİ ✦</div>
+        <div class="grid-info">
+            <div class="info-block">
+                <div class="info-block-title">TARİH</div>
+                <p>21 Ağustos 2026</p>
+                <p>Cuma</p>
+            </div>
+            <div class="info-block">
+                <div class="info-block-title">SAAT</div>
+                <p>19:00</p>
+                <p>Akşam</p>
+            </div>
+            <div class="info-block" style="grid-column: span 2;">
+                <div class="info-block-title">MEKAN</div>
+                <p>ALTINKUM SOSYAL TESİSLERİ</p>
                 <p>Atakum / SAMSUN</p>
             </div>
-            
-            <div class="invitation-text">
-                Bu özel günümüzde sizleri de aramızda görmekten mutluluk duyarız.
-            </div>
-            
-            <!-- Canlı Google Maps Konum Linki -->
-            <a href="https://maps.google.com/?cid=12936527751600023520" target="_blank" class="maps-btn">
-                HARİTADA GÖSTER
-            </a>
+        </div>
+
+        <div class="info-section-title">✦ KONUM ✦</div>
+        <div class="location-box">
+            <div class="location-title">ALTINKUM SOSYAL TESİSLERİ</div>
+            <div class="location-sub">Atakum / SAMSUN</div>
+            <a href="https://maps.google.com" target="_blank" class="maps-btn">HARİTADA GÖSTER</a>
+        </div>
+
+        <div class="footer-text">
+            Sizleri de Aramızda Görmekten<br>Mutluluk Duyarız.
         </div>
     </div>
 
     <script>
-        function openEnvelope() {
-            // Zarfı yukarı kaydırarak açma animasyonu tetikle
-            document.getElementById('envelope-layer').classList.add('open');
+        // Mühür Kırılma ve Zarf Açılma Mekanizması
+        function crackAndOpen() {
+            const seal = document.querySelector('.seal-container');
+            const envelope = document.getElementById('envelope-layer');
+            const music = document.getElementById('wedding-music');
             
-            // Müziği başlat
-            var music = document.getElementById('wedding-music');
-            music.play().catch(function(error) {
-                console.log("Müzik otomatik başlatılamadı, tarayıcı izni gerekiyor.");
-            });
+            // Önce mühürü kır
+            seal.classList.add('broken');
+            
+            // Kısa bir süre sonra zarfı yukarı kaydırarak aç
+            setTimeout(() => {
+                envelope.classList.add('open');
+                // Müziği oynat
+                music.play().catch(err => console.log("Müzik için etkileşim gerekiyor."));
+            }, 600);
         }
+
+        // Dinamik Geri Sayım Sayacı Algoritması (21 Ağustos 2026 için)
+        const targetDate = new Date("August 21, 2026 19:00:00").getTime();
+
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+
+            if (difference < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector(".countdown-container").innerHTML = "<p style='font-family:Cinzel; color:#8a7343;'>MUTLULUKLAR DİLERİZ!</p>";
+            }
+        }, 1000);
     </script>
 </body>
 </html>
