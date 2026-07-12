@@ -28,59 +28,78 @@
         }
 
         /* ----------------------------------------------- */
-        /* DERİN MAT SİYAH LÜKS ZARF SİSTEMİ */
+        /* KOMPLE MAT SİYAH KÂĞIT DOKULU ZARF SİSTEMİ */
         #envelope-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #050505;
+            background-color: #030303;
             z-index: 9999; display: flex; justify-content: center; align-items: center;
-            transition: transform 1.3s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.3s ease;
-            perspective: 2000px;
+            transition: transform 1.6s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.6s ease;
+            perspective: 2500px; /* 3D derinlik artırıldı */
         }
         #envelope-screen.open {
             transform: translateY(-100vh); opacity: 0; pointer-events: none;
         }
 
-        /* Zarfın Tamamen Koyu Mat Siyah Gövdesi ve Lüks Kum Dokusu */
+        /* Zarfın Gövdesi: Komple Koyu Siyah Kâğıt Dokusu ve Işık Hissiyatı */
         .envelope-body {
             position: relative; width: 100%; height: 100%;
-            background: linear-gradient(180deg, #0d0d0d 0%, #030303 100%);
-            box-shadow: inset 0 0 120px rgba(0,0,0,0.95);
+            /* Üstten vuran yumuşak lüks spot ışık efekti */
+            background: radial-gradient(circle at 50% 20%, #1a1a1a 0%, #080808 60%, #020202 100%);
             display: flex; flex-direction: column; justify-content: space-between;
             align-items: center; padding: 80px 0 100px 0;
+            overflow: hidden;
         }
-        /* Geliştirilmiş Asil Kum Dokusu */
-        .envelope-body::before {
+        
+        /* Gelişmiş Ağır Kâğıt/Karton Lifli Dokusu (Tüm Sayfa İçin) */
+        .envelope-body::before, .envelope-flap::before {
             content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0.16; pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.18; pointer-events: none; z-index: 1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Üst Bölüm Yazıları */
-        .envelope-header { text-align: center; z-index: 10; padding: 0 20px; }
-        .env-quote { font-family: 'Cinzel', serif; color: #d4af37; font-size: 0.75rem; letter-spacing: 5px; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .env-names { font-family: 'Great Vibes', cursive; color: #f3cf7a; font-size: 3.5rem; line-height: 1.2; text-shadow: 2px 4px 15px rgba(0,0,0,0.9); }
-
-        /* Derin Siyah Üçgen Kapak */
+        /* YAVAŞÇA YUKARI KATLANAN 3D ÜÇGEN KAPAK */
         .envelope-flap {
             position: absolute; top: 0; left: 0; width: 100%; height: 55%;
-            background: linear-gradient(135deg, #121212 0%, #050505 100%);
+            /* Üçgen kapağa da vuran ışık gradyanı */
+            background: linear-gradient(180deg, #161616 0%, #0d0d0d 100%);
             clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-            z-index: 5; transform-origin: top center;
-            transition: transform 1.1s cubic-bezier(0.76, 0, 0.24, 1);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+            z-index: 5; 
+            transform-origin: top center;
+            /* Kapak açılış hızı yavaşlatıldı ve daha gerçekçi yapıldı */
+            transition: transform 1.5s cubic-bezier(0.66, 0, 0.34, 1), opacity 1.4s ease;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.8);
         }
-        /* Kapak Açılma Hareketi */
+        
+        /* İç gölge illüzyonu (Kapağın altına düşen gölge) */
+        .envelope-flap-shadow {
+            position: absolute; top: 0; left: 0; width: 100%; height: 55%;
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+            background: transparent;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+            z-index: 4;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        /* Kapak Yavaşça Yukarı Doğru Gerçekçi Katlanıyor */
         #envelope-screen.active .envelope-flap {
-            transform: rotateX(150deg) translateY(-100%);
-            z-index: 1; opacity: 0;
+            transform: rotateX(140deg); /* Havaya doğru kalkma hissi */
+            opacity: 0.9;
+        }
+        #envelope-screen.active .envelope-flap-shadow {
+            opacity: 0;
         }
 
         /* Altın Çerçeve Çizgileri */
         .envelope-gold-frame {
             position: absolute; top: 20px; bottom: 20px; left: 20px; right: 20px;
-            border: 1px solid rgba(212, 175, 55, 0.35); pointer-events: none; z-index: 2;
+            border: 1px solid rgba(212, 175, 55, 0.3); pointer-events: none; z-index: 2;
         }
+
+        /* Üst Bölüm Yazıları */
+        .envelope-header { text-align: center; z-index: 10; padding: 0 20px; position: relative; }
+        .env-quote { font-family: 'Cinzel', serif; color: #d4af37; font-size: 0.75rem; letter-spacing: 5px; margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.9); }
+        .env-names { font-family: 'Great Vibes', cursive; color: #f3cf7a; font-size: 3.5rem; line-height: 1.2; text-shadow: 2px 4px 15px rgba(0,0,0,0.95); }
 
         /* GERÇEK MÜHÜRÜN İKİYE BÖLÜNME ALANI */
         .seal-wrapper {
@@ -94,7 +113,7 @@
         
         .seal-half-box {
             width: 50%; height: 100%; overflow: hidden; position: relative;
-            transition: transform 0.9s ease-in-out, opacity 0.8s ease;
+            transition: transform 1.2s cubic-bezier(0.66, 0, 0.34, 1), opacity 1s ease;
         }
         .seal-half-box img {
             width: 150px; height: 150px; max-width: none;
@@ -103,11 +122,11 @@
         .seal-left-side img { left: 0; }
         .seal-right-side img { right: 0; }
 
-        /* Açılma anında mühür parçalanma efekti */
-        #envelope-screen.active .seal-left-side { transform: translateX(-120px) rotate(-15deg); opacity: 0; }
-        #envelope-screen.active .seal-right-side { transform: translateX(120px) rotate(15deg); opacity: 0; }
+        /* Mühür Kırılma Animasyonu da Kapakla Senkronize Yavaşlatıldı */
+        #envelope-screen.active .seal-left-side { transform: translateX(-140px) rotate(-20deg); opacity: 0; }
+        #envelope-screen.active .seal-right-side { transform: translateX(140px) rotate(20deg); opacity: 0; }
 
-        .hint-text { color: #d4af37; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 4px; z-index: 10; animation: softPulse 2s infinite ease-in-out; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .hint-text { color: #d4af37; font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 4px; z-index: 10; animation: softPulse 2s infinite ease-in-out; text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; }
 
         /* ----------------------------------------------- */
         /* İÇ DAVETİYE KARTI TASARIMI */
@@ -177,7 +196,7 @@
         .gold-action-btn:hover { background: #8e7243; }
         .map-iframe { width: 100%; height: 180px; border-radius: 8px; border: 0; }
 
-        /* SÖZ VE ALT KISIM */
+        /* SÖZ VE ALT ALAN */
         .footer-poem-area { margin-top: 40px; padding: 0 10px; }
         .footer-main-quote { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #8a7343; margin-bottom: 15px; line-height: 1.3; }
         .footer-sub-text { font-size: 0.8rem; color: #555; line-height: 1.7; max-width: 90%; margin: 0 auto; }
@@ -187,6 +206,44 @@
             50% { opacity: 1; transform: scale(1); }
             100% { opacity: 0.4; transform: scale(0.98); }
         }
+        /* ➔ LÜKS SARAY TARZI OYMANLI KÖŞE MOTİFLERİ (ORNAMENT FRAME) */
+.envelope-ornament-frame {
+    position: absolute; 
+    top: 30px; 
+    bottom: 30px; 
+    left: 30px; 
+    right: 30px;
+    pointer-events: none; 
+    z-index: 2;
+}
+
+/* İnce altın iç hat çizgisi */
+.envelope-ornament-frame::after {
+    content: ""; 
+    position: absolute; 
+    top: 12px; 
+    bottom: 12px; 
+    left: 12px; 
+    right: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* Köşe oymalarının saf SVG olarak tarayıcıya çizdirilmesi (4 Köşe İçin) */
+.ornament {
+    position: absolute; 
+    width: 45px; 
+    height: 45px; 
+    opacity: 0.65;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,0 C30,0 50,10 60,30 C65,40 55,50 45,45 C35,40 40,25 25,25 C15,25 15,35 25,35 C35,35 30,55 50,60 C70,65 80,45 80,20 C80,10 90,0 100,0 M0,0 C0,30 10,50 30,60 C40,65 50,55 45,45 C40,35 25,40 25,25 C25,15 35,15 35,25 C35,35 55,30 60,50 C65,70 45,80 20,80 C10,80 0,90 0,100' fill='none' stroke='%23d4af37' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='25' r='3' fill='%23d4af37'/%3E%3Ccircle cx='45' cy='45' r='2' fill='%23d4af37'/%3E%3C/svg%3E");
+    background-size: contain; 
+    background-repeat: no-repeat;
+}
+
+.top-left { top: 0; left: 0; }
+.top-right { top: 0; right: 0; transform: rotate(90deg); }
+.bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
+.bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
+
     </style>
 </head>
 <body>
@@ -201,9 +258,19 @@
         <i class="fas fa-volume-up"></i>
     </button>
 
-    <!-- DERİN GECE SİYAHI LÜKS ZARF SİSTEMİ -->
+    <!-- KOMPLE KÂĞIT DOKULU LÜKS ZARF SİSTEMİ -->
     <div id="envelope-screen">
+        <!-- SARAY/AJANS TARZI KÖŞE MOTİFLERİ -->
+<div class="envelope-ornament-frame">
+    <div class="ornament top-left"></div>
+    <div class="ornament top-right"></div>
+    <div class="ornament bottom-left"></div>
+    <div class="ornament bottom-right"></div>
+</div>
+
+        <div class="envelope-flap-shadow"></div>
         <div class="envelope-flap"></div>
+        
         <div class="envelope-body">
             <div class="envelope-gold-frame"></div>
             
@@ -297,12 +364,12 @@
             </div>
         </div>
 
-        <!-- SÖZ VEE ALT ALAN -->
+        <!-- SÖZ VE ALT ALAN -->
         <div class="footer-poem-area">
             <div class="footer-main-quote">Sizleri de Aramızda Görmekten Mutluluk Duyarız</div>
             <div class="divider-heart" style="margin: 15px 0;">♥</div>
             <p class="footer-sub-text">
-                Hayatlarımızı birleştirdiğimiz bu özel günümüzde siz değerli dostlarimizi aramizda görmekten mutluluk duyarız.
+                Hayatlarımızı birleştirdiğimiz bu özel günümüzde siz değerli dostlarımızı aramizda görmekten mutluluk duyarız.
             </p>
         </div>
 
@@ -334,9 +401,10 @@
             
             audioBtn.style.display = 'flex';
 
+            // Ekranın yukarı kayma süresi kapak animasyonuyla senkronize edildi
             setTimeout(() => {
                 screen.classList.add('open');
-            }, 1200);
+            }, 1500); 
         }
 
         function toggleMusic() {
