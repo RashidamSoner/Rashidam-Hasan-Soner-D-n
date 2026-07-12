@@ -6,7 +6,7 @@
     <title>Rashidam & Hasan Soner Düğün Davetiyesi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -15,120 +15,139 @@
             box-sizing: border-box;
         }
         body {
-            background-color: #f4ebd0;
+            background-color: #f7f4ed;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            justify-content: center;
         }
 
-        /* 1. KATMAN: YÜKLEDİĞİNİZ SİYAH ZARF GÖRSELİ */
+        /* 1. ZARF KATMANI (TAM EKRAN RESİM) */
         #envelope-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #121212 url('zarf.png.jpg') center center / cover no-repeat;
+            background-color: #1a1a1a;
             z-index: 999;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s;
+            transition: opacity 1s ease, transform 1s ease;
         }
         #envelope-layer.open {
-            transform: translateY(-100%);
             opacity: 0;
+            transform: scale(1.05);
             pointer-events: none;
         }
-
-        /* Orijinal Mühür Üzerine Denk Gelecek Görünmez/Şeffaf Tıklama Alanı */
-        .invisible-seal-btn {
+        .envelope-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Resmi kesmeden ekrana tam sığdırır */
+            max-width: 500px;
+        }
+        /* Resimdeki mühürün üzerine gelen tıklama alanı */
+        .seal-click-area {
             position: absolute;
-            width: 150px;
-            height: 150px;
-            bottom: 12%; /* Ekrandaki mühürün yüksekliğine göre ayarlandı */
+            width: 120px;
+            height: 120px;
+            bottom: 22%; /* Zarf resmindeki mühürün yerine göre hizalandı */
             cursor: pointer;
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            -webkit-tap-highlight-color: transparent;
         }
-        
-        /* Hafifçe yanıp sönen mühre dokun yönlendirmesi */
-        .seal-hint-text {
+        .hint-text {
             position: absolute;
-            bottom: 6%;
+            bottom: 15%;
             color: #d4af37;
             font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-            text-align: center;
-            width: 100%;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            animation: pulseText 1.5s infinite;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            animation: pulse 1.5s infinite;
         }
 
-        /* 2. KATMAN: YÜKLEDİĞİNİZ İÇ SAYFA GÖRSELİ DÜZENİ */
-        .invitation-container {
+        /* 2. İÇ SAYFA KATMANI */
+        .main-content {
+            width: 100%;
             max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-            /* Yüklediğiniz uzun davetiye görselini arka plan yapıyoruz */
-            background: #fdfbf7 url('davetiye-arka-plan.png.jpg') top center / 100% auto no-repeat;
-            min-height: 2020px; /* Görselin dikey uzunluğuna göre yaklaşık alan */
-            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            background-color: #fdfbf7;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .invitation-main-img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
-        /* GERİ SAYIM SAYACI (Resimdeki çemberlerin tam üzerine oturacak şekilde) */
-        .countdown-overlay {
-            position: absolute;
-            top: 760px; /* Resimdeki geri sayım yuvarlaklarının olduğu yaklaşık yükseklik */
-            left: 0;
-            width: 100%;
+        /* CANLI GERİ SAYIM ALANI (Resmin hemen altında temiz düzen) */
+        .countdown-wrapper {
+            background-color: #faf6ee;
+            padding: 30px 20px;
+            border-top: 1px solid #ebdcb9;
+            border-bottom: 1px solid #ebdcb9;
+        }
+        .countdown-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: #8a7343;
+            margin-bottom: 15px;
+        }
+        .countdown-container {
             display: flex;
             justify-content: center;
-            gap: 18px; /* Yuvarlakların hizasına göre ayar */
-            padding: 0 10px;
+            gap: 15px;
         }
         .time-box {
-            width: 68px;
-            height: 68px;
+            background: #fff;
+            border: 1px solid #ebdcb9;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
         .time-num {
             font-family: 'Cinzel', serif;
             font-size: 1.2rem;
             font-weight: 700;
             color: #61502f;
-            line-height: 1;
         }
         .time-label {
             font-size: 0.55rem;
-            font-family: sans-serif;
             letter-spacing: 1px;
             color: #9c8863;
             text-transform: uppercase;
-            margin-top: 2px;
         }
 
-        /* HARİTAYA GİT BUTONU (Resimdeki butonun tam üzerine gelecek şekilde şeffaf buton) */
-        .maps-overlay-btn {
-            position: absolute;
-            top: 1590px; /* Resimdeki "HARİTADA GÖSTER" butonunun olduğu yükseklik */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 220px;
-            height: 45px;
-            display: block;
+        /* HARİTA BUTONU */
+        .maps-container {
+            padding: 30px 20px 40px 20px;
+            background-color: #fdfbf7;
+        }
+        .maps-btn {
+            display: inline-block;
+            background-color: #8a7343;
+            color: #fff;
             text-decoration: none;
-            background: transparent; /* Resimdeki buton göründüğü için şeffaf bırakıyoruz */
-            cursor: pointer;
+            padding: 14px 35px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
             border-radius: 4px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(138, 115, 67, 0.3);
+            transition: background 0.3s;
         }
 
-        @keyframes pulseText {
+        @keyframes pulse {
             0% { opacity: 0.4; }
             50% { opacity: 1; }
             100% { opacity: 0.4; }
@@ -142,44 +161,46 @@
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
     </audio>
 
-    <!-- 1. GÖRSEL: INTERAKTİF SİYAH ZARF -->
+    <!-- ZARF GÖRSELİ -->
     <div id="envelope-layer">
-        <!-- Resimdeki mühür alanına denk gelen şeffaf tıklama bölgesi -->
-        <div class="invisible-seal-btn" onclick="openEnvelope()"></div>
-        <div class="seal-hint-text">MÜHRE DOKUNUNUZ</div>
+        <img src="zarf.png.jpg" class="envelope-img" alt="Zarf">
+        <div class="seal-click-area" onclick="openEnvelope()"></div>
+        <div class="hint-text">MÜHRE DOKUNUNUZ</div>
     </div>
 
-    <!-- 2. GÖRSEL: BİREBİR İÇ SAYFA VE DİNAMİK ALANLAR -->
-    <div class="invitation-container">
+    <!-- İÇ DAVETİYE GÖRSELİ VE SAYAÇ -->
+    <div class="main-content">
+        <!-- Yüklediğiniz harika iç sayfa resmi orijinal haliyle üstte durur -->
+        <img src="davetiye-arka-plan.png.jpg" class="invitation-main-img" alt="Davetiye">
         
-        <!-- Dinamik Sayaç (Arka plandaki yuvarlak halkaların tam içine yerleşir) -->
-        <div class="countdown-overlay">
-            <div class="time-box"><div class="time-num" id="days">00</div><div class="time-label">Gün</div></div>
-            <div class="time-box"><div class="time-num" id="hours">00</div><div class="time-label">Saat</div></div>
-            <div class="time-box"><div class="time-num" id="minutes">00</div><div class="time-label">Dk</div></div>
-            <div class="time-box"><div class="time-num" id="seconds">00</div><div class="time-label">Sn</div></div>
+        <!-- Geri Sayım Sayacı Tam Resmin Altında Net Şekilde Başlar -->
+        <div class="countdown-wrapper">
+            <div class="countdown-title">✦ DÜĞÜNÜMÜZE KALAN SÜRE ✦</div>
+            <div class="countdown-container">
+                <div class="time-box"><div class="time-num" id="days">00</div><div class="time-label">Gün</div></div>
+                <div class="time-box"><div class="time-num" id="hours">00</div><div class="time-label">Saat</div></div>
+                <div class="time-box"><div class="time-num" id="minutes">00</div><div class="time-label">Dk</div></div>
+                <div class="time-box"><div class="time-num" id="seconds">00</div><div class="time-label">Sn</div></div>
+            </div>
         </div>
 
-        <!-- Gerçek Google Haritalar Bağlantısı (Resimdeki butonun üzerine biner) -->
-        <a href="https://maps.app.goo.gl/r5z7d3Yv4zG5N6vK7" target="_blank" class="maps-overlay-btn" title="Yol Tarifi Al"></a>
-
+        <!-- Harita Butonu En Altta -->
+        <div class="maps-container">
+            <a href="https://maps.app.goo.gl/r5z7d3Yv4zG5N6vK7" target="_blank" class="maps-btn">YOL TARİFİ VE KONUM</a>
+        </div>
     </div>
 
     <script>
-        // Zarfı Açma Fonksiyonu
         function openEnvelope() {
-            const envelope = document.getElementById('envelope-layer');
+            document.getElementById('envelope-layer').classList.add('open');
             const music = document.getElementById('wedding-music');
-            
-            envelope.classList.add('open');
-            // Müziği başlat
-            music.play().catch(err => console.log("Müzik için kullanıcı etkileşimi bekleniyor."));
+            music.play().catch(err => console.log("Müzik otomatik başlatılamadı."));
         }
 
-        // Dinamik Geri Sayım Sayacı (21 Ağustos 2026 için)
+        // Geri Sayım (21 Ağustos 2026 için)
         const targetDate = new Date("August 21, 2026 19:00:00").getTime();
 
-        const countdownInterval = setInterval(function() {
+        setInterval(function() {
             const now = new Date().getTime();
             const difference = targetDate - now;
 
@@ -192,10 +213,6 @@
             document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
             document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
             document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
-
-            if (difference < 0) {
-                clearInterval(countdownInterval);
-            }
         }, 1000);
     </script>
 </body>
