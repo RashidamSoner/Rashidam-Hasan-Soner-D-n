@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rashidam & Hasan Soner Düğün Davetiyesi</title>
+    <!-- Google Fonts şık yazı tipleri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #fcfaf7;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 1. INTERAKTIF ZARF (KAPAK) KATMANI */
+        #envelope-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+            border: 15px solid #d4af37;
+        }
+        #envelope-layer.open {
+            transform: translateY(-100%);
+        }
+        .envelope-title {
+            font-family: 'Great Vibes', cursive;
+            color: #d4af37;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        /* Balmumu Mühür */
+        .seal-button {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #c99e32 0%, #9e781d 100%);
+            border-radius: 50%;
+            border: 4px dashed #fff;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), inset 0 0 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: bold;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .seal-button:hover {
+            transform: scale(1.08);
+        }
+        .seal-hint {
+            color: #d4af37;
+            margin-top: 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* 2. ASIL DAVETİYE İÇERİK SAYFASI */
+        .main-card {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #faf6f0;
+            border-left: 2px solid #eadecc;
+            border-right: 2px solid #eadecc;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+        .gold-border-inner {
+            border: 1px solid #d4af37;
+            padding: 40px 20px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tagline {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: #8c7647;
+            margin-bottom: 30px;
+        }
+        .names {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: #b38f43;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .wedding-date {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #333;
+            border-top: 1px solid #d4af37;
+            border-bottom: 1px solid #d4af37;
+            padding: 10px 35px;
+            margin: 25px 0;
+            letter-spacing: 1px;
+        }
+        .details-box {
+            margin: 20px 0;
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.8;
+        }
+        .venue-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: #8c7647;
+            margin-top: 10px;
+        }
+        .invitation-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #666;
+            margin: 35px 0;
+        }
+        
+        /* HARİTA BUTONU */
+        .maps-btn {
+            display: inline-block;
+            background-color: #b38f43;
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(179, 143, 67, 0.3);
+            transition: background 0.3s, transform 0.2s;
+        }
+        .maps-btn:hover {
+            background-color: #947333;
+            transform: translateY(-2px);
+        }
+
+        /* Animasyonlar */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SES DOSYASI (Arka plan müziği için telifsiz klasik müzik linki eklendi) -->
+    <audio id="wedding-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- 1. ADIM: DIŞ ZARF KAPAK -->
+    <div id="envelope-layer" onclick="openEnvelope()">
+        <div class="envelope-title">Rashidam & Hasan Soner</div>
+        <div class="seal-button">R & H</div>
+        <div class="seal-hint">MÜHRE DOKUNUNUZ</div>
+    </div>
+
+    <!-- 2. ADIM: İÇ DAVETİYE SAYFASI -->
+    <div class="main-card">
+        <div class="gold-border-inner">
+            <div class="tagline">İKİ KALP • TEK ÖMÜR • SONSUZ SEVGİ</div>
+            
+            <div class="names">Rashidam<br>&<br>Hasan Soner</div>
+            
+            <div class="wedding-date">21 AĞUSTOS 2026</div>
+            
+            <div class="details-box">
+                <p><strong>CUMA</strong></p>
+                <p>Saat: 19:00</p>
+                <p class="venue-title">ALTINKUM SOSYAL TESİSLERİ</p>
+                <p>Atakum / SAMSUN</p>
+            </div>
+            
+            <div class="invitation-text">
+                Bu özel günümüzde sizleri de aramızda görmekten mutluluk duyarız.
+            </div>
+            
+            <!-- Canlı Google Maps Konum Linki -->
+            <a href="https://maps.google.com/?cid=12936527751600023520" target="_blank" class="maps-btn">
+                HARİTADA GÖSTER
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function openEnvelope() {
+            // Zarfı yukarı kaydırarak açma animasyonu tetikle
+            document.getElementById('envelope-layer').classList.add('open');
+            
+            // Müziği başlat
+            var music = document.getElementById('wedding-music');
+            music.play().catch(function(error) {
+                console.log("Müzik otomatik başlatılamadı, tarayıcı izni gerekiyor.");
+            });
+        }
+    </script>
+</body>
+</html>
