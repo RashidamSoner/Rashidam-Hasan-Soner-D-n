@@ -161,9 +161,9 @@
 
     clip-path:polygon(0 0,100% 0,50% 100%);
 
-    z-index:100;
+    z-index:60;
 
-    overflow:visible;
+    overflow:hidden;
     isolation:isolate;
 
     transform-origin:top center;
@@ -273,10 +273,9 @@ box-shadow:
 
         /* Kapak Yavaşça Yukarı Doğru Gerçekçi Katlanıyor */
         #envelope-screen.active .envelope-flap {
-    transition: transform 2s cubic-bezier(.66,0,.34,1);
-    transform: rotateX(-180deg);
+            transform: rotateX(140deg); /* Havaya doğru kalkma hissi */
+            opacity: 0.9;
         }
-
         #envelope-screen.active .envelope-flap-shadow {
             opacity: 0;
         }
@@ -651,10 +650,10 @@ box-shadow:
 }
 
 /* ===============================
-   PREMIUM ANIMATIONS
+   PREMIUM FLOAT ANIMATION
 =============================== */
 
-@keyframes envelopeFloat{
+@keyframes envelopeFloat {
     0%{
         transform:translateY(0) rotateZ(0deg);
     }
@@ -675,58 +674,19 @@ box-shadow:
         transform:translateY(0) rotateZ(0deg);
     }
 }
-
-@keyframes sealFloat{
-    0%,100%{
-        transform:translate(-50%,-50%) translateY(0);
+    @keyframes goldShine {
+    0% {
+        transform: translateX(-150%) skewX(-25deg);
+        opacity: 0;
     }
-
-    50%{
-        transform:translate(-50%,-50%) translateY(-5px);
+    30% {
+        opacity: .25;
     }
-}
-
-@keyframes flapShine{
-    0%{
-        transform:translateX(-220%) skewX(-28deg);
-        opacity:0;
+    100% {
+        transform: translateX(250%) skewX(-25deg);
+        opacity: 0;
     }
-
-    18%{
-        opacity:.95;
-    }
-
-    45%{
-        opacity:1;
-    }
-
-    72%{
-        opacity:.85;
-    }
-
-    100%{
-        transform:translateX(240%) skewX(-28deg);
-        opacity:0;
-    }
-}
-
-@keyframes goldShine{
-    0%{
-        transform:translateX(-150%) skewX(-25deg);
-        opacity:0;
-    }
-
-    30%{
-        opacity:.25;
-    }
-
-    100%{
-        transform:translateX(250%) skewX(-25deg);
-        opacity:0;
-    }
-}
-
-@keyframes sealGlow{
+    @keyframes sealGlow {
     0%,100%{
         transform:scale(1);
         filter:drop-shadow(0 0 8px rgba(212,175,55,.25));
@@ -736,31 +696,12 @@ box-shadow:
         transform:scale(1.03);
         filter:drop-shadow(0 0 18px rgba(212,175,55,.65));
     }
-}
-
-@keyframes goldSweep{
-    0%{
-        background-position:-250% 0;
+    @keyframes goldSweep {
+    0% {
+        background-position: -250% 0;
     }
-
-    100%{
-        background-position:250% 0;
-    }
-}
-
-@keyframes sparkle{
-    0%{
-        transform:translateY(0) scale(1);
-        opacity:0;
-    }
-
-    50%{
-        opacity:.8;
-    }
-
-    100%{
-        transform:translateY(-25px) scale(1.4);
-        opacity:0;
+    100% {
+        background-position: 250% 0;
     }
 }
 
@@ -769,7 +710,6 @@ box-shadow:
     position:absolute;
     inset:0;
     pointer-events:none;
-
     background:linear-gradient(
         115deg,
         transparent 35%,
@@ -778,12 +718,22 @@ box-shadow:
         rgba(255,255,255,.08) 55%,
         transparent 65%
     );
-
     background-size:250% 100%;
-
     animation:goldSweep 8s linear infinite;
-
     mix-blend-mode:screen;
+}  
+     @keyframes sparkle {
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:0;
+    }
+    50%{
+        opacity:.8;
+    }
+    100%{
+        transform:translateY(-25px) scale(1.4);
+        opacity:0;
+    }
 }
 
 .sparkle{
@@ -794,7 +744,7 @@ box-shadow:
     background:#d4af37;
     box-shadow:0 0 10px #ffd86a;
     animation:sparkle 3.5s infinite;
-}
+} 
     /* ===========================
    PREMIUM ENVELOPE V2
 ===========================*/
@@ -905,29 +855,16 @@ box-shadow:
 
 }  
     @keyframes flapShine{
-
-    0%{
-        transform:translateX(-220%) skewX(-28deg);
-        opacity:0;
-    }
-
-    18%{
-        opacity:.95;
-    }
-
-    45%{
-        opacity:1;
-    }
-
-    72%{
-        opacity:.85;
-    }
-
-    100%{
-        transform:translateX(240%) skewX(-28deg);
-        opacity:0;
-    }
-
+0%{
+transform:translateX(-180%) skewX(-28deg);
+opacity:0;
+}
+15%{opacity:1;}
+55%{opacity:.9;}
+100%{
+transform:translateX(220%) skewX(-28deg);
+opacity:0;
+}
 }
 /* ===========================
    PREMIUM WAX SEAL
@@ -1047,38 +984,7 @@ box-shadow:
 
     letter-spacing:2px;
     text-transform:uppercase;
-}
-/* --- KAPAK KENARI ALTIN ÇİZGİSİ VE ÜSTÜNDEKİ ÖĞELERİN YENİ KONUMLARI --- */
-.flap-gold-border {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px; /* Altın çizgi kalınlığı */
-    background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); /* Metalik altın yaldız */
-    box-shadow: 0 1px 5px rgba(186, 148, 62, 0.5);
-    z-index: 105;
-}
-
-.envelope-flap .envelope-header {
-    position: absolute;
-    top: 30%; /* İsimlerin kapak üzerindeki yüksekliği */
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    width: 100%;
-    z-index: 110;
-}
-
-.envelope-flap .seal-wrapper {
-    position: absolute;
-    bottom: -25px; /* Mührü kapağın tam alt ucuna, altın çizginin üstüne hizalar */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 120;
-    cursor: pointer;
-}
-/* --------------------------------------------------------------------- */        
+}        
     </style>
 </head>
 <body>
@@ -1096,44 +1002,36 @@ box-shadow:
     <!-- KOMPLE KÂĞIT DOKULU LÜKS ZARF SİSTEMİ -->
     <div id="envelope-screen">
 
-        <div class="sparkle" style="top:18%;left:18%;animation-delay:0s;"></div>
-        <div class="sparkle" style="top:25%;right:20%;animation-delay:.7s;"></div>
-        <div class="sparkle" style="top:42%;left:12%;animation-delay:1.2s;"></div>
-        <div class="sparkle" style="top:60%;right:18%;animation-delay:2s;"></div>
-        <div class="sparkle" style="top:72%;left:28%;animation-delay:2.6s;"></div>
-        <div class="sparkle" style="top:35%;left:70%;animation-delay:1.8s;"></div>
-        <div class="sparkle" style="top:80%;right:35%;animation-delay:3s;"></div>
-        <div class="sparkle" style="top:12%;left:55%;animation-delay:1s;"></div>
-        <div class="sparkle" style="top:50%;left:50%;animation-delay:2.3s;"></div>
-        <div class="sparkle" style="top:86%;right:12%;animation-delay:3.4s;"></div>    
-        
+    <div class="sparkle" style="top:18%;left:18%;animation-delay:0s;"></div>
+<div class="sparkle" style="top:25%;right:20%;animation-delay:.7s;"></div>
+<div class="sparkle" style="top:42%;left:12%;animation-delay:1.2s;"></div>
+<div class="sparkle" style="top:60%;right:18%;animation-delay:2s;"></div>
+<div class="sparkle" style="top:72%;left:28%;animation-delay:2.6s;"></div>
+<div class="sparkle" style="top:35%;left:70%;animation-delay:1.8s;"></div>
+<div class="sparkle" style="top:80%;right:35%;animation-delay:3s;"></div>
+<div class="sparkle" style="top:12%;left:55%;animation-delay:1s;"></div>
+<div class="sparkle" style="top:50%;left:50%;animation-delay:2.3s;"></div>
+<div class="sparkle" style="top:86%;right:12%;animation-delay:3.4s;"></div>    
         <!-- SARAY/AJANS TARZI KÖŞE MOTİFLERİ -->
-        <div class="envelope-ornament-frame">
-            <div class="ornament top-left"></div>
-            <div class="ornament top-right"></div>
-            <div class="ornament bottom-left"></div>
-            <div class="ornament bottom-right"></div>
-        </div>
-            
-        <!-- ZARF GÖVDESİ (Arka Plan) -->
+<div class="envelope-ornament-frame">
+    <div class="ornament top-left"></div>
+    <div class="ornament top-right"></div>
+    <div class="ornament bottom-left"></div>
+    <div class="ornament bottom-right"></div>
+</div>
+
+        <div class="envelope-flap-shadow"></div>
+        <div class="envelope-flap"></div>
+        
         <div class="envelope-body">
             <div class="envelope-gold-frame"></div>
-            <div class="hint-text">AÇMAK İÇİN MÜHRE DOKUNUN</div>
-        </div>
-
-        <!-- KAPAK SİSTEMİ (İsimler, Mühür ve Altın Çizgi Artık Buranın İçinde) -->
-        <div class="envelope-flap-shadow"></div>
-        <div class="envelope-flap">
-            <!-- Kapak Kenarındaki Altın Çizgiler İçin Dekorasyon -->
-            <div class="flap-gold-border"></div>
-
-            <!-- İsimler artık kapağın üstünde -->
+            
             <div class="envelope-header">
                 <div class="env-quote">İKİ KALP... TEK ÖMÜR... SONSUZ SEVGİ...</div>
                 <div class="env-names">Rashidam<br>&<br>Hasan Soner</div>
             </div>
             
-            <!-- Mühür artık kapağın üstünde -->
+            <!-- GERÇEK MÜHÜRÜNÜZÜ SOL VE SAĞ OLARAK İKİYE BÖLEN SİSTEM -->
             <div class="seal-wrapper" onclick="executeEnvelopeOpening()">
                 <div class="seal-half-box seal-left-side">
                     <img src="muhur.png.PNG" alt="Mühür Sol">
@@ -1142,139 +1040,187 @@ box-shadow:
                     <img src="muhur.png.PNG" alt="Mühür Sağ">
                 </div>
             </div>
-        </div>
-
-    </div>
-
-<!-- İÇ DAVETİYE KARTI -->
-<div class="main-card">
-    
-    <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
-    
-    <div class="card-names">
-        RASHIDAM
-        <span class="card-ampersand">&</span>
-        HASAN SONER
-    </div>
-    
-    <div class="divider-heart">♥</div>
-    
-    <div class="card-date-main">21 AĞUSTOS 2026</div>
-
-    <!-- DAİRESEL GERİ SAYIM SAYACI -->
-    <div class="counter-section">
-        <div class="counter-title">➔ DÜĞÜNÜMÜZE KALAN SÜRE ➔</div>
-        <div class="counter-grid">
-            <div class="counter-box"><div class="counter-num" id="days">00</div><div class="counter-label">Gün</div></div>
-            <div class="counter-box"><div class="counter-num" id="hours">00</div><div class="counter-label">Saat</div></div>
-            <div class="counter-box"><div class="counter-num" id="minutes">00</div><div class="counter-label">Dakika</div></div>
-            <div class="counter-box"><div class="counter-num" id="seconds">00</div><div class="counter-label">Saniye</div></div>
+            
+            <div class="hint-text">AÇMAK İÇİN MÜHRE DOKUNUN</div>
         </div>
     </div>
 
-       <!-- ARKA PLAN SESİ İÇİN GÖRÜNMEZ YOUTUBE PLAYER KAPSAYICISI (Gerekli!) -->
-    <div id="music-player" style="display: none;"></div>
+    <!-- İÇ DAVETİYE KARTI -->
+    <div class="main-card">
+        
+        <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
+        
+        <div class="card-names">
+            RASHIDAM
+            <span class="card-ampersand">&</span>
+            HASAN SONER
+        </div>
+        
+        <div class="divider-heart">♥</div>
+        
+        <div class="card-date-main">21 AĞUSTOS 2026</div>
+
+        <!-- DAİRESEL GERİ SAYIM SAYACI -->
+        <div class="counter-section">
+            <div class="counter-title">➔ DÜĞÜNÜMÜZE KALAN SÜRE ➔</div>
+            <div class="counter-grid">
+                <div class="counter-box"><div class="counter-num" id="days">00</div><div class="counter-label">Gün</div></div>
+                <div class="counter-box"><div class="counter-num" id="hours">00</div><div class="counter-label">Saat</div></div>
+                <div class="counter-box"><div class="counter-num" id="minutes">00</div><div class="counter-label">Dakika</div></div>
+                <div class="counter-box"><div class="counter-num" id="seconds">00</div><div class="counter-label">Saniye</div></div>
+            </div>
+        </div>
+
+        <!-- İKONLU MENÜ GEZİNTİSİ -->
+        <div class="nav-menu-grid">
+            <a href="#" class="nav-btn-item"><i class="fas fa-ring"></i>Davetİye</a>
+            <a href="#tarih-alanı" class="nav-btn-item"><i class="fas fa-calendar-alt"></i>Tarİh & Saat</a>
+            <a href="#harita-alanı" class="nav-btn-item"><i class="fas fa-map-marker-alt"></i>Konum</a>
+            <a href="#" class="nav-btn-item"><i class="fas fa-images"></i>Galerİ</a>
+            <a href="#" class="nav-btn-item"><i class="fas fa-gift"></i>Hedİyeler</a>
+            <a href="#" class="nav-btn-item"><i class="fas fa-envelope"></i>İletİşİm</a>
+        </div>
+
+        <!-- DÜĞÜN BİLGİLERİ SATIRI -->
+        <div id="tarih-alanı">
+            <div class="details-title">➔ DÜĞÜN BİLGİLERİ ➔</div>
+            <div class="details-row">
+                <div class="detail-block">
+                    <i class="fas fa-calendar-check"></i>
+                    <h4>21 AĞUSTOS 2026</h4>
+                    <p>Cuma</p>
+                </div>
+                <div class="detail-block">
+                    <i class="fas fa-clock"></i>
+                    <h4>19:00</h4>
+                    <p>Akşam</p>
+                </div>
+                <div class="detail-block">
+                    <i class="fas fa-hotel"></i>
+                    <h4>ALTINKUM TESİSLERİ</h4>
+                    <p>Atakum / SAMSUN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- HARİTA KARTI BÖLÜMÜ -->
+        <div id="harita-alanı">
+            <div class="map-section-title">➔ KONUM ➔</div>
+            <div class="map-embed-box">
+                <div class="map-info-text">
+                    <h3>ALTINKUM SOSYAL TESİSLERİ</h3>
+                    <p>ATAKUM / SAMSUN</p>
+                    <a href="https://maps.google.com/?q=Altinkum+Sosyal+Tesisleri+Atakum+Samsun"
+ 
+               target="_blank" 
+               class="map-button">
+               Haritada Aç / Yol Tarifi
+            </a>
+
+            <iframe class="map-iframe" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.467479708915!2d36.2163459!3d41.3639423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4087df606994bc1d%3A0xc6cb1c636f32e987!2sAlt%C4%B1nkum%20Sosyal%20Tesisleri!5e0!3m2!1str!2str!4v1710000000000!5m2!1str!2str" 
+                    width="100%" 
+                    height="250" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+            </iframe>
+
+        <!-- SÖZ VE ALT ALAN -->
+        <div class="footer-poem-area">
+            <div class="footer-main-quote">Sizleri de Aramızda Görmekten Mutluluk Duyarız</div>
+            <div class="divider-heart" style="margin: 15px 0;">♥</div>
+            <p class="footer-sub-text">
+                Hayatlarımızı birleştirdiğimiz bu özel günümüzde siz değerli dostlarımızı aramizda görmekten mutluluk duyarız.
+            </p>
+        </div>
+
+    </div>
 
     <!-- SCRIPT KONTROLLERİ -->
     <script>
         let isMuted = false;
         let player;
 
-        // YouTube API hazır olduğunda tetiklenir
         function onYouTubeIframeAPIReady() {
-            // Buradaki video ID'sini (örnek: "YOUR_VIDEO_ID") kendi istediğin şarkının ID'siyle değiştirebilirsin
-            player = new YT.Player('music-player', {
-                height: '0',
-                width: '0',
-                videoId: 'dQw4w9WgXcQ', // Buraya çalmasını istediğin YouTube şarkısının ID'sini yaz
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'dQw4w9WgXcQ' // Döngü için video ID'sini tekrar yazmalısın
-                }
-            });
+            player = new YT.Player('music-player');
         }
 
-        // YouTube API scriptini dinamik olarak yükler
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         const firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         function executeEnvelopeOpening() {
-            const screen = document.getElementById('envelope-screen');
-            const flap = document.querySelector('.envelope-flap');
-            const seal = document.querySelector('.seal-wrapper');
-            // DÜZELTİLDİ: Sınıf ismi .invitation-card yerine .main-card yapıldı
-            const invitation = document.querySelector('.main-card'); 
-            const audioBtn = document.getElementById('audioToggle');
 
-            if (screen) {
-                screen.classList.add('active');
-            }
+    const screen = document.getElementById('envelope-screen');
+    const flap = document.querySelector('.envelope-flap');
+    const seal = document.querySelector('.seal-wrapper');
+    const invitation = document.querySelector('.invitation-card');
+    const audioBtn = document.getElementById('audioToggle');
 
-            // Müzik çalmayı başlatır
-            if (player && typeof player.playVideo === 'function') {
-                player.playVideo();
-            }
+    screen.classList.add('active');
 
-            if (audioBtn) {
-                audioBtn.style.display = 'flex';
-            }
+    if (player && typeof player.playVideo === 'function') {
+        player.playVideo();
+    }
 
-            /* 1- Mühür hafif küçülüp kayboluyor */
-            setTimeout(() => {
-                if (seal) {
-                    seal.classList.add("break");
-                    seal.style.transition = "transform .9s ease, opacity .9s ease";
-                    seal.style.transform = "translate(-50%,-50%) scale(.92)";
-                    
-                    setTimeout(() => {
-                        seal.style.opacity = "0";
-                    }, 550);
-                }
-            }, 250);
+    audioBtn.style.display = 'flex';
 
-            /* 2- Kapak ağır şekilde açılıyor */
-            setTimeout(() => {
-                if (flap) {
-                    flap.style.transition = "transform 2s cubic-bezier(.66,0,.34,1)";
-                    flap.style.transform = "rotateX(-185deg)";
-                }
-            }, 700);
-
-            /* 3- Davetiye yavaşça yükseliyor */
-            setTimeout(() => {
-                if (invitation) {
-                    invitation.style.transition = "transform 1.8s ease, opacity 1.8s ease";
-                    invitation.style.transform = "translateY(-82px) scale(1.02)";
-                    invitation.style.opacity = "1";
-                }
-            }, 1700);
-
-            /* 4- En son ekran kayıyor */
-            setTimeout(() => {
-                if (screen) {
-                    screen.classList.add('open');
-                }
-            }, 4300);
+    /* 1- Mühür hafif küçülüp kayboluyor */
+    setTimeout(() => {
+        if (seal) {
+            seal.style.transition =
+                "transform .8s ease, opacity .8s ease";
+            seal.style.transform =
+                "translateX(-50%) scale(.78)";
+            seal.style.opacity = "0";
         }
+    }, 250);
+
+    /* 2- Kapak ağır şekilde açılıyor */
+    setTimeout(() => {
+        if (flap) {
+            flap.style.transition =
+                "transform 2s cubic-bezier(.66,0,.34,1)";
+            flap.style.transform =
+                "rotateX(-178deg)";
+        }
+    }, 700);
+
+    /* 3- Davetiye yavaşça yükseliyor */
+    setTimeout(() => {
+        if (invitation) {
+            invitation.style.transition =
+                "transform 1.8s ease, opacity 1.8s ease";
+
+            invitation.style.transform =
+                "translateY(-65px) scale(1)";
+
+            invitation.style.opacity = "1";
+        }
+    }, 1700);
+
+    /* 4- En son ekran kayıyor */
+    setTimeout(() => {
+        screen.classList.add('open');
+    }, 3600);
+
+}
 
         function toggleMusic() {
             const icon = document.querySelector('#audioToggle i');
             if (!isMuted) {
                 if (player && typeof player.pauseVideo === 'function') { player.pauseVideo(); }
-                if (icon) icon.className = 'fas fa-volume-mute';
+                icon.className = 'fas fa-volume-mute';
                 isMuted = true;
             } else {
                 if (player && typeof player.playVideo === 'function') { player.playVideo(); }
-                if (icon) icon.className = 'fas fa-volume-up';
+                icon.className = 'fas fa-volume-up';
                 isMuted = false;
             }
         }
 
-        // Geri Sayım Sayacı (Hedef Tarih: 21 Ağustos 2026 19:00)
         const targetWeddingDate = new Date("August 21, 2026 19:00:00").getTime();
         setInterval(function() {
             const now = new Date().getTime();
@@ -1286,15 +1232,10 @@ box-shadow:
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            const daysEl = document.getElementById("days");
-            const hoursEl = document.getElementById("hours");
-            const minutesEl = document.getElementById("minutes");
-            const secondsEl = document.getElementById("seconds");
-
-            if (daysEl) daysEl.innerText = days < 10 ? "0" + days : days;
-            if (hoursEl) hoursEl.innerText = hours < 10 ? "0" + hours : hours;
-            if (minutesEl) minutesEl.innerText = minutes < 10 ? "0" + minutes : minutes;
-            if (secondsEl) secondsEl.innerText = seconds < 10 ? "0" + seconds : seconds;
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
     </script>
 </body>
