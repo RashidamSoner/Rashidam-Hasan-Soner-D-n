@@ -984,6 +984,20 @@ opacity:0;
 
     letter-spacing:2px;
     text-transform:uppercase;
+}
+/* --- ZARF VE KAPAK RENK BÜTÜNLÜĞÜ + ALTIN ÇİZGİLER --- */
+
+.envelope-flap {
+    /* Zarfın gövdesiyle aynı tonda olması için rengi eşitliyoruz */
+    background: #151515 !important; 
+    
+    /* Üçgen kapağın iki eğik kenarına altın yaldız çizgisi çekiyoruz */
+    filter: drop-shadow(0px 2px 0px #bf953f) drop-shadow(0px 3px 1px #b38728) !important;
+}
+
+/* Eğer kapak üzerinde hafif bir ışık parlaması veya gölge farkı varsa tamamen sıfırlıyoruz */
+.envelope-flap::after {
+    display: none !important;
 }        
     </style>
 </head>
