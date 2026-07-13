@@ -161,7 +161,7 @@
 
     clip-path:polygon(0 0,100% 0,50% 100%);
 
-    z-index:45;
+    z-index:60;
 
     overflow:hidden;
     isolation:isolate;
@@ -210,6 +210,20 @@
     transition:
         transform 1.8s cubic-bezier(.66,0,.34,1),
         opacity 1.6s ease;
+
+        border-top:1px solid rgba(255,230,160,.10);
+
+filter:
+    drop-shadow(0 2px 2px rgba(255,215,120,.12));
+
+    border-left:1px solid rgba(255,215,120,.18);
+border-right:1px solid rgba(255,215,120,.18);
+
+box-shadow:
+    0 24px 55px rgba(0,0,0,.82),
+    inset 0 1px rgba(255,255,255,.06),
+    inset 0 -20px 35px rgba(0,0,0,.58),
+    inset 0 0 0 1px rgba(212,175,55,.06);
 }
 
 .envelope-flap::after{
@@ -278,26 +292,96 @@
         .env-names { font-family: 'Great Vibes', cursive; color: #f3cf7a; font-size: 3.5rem; line-height: 1.2; text-shadow: 2px 4px 15px rgba(0,0,0,0.95); }
 
         /* GERÇEK MÜHÜRÜN İKİYE BÖLÜNME ALANI */
-        .seal-wrapper {
-            position: absolute; top: 55%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 150px; height: 150px; z-index: 20;
-            cursor: pointer; display: flex;
-            transition: transform 0.3s ease;
-            animation: sealGlow 3.5s ease-in-out infinite;
-        }
-        .seal-wrapper:hover { transform: translate(-50%, -50%) scale(1.05); }
+        .seal-wrapper{
+    position:absolute;
+
+    left:50%;
+    top:53%;
+
+    transform:translate(-50%,-50%);
+
+    width:165px;
+    height:165px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    z-index:95;
+
+    transform-origin:center center;
+
+    transition:
+        transform .25s ease,
+        filter .35s ease;
+
+    filter:
+        drop-shadow(0 18px 26px rgba(0,0,0,.35));
+
+    animation:sealFloat 4s ease-in-out infinite;
+}
+        .seal-wrapper:hover{
+    transform:translate(-50%,-50%) scale(1.08);
+
+    filter:
+        drop-shadow(0 22px 40px rgba(0,0,0,.42));
+
+    animation-play-state:paused;
+}
         
-        .seal-half-box {
-            width: 50%; height: 100%; overflow: hidden; position: relative;
-            transition: transform 1.2s cubic-bezier(0.66, 0, 0.34, 1), opacity 1s ease;
-        }
-        .seal-half-box img {
-            width: 150px; height: 150px; max-width: none;
-            position: absolute; top: 0; height: 100%; object-fit: contain;
-        }
+        .seal-half-box{
+    position:relative;
+
+    width:50%;
+    height:100%;
+
+    overflow:hidden;
+
+    transition:
+        transform 1.45s cubic-bezier(.66,0,.34,1),
+        opacity .95s ease,
+        filter .8s ease;
+
+    will-change:transform;
+}
+        .seal-half-box img{
+    position:absolute;
+
+    top:0;
+
+    width:165px;
+    height:165px;
+
+    max-width:none;
+
+    object-fit:contain;
+
+    user-select:none;
+    pointer-events:none;
+
+    filter:
+        drop-shadow(0 2px 2px rgba(255,255,255,.08));
+}
         .seal-left-side img { left: 0; }
         .seal-right-side img { right: 0; }
+
+        .seal-wrapper.break .seal-left-side{
+    transform:
+        translateX(-34px)
+        rotate(-16deg);
+
+    opacity:0;
+}
+
+.seal-wrapper.break .seal-right-side{
+    transform:
+        translateX(34px)
+        rotate(16deg);
+
+    opacity:0;
+}
 
         /* Mühür Kırılma Animasyonu da Kapakla Senkronize Yavaşlatıldı */
         #envelope-screen.active .seal-left-side { transform: translateX(-140px) rotate(-20deg); opacity: 0; }
@@ -499,14 +583,17 @@
             100% { opacity: 0.4; transform: scale(0.98); }
         }
         /* ➔ LÜKS SARAY TARZI OYMANLI KÖŞE MOTİFLERİ (ORNAMENT FRAME) */
-.envelope-ornament-frame {
-    position: absolute; 
-    top: 60px; /* Üst oymalar kapak altında gizlenmesin diye aşağı kaydırıldı */
-    bottom: 40px; 
-    left: 40px; 
-    right: 40px;
-    pointer-events: none; 
-    z-index: 30;
+.envelope-ornament-frame{
+    position:absolute;
+
+    top:18px;
+    left:18px;
+    right:18px;
+    bottom:18px;
+
+    pointer-events:none;
+
+    z-index:80;
 }
 
 /* Daha kalın ve belirgin altın iç hat çizgisi */
@@ -521,28 +608,52 @@
 }
 
 /* Köşe oymalarının çizgilerini asil bir şekilde kalınlaştırdığımız yeni yapı */
-.ornament {
-    position: absolute; 
-    width: 55px; /* Motif boyutu daha belirgin olması için büyütüldü */
-    height: 55px; 
-    opacity: 0.9; /* Görünürlük artırıldı */
-    /* stroke-width 4.5 yapılarak hatlar kalınlaştırıldı */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,0 C30,0 50,10 60,30 C65,40 55,50 45,45 C35,40 40,25 25,25 C15,25 15,35 25,35 C35,35 30,55 50,60 C70,65 80,45 80,20 C80,10 90,0 100,0 M0,0 C0,30 10,50 30,60 C40,65 50,55 45,45 C40,35 25,40 25,25 C25,15 35,15 35,25 C35,35 55,30 60,50 C65,70 45,80 20,80 C10,80 0,90 0,100' fill='none' stroke='%23d4af37' stroke-width='4.5'/%3E%3Ccircle cx='25' cy='25' r='4' fill='%23d4af37'/%3E%3Ccircle cx='45' cy='45' r='3' fill='%23d4af37'/%3E%3C/svg%3E");
-    background-size: contain; 
-    background-repeat: no-repeat;
-    filter: drop-shadow(0 0 6px rgba(212,175,55,.45));
+.ornament{
+    position:absolute;
+
+    width:78px;
+    height:78px;
+
+    opacity:1;
+
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,0 C30,0 50,10 60,30 C65,40 55,50 45,45 C35,40 40,25 25,25 C15,25 15,35 25,35 C35,35 30,55 50,60 C70,65 80,45 80,20 C80,10 90,0 100,0 M0,0 C0,30 10,50 30,60 C40,65 50,55 45,45 C40,35 25,40 25,25 C25,15 35,15 35,25 C35,35 55,30 60,50 C65,70 45,80 20,80 C10,80 0,90 0,100' fill='none' stroke='%23d4af37' stroke-width='3.8'/%3E%3Ccircle cx='25' cy='25' r='3' fill='%23d4af37'/%3E%3Ccircle cx='45' cy='45' r='2.5' fill='%23d4af37'/%3E%3C/svg%3E");
+
+    background-size:contain;
+    background-repeat:no-repeat;
+
+    filter:
+        drop-shadow(0 0 3px rgba(255,220,120,.45))
+        drop-shadow(0 0 10px rgba(212,175,55,.18));
 }
 
-.top-left { top: 0; left: 0; }
-.top-right { top: 0; right: 0; transform: rotate(90deg); }
-.bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
-.bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
+.top-left{
+    top:-10px;
+    left:-10px;
+}
+
+.top-right{
+    top:-10px;
+    right:-10px;
+    transform:rotate(90deg);
+}
+
+.bottom-left{
+    bottom:-10px;
+    left:-10px;
+    transform:rotate(-90deg);
+}
+
+.bottom-right{
+    bottom:-10px;
+    right:-10px;
+    transform:rotate(180deg);
+}
 
 /* ===============================
-   PREMIUM FLOAT ANIMATION
+   PREMIUM ANIMATIONS
 =============================== */
 
-@keyframes envelopeFloat {
+@keyframes envelopeFloat{
     0%{
         transform:translateY(0) rotateZ(0deg);
     }
@@ -563,19 +674,58 @@
         transform:translateY(0) rotateZ(0deg);
     }
 }
-    @keyframes goldShine {
-    0% {
-        transform: translateX(-150%) skewX(-25deg);
-        opacity: 0;
+
+@keyframes sealFloat{
+    0%,100%{
+        transform:translate(-50%,-50%) translateY(0);
     }
-    30% {
-        opacity: .25;
+
+    50%{
+        transform:translate(-50%,-50%) translateY(-5px);
     }
-    100% {
-        transform: translateX(250%) skewX(-25deg);
-        opacity: 0;
+}
+
+@keyframes flapShine{
+    0%{
+        transform:translateX(-220%) skewX(-28deg);
+        opacity:0;
     }
-    @keyframes sealGlow {
+
+    18%{
+        opacity:.95;
+    }
+
+    45%{
+        opacity:1;
+    }
+
+    72%{
+        opacity:.85;
+    }
+
+    100%{
+        transform:translateX(240%) skewX(-28deg);
+        opacity:0;
+    }
+}
+
+@keyframes goldShine{
+    0%{
+        transform:translateX(-150%) skewX(-25deg);
+        opacity:0;
+    }
+
+    30%{
+        opacity:.25;
+    }
+
+    100%{
+        transform:translateX(250%) skewX(-25deg);
+        opacity:0;
+    }
+}
+
+@keyframes sealGlow{
     0%,100%{
         transform:scale(1);
         filter:drop-shadow(0 0 8px rgba(212,175,55,.25));
@@ -585,12 +735,31 @@
         transform:scale(1.03);
         filter:drop-shadow(0 0 18px rgba(212,175,55,.65));
     }
-    @keyframes goldSweep {
-    0% {
-        background-position: -250% 0;
+}
+
+@keyframes goldSweep{
+    0%{
+        background-position:-250% 0;
     }
-    100% {
-        background-position: 250% 0;
+
+    100%{
+        background-position:250% 0;
+    }
+}
+
+@keyframes sparkle{
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:0;
+    }
+
+    50%{
+        opacity:.8;
+    }
+
+    100%{
+        transform:translateY(-25px) scale(1.4);
+        opacity:0;
     }
 }
 
@@ -599,6 +768,7 @@
     position:absolute;
     inset:0;
     pointer-events:none;
+
     background:linear-gradient(
         115deg,
         transparent 35%,
@@ -607,22 +777,12 @@
         rgba(255,255,255,.08) 55%,
         transparent 65%
     );
+
     background-size:250% 100%;
+
     animation:goldSweep 8s linear infinite;
+
     mix-blend-mode:screen;
-}  
-     @keyframes sparkle {
-    0%{
-        transform:translateY(0) scale(1);
-        opacity:0;
-    }
-    50%{
-        opacity:.8;
-    }
-    100%{
-        transform:translateY(-25px) scale(1.4);
-        opacity:0;
-    }
 }
 
 .sparkle{
@@ -633,7 +793,7 @@
     background:#d4af37;
     box-shadow:0 0 10px #ffd86a;
     animation:sparkle 3.5s infinite;
-} 
+}
     /* ===========================
    PREMIUM ENVELOPE V2
 ===========================*/
@@ -655,7 +815,7 @@
 
     text-align:center;
 
-    z-index:60;
+    z-index:80;
 
     pointer-events:none;
 }
@@ -744,16 +904,29 @@
 
 }  
     @keyframes flapShine{
-0%{
-transform:translateX(-180%) skewX(-28deg);
-opacity:0;
-}
-15%{opacity:1;}
-55%{opacity:.9;}
-100%{
-transform:translateX(220%) skewX(-28deg);
-opacity:0;
-}
+
+    0%{
+        transform:translateX(-220%) skewX(-28deg);
+        opacity:0;
+    }
+
+    18%{
+        opacity:.95;
+    }
+
+    45%{
+        opacity:1;
+    }
+
+    72%{
+        opacity:.85;
+    }
+
+    100%{
+        transform:translateX(240%) skewX(-28deg);
+        opacity:0;
+    }
+
 }
 /* ===========================
    PREMIUM WAX SEAL
@@ -772,7 +945,7 @@ opacity:0;
 
     border-radius:50%;
 
-    z-index:65;
+    z-index:90;
 
     display:flex;
     align-items:center;
@@ -911,10 +1084,6 @@ opacity:0;
 
         <div class="envelope-flap-shadow"></div>
         <div class="envelope-flap"></div>
-
-        <div class="wax-seal">
-            <div class="wax-inner">RH</div>
-        </div>
         
         <div class="envelope-body">
             <div class="envelope-gold-frame"></div>
@@ -1048,7 +1217,7 @@ opacity:0;
 
     const screen = document.getElementById('envelope-screen');
     const flap = document.querySelector('.envelope-flap');
-    const seal = document.querySelector('.wax-seal');
+    const seal = document.querySelector('.seal-wrapper');
     const invitation = document.querySelector('.invitation-card');
     const audioBtn = document.getElementById('audioToggle');
 
@@ -1063,11 +1232,17 @@ opacity:0;
     /* 1- Mühür hafif küçülüp kayboluyor */
     setTimeout(() => {
         if (seal) {
-            seal.style.transition =
-                "transform .8s ease, opacity .8s ease";
-            seal.style.transform =
-                "translateX(-50%) scale(.78)";
-            seal.style.opacity = "0";
+            seal.classList.add("break");
+
+seal.style.transition =
+    "transform .9s ease, opacity .9s ease";
+
+seal.style.transform =
+    "translate(-50%,-50%) scale(.92)";
+
+setTimeout(()=>{
+    seal.style.opacity="0";
+},550);
         }
     }, 250);
 
@@ -1077,7 +1252,7 @@ opacity:0;
             flap.style.transition =
                 "transform 2s cubic-bezier(.66,0,.34,1)";
             flap.style.transform =
-                "rotateX(-178deg)";
+                "rotateX(-185deg)";
         }
     }, 700);
 
@@ -1088,7 +1263,7 @@ opacity:0;
                 "transform 1.8s ease, opacity 1.8s ease";
 
             invitation.style.transform =
-                "translateY(-65px) scale(1)";
+                "translateY(-82px) scale(1.02)";
 
             invitation.style.opacity = "1";
         }
@@ -1097,7 +1272,7 @@ opacity:0;
     /* 4- En son ekran kayıyor */
     setTimeout(() => {
         screen.classList.add('open');
-    }, 3600);
+    }, 4300);
 
 }
 
