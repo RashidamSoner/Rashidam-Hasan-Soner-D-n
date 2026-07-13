@@ -1008,66 +1008,68 @@ opacity:0;
 }
 
 /* Üçgen Kapak Yapısı */
+/* --- PREMIUM KAPAK VE MÜHÜR SİSTEMİ (KESİN ÇÖZÜM) --- */
+
 .envelope-flap {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 56%; 
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 56% !important; 
+    clip-path: polygon(0 0, 100% 0, 50% 100%) !important;
+    transform-origin: top center !important;
+    transform-style: preserve-3d !important;
+    backface-visibility: hidden !important;
     
-    /* Üçgen kapak şekli */
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    
-    transform-origin: top center;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    will-change: transform;
-    
-    /* Zarf gövdesiyle birebir aynı mat siyah renk */
+    /* Kapak rengini zarf ile birebir eşitleme */
     background: #151515 !important; 
     
-    /* Eski drop-shadow filtresini temizliyoruz çünkü özel fırçalanmış çizgiler ekleyeceğiz */
-    filter: none !important;
-    
-    z-index: 60;
-    overflow: visible; /* Çizgilerin ve mührün görünebilmesi için */
+    z-index: 60 !important;
+    overflow: visible !important;
 }
-/* --- ZIMPARALANMIŞ/FIRÇALANMIŞ KALIN ALTIN ÇIZGİLER --- */
+
+/* ZIMPARALANMIŞ / FIRÇALANMIŞ KALIN ALTIN ÇIZGİLER */
 .envelope-flap::before,
 .envelope-flap::after {
-    content: ""; /* Hata düzeltildi */
-    position: absolute;
-    bottom: 0;
-    width: 50.5%;
-    height: 6px; /* Zımparalanmış dokunun belli olması için biraz daha kalınlaştırdık */
+    content: "" !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    width: 50.5% !important;
+    height: 6px !important; /* Kalın ve belirgin çizgi */
     background: linear-gradient(90deg, 
         #9a7428 0%, 
         #bf953f 25%, 
         #fcf6ba 50%, 
         #b38728 75%, 
         #aa771c 100%
-    );
-    z-index: 65;
-    box-shadow: inset 1px 1px 2px rgba(255,255,255,0.3), 0 3px 6px rgba(0,0,0,0.6);
+    ) !important;
+    z-index: 65 !important;
+    box-shadow: inset 1px 1px 2px rgba(255,255,255,0.3), 0 3px 6px rgba(0,0,0,0.6) !important;
 }
 
-/* Sol kenar çizgisi */
+/* Sol çizginin açısı */
 .envelope-flap::before {
-    left: 0;
-    transform: rotate(29.5deg);
-    transform-origin: left bottom;
+    left: 0 !important;
+    transform: rotate(29.5deg) !important;
+    transform-origin: left bottom !important;
 }
 
-/* Sağ kenar çizgisi */
+/* Sağ çizginin açısı */
 .envelope-flap::after {
-    right: 0;
-    transform: rotate(-29.5deg);
-    transform-origin: right bottom;
+    right: 0 !important;
+    transform: rotate(-29.5deg) !important;
+    transform-origin: right bottom !important;
 }
- 
 
-/* Üst Süs Eklemesi */
-.top-ornament {
+/* MÜHRÜ KAPAĞIN UCUNA İNDİRME VE ÖNE ALMA */
+.envelope-flap .seal-wrapper {
+    position: absolute !important;
+    bottom: -45px !important; /* İsimlerin üzerinden söküp uca indirdik */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 9999 !important; /* Her şeyin en üstünde durmasını sağlar */
+    cursor: pointer !important;
+}
     position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
     color: rgba(191, 149, 63, 0.6); font-size: 0.8rem; display: flex; align-items: center; gap: 10px;
 }
