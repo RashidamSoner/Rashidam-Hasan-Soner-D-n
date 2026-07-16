@@ -77,6 +77,7 @@
             justify-content: center;
             align-items: center;
             transition: transform 1.6s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.6s ease;
+            will-change: transform;
         }
 
         /* Zarf açıldığında yukarı kayıp yok olur */
@@ -86,36 +87,37 @@
             pointer-events: none;
         }
 
-        /* Zarfın Ön Yüz Tasarımı */
+        /* Zarfın Ön Yüz Tasarımı - Üçgen Flap Alanını Genişleten Ayarlar */
         .envelope-front {
             position: relative;
             width: 100%;
             height: 100%;
             background-image: url('zarf-on.png.PNG');
             background-repeat: no-repeat;
-            background-position: center center;
+            background-position: center 30%; /* Görseli hafif yukarı kaydırarak alt ve orta alanı genişletiyoruz */
             background-size: cover;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* İçeriği alta yasla çünkü üst kısım görselde tasarımlı */
+            justify-content: flex-end; 
             align-items: center;
-            padding: 40px 20px 120px 20px;
+            padding: 40px 20px 100px 20px; /* Alttaki boşluğu dengeledik */
         }
 
-        /* CSS CLIP-PATH MÜHÜR SİSTEMİ */
+        /* CSS CLIP-PATH MÜHÜR SİSTEMİ - Geniş açılı yerleşim */
         .seal-box {
             position: absolute;
-            bottom: 22%;
+            bottom: 25%; /* Üçgen kapağın bittiği geniş hizaya tam oturması için yukarı çektik */
             left: 50%;
-            transform: translateX(-50%);
-            width: 110px;
-            height: 110px;
+            transform: translate3d(-50%, 0, 0);
+            width: 115px; /* Mührü daha belirgin ve geniş yaptık */
+            height: 115px;
             cursor: pointer;
             z-index: 50;
             transition: transform 0.3s ease;
+            will-change: transform;
         }
         .seal-box:hover {
-            transform: translateX(-50%) scale(1.05);
+            transform: translate3d(-50%, -5px, 0) scale(1.05); /* Üste doğru hafif esneme */
         }
 
         /* İki parçanın ortak özellikleri */
@@ -130,6 +132,7 @@
             background-position: center center;
             background-size: contain;
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+            will-change: transform, opacity;
         }
 
         /* clip-path ile pikselsel olarak bölme */
@@ -144,11 +147,11 @@
 
         /* Kırılma efekti tetiklendiğinde iki yana kayış */
         .seal-box.broken .seal-left {
-            transform: translateX(-40px) rotate(-15deg);
+            transform: translate3d(-45px, -10px, 0) rotate(-15deg);
             opacity: 0;
         }
         .seal-box.broken .seal-right {
-            transform: translateX(40px) rotate(15deg);
+            transform: translate3d(45px, -10px, 0) rotate(15deg);
             opacity: 0;
         }
 
@@ -176,17 +179,17 @@
             60% { transform: translateY(-5px); }
         }
 
-        /* İÇ DAVETİYE KARTI (Mobil uyumlu ve tarayıcı dostu arka plan) */
+        /* İÇ DAVETİYE KARTI */
         .main-card {
             width: 100%; 
             max-width: 500px; 
             margin: 0 auto; 
             min-height: 100vh;
             
-            /* Arka plan resminin kesin yüklenmesi için ayrıştırılmış kod */
+            /* Mobil tarayıcılar için kesin render optimizasyonu */
             background-image: url('davetiye-ic.png.PNG');
             background-repeat: no-repeat;
-            background-position: center center;
+            background-position: top center;
             background-size: cover;
             background-color: #fffdf8;
             
@@ -194,6 +197,9 @@
             box-shadow: 0 0 40px rgba(163, 132, 80, 0.15);
             text-align: center; 
             position: relative;
+            z-index: 1; /* Safari render katmanı düzeltmesi */
+            transform: translate3d(0, 0, 0); /* Safari render zorlaması */
+            will-change: transform;
         }
 
         .card-headline { 
@@ -473,7 +479,7 @@
         <i class="fas fa-volume-up"></i>
     </button>
 
-    <!-- ZARF EKRANI (ÜZERİNDEKİ TÜM ÇİFT METİNLER KALDIRILDI) -->
+    <!-- ZARF EKRANI -->
     <div id="envelope-overlay">
         <div class="envelope-front">
             
@@ -492,7 +498,7 @@
         </div>
     </div>
 
-    <!-- ANA DAVETİYE KARTI (ARKA PLAN RESMİ KESİN ŞEKİLDE ÇALIŞACAK HALE GETİRİLDİ) -->
+    <!-- ANA DAVETİYE KARTI -->
     <div class="main-card">
         <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
         
