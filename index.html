@@ -17,11 +17,11 @@
         }
         
         body, html { 
-            width: 100%; 
-            min-height: 100vh; 
-            background-color: #f6efe2; 
+            width: 100vw; 
+            height: 100vh; 
+            background-color: #0c0c0c; 
             -webkit-tap-highlight-color: transparent;
-            overflow: hidden; /* Davetiye tek parça bir görsel olduğu için kaydırmayı tamamen kapatıyoruz */
+            overflow: hidden; /* Tam ekranda kaydırma çubuklarını tamamen engelliyoruz */
         }
 
         /* GİZLİ YOUTUBE OYNATICI */
@@ -53,13 +53,13 @@
             transition: all 0.3s ease;
         }
 
-        /* ZARF EKRANI (KAPAK) */
+        /* ZARF EKRANI (TAM EKRAN KAPAK) */
         #envelope-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: 9999;
             background-color: #0c0c0c;
             display: flex;
@@ -75,32 +75,30 @@
             pointer-events: none;
         }
 
-        /* Zarfın Ön Yüz Tasarımı */
+        /* Zarfın Ön Yüz Tasarımı - Tam Ekran ve Boşluksuz */
         .envelope-front {
             position: relative;
-            width: 100%;
-            height: 100%;
-            max-width: 500px;
-            margin: 0 auto;
+            width: 100vw;
+            height: 100vh;
             background-image: url('zarf-on.png.PNG');
             background-repeat: no-repeat;
             background-position: center center;
-            background-size: contain;
+            background-size: cover; /* Zarf görselinin ekranı tamamen, boşluksuz kaplamasını sağlar */
             display: flex;
             flex-direction: column;
             justify-content: flex-end; 
             align-items: center;
-            padding-bottom: 30px;
+            padding-bottom: 50px;
         }
 
-        /* Şeffaf Dokunma Alanı (Resimdeki mührün üstüne gelen görünmez buton) */
+        /* Şeffaf Dokunma Alanı (Görseldeki mührün üzerine denk gelen tıklama alanı) */
         .seal-trigger {
             position: absolute;
             bottom: 35%;
             left: 50%;
             transform: translate3d(-50%, 0, 0);
-            width: 120px; 
-            height: 120px;
+            width: 140px; 
+            height: 140px;
             cursor: pointer;
             z-index: 50;
             background-color: rgba(255, 0, 0, 0);
@@ -111,19 +109,20 @@
         .navigation-hint {
             text-align: center;
             z-index: 10;
-            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6); /* Karanlıkta daha rahat okunması için gölge */
         }
         .nav-arrow { 
             color: #bf953f; 
-            font-size: 1.8rem; 
+            font-size: 2rem; 
             animation: pulseArrow 2s infinite; 
         }
         .nav-label { 
             font-family: sans-serif; 
-            font-size: 0.75rem; 
+            font-size: 0.8rem; 
             color: #bf953f; 
             letter-spacing: 4px; 
             margin-top: 8px; 
+            font-weight: 600;
         }
 
         @keyframes pulseArrow {
@@ -132,9 +131,9 @@
             60% { transform: translateY(-5px); }
         }
 
-        /* ANA DAVETİYE ALANI */
+        /* ANA DAVETİYE ALANI (TAM EKRAN KONTEYNER) */
         .main-card-container {
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -142,15 +141,12 @@
             background-color: #f6efe2;
         }
 
-        /* SADECE SİZİN DAVETİYE GÖRSELİNİZ */
+        /* SADECE SİZİN DAVETİYE GÖRSELİNİZ (Tam Ekran Arka Plan Gibi) */
         .invitation-image {
-            width: 100%;
-            height: 100%;
-            max-width: 500px; /* Mobil dikey oran koruması */
-            max-height: 100vh;
-            object-fit: contain; /* Görselin hiçbir köşesi kesilmez, ekrana tam sığar */
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* Görseli ekrana sıfıra sıfır sığdırır ve boşluk bırakmaz */
             display: block;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -166,7 +162,7 @@
         <i class="fas fa-volume-up"></i>
     </button>
 
-    <!-- ZARF EKRANI (AÇILIŞ KAPAK) -->
+    <!-- ZARF EKRANI (TAM EKRAN KAPAK) -->
     <div id="envelope-overlay">
         <div class="envelope-front">
             
@@ -182,7 +178,7 @@
         </div>
     </div>
 
-    <!-- ANA DAVETİYE ALANI (Ekstra hiçbir yazı/tema yok, sadece sizin görseliniz) -->
+    <!-- ANA DAVETİYE ALANI (TAM EKRAN SIFIRA SIFIR GÖRSEL) -->
     <div class="main-card-container">
         <img class="invitation-image" src="davetiye-ic.png.PNG" alt="Düğün Davetiyesi">
     </div>
