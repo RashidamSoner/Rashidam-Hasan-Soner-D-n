@@ -91,36 +91,15 @@
             position: relative;
             width: 100%;
             height: 100%;
-            background: url('zarf-on.png.PNG') no-repeat center center;
+            background-image: url('zarf-on.png.PNG');
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: cover;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end; /* İçeriği alta yasla çünkü üst kısım görselde tasarımlı */
             align-items: center;
-            padding: 100px 20px 120px 20px;
-        }
-
-        /* Zarf İçi Yazıları */
-        .envelope-info {
-            text-align: center;
-            z-index: 10;
-        }
-        .env-title {
-            font-family: 'Cinzel', serif; 
-            color: #bf953f; 
-            font-size: 0.9rem;
-            letter-spacing: 6px; 
-            margin-bottom: 20px;
-        }
-        .env-couple-names {
-            font-family: 'Great Vibes', cursive; 
-            color: #fdf3cd;
-            font-size: 3.8rem; 
-            line-height: 1.2;
-            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
-            background: linear-gradient(135deg, #fcf6ba 0%, #bf953f 100%);
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
+            padding: 40px 20px 120px 20px;
         }
 
         /* CSS CLIP-PATH MÜHÜR SİSTEMİ */
@@ -146,7 +125,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('muhur.png.PNG') no-repeat center center;
+            background-image: url('muhur.png.PNG');
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: contain;
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
         }
@@ -195,14 +176,20 @@
             60% { transform: translateY(-5px); }
         }
 
-        /* İÇ DAVETİYE KARTI (Dosya ismi davetiye-ic.png.PNG olarak güncellendi) */
+        /* İÇ DAVETİYE KARTI (Mobil uyumlu ve tarayıcı dostu arka plan) */
         .main-card {
             width: 100%; 
             max-width: 500px; 
             margin: 0 auto; 
             min-height: 100vh;
-            background: #fffdf8 url('davetiye-ic.png.PNG') no-repeat center center;
+            
+            /* Arka plan resminin kesin yüklenmesi için ayrıştırılmış kod */
+            background-image: url('davetiye-ic.png.PNG');
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: cover;
+            background-color: #fffdf8;
+            
             padding: 60px 24px 80px 24px;
             box-shadow: 0 0 40px rgba(163, 132, 80, 0.15);
             text-align: center; 
@@ -486,16 +473,10 @@
         <i class="fas fa-volume-up"></i>
     </button>
 
-    <!-- ZARF EKRANI -->
+    <!-- ZARF EKRANI (ÜZERİNDEKİ TÜM ÇİFT METİNLER KALDIRILDI) -->
     <div id="envelope-overlay">
         <div class="envelope-front">
             
-            <!-- ÜST BİLGİ -->
-            <div class="envelope-info">
-                <div class="env-title">DÜĞÜN DAVETİYESİ</div>
-                <div class="env-couple-names">Rashidam & Hasan Soner</div>
-            </div>
-
             <!-- CSS CLIP-PATH İLE KUSURSUZ BÖLÜNEN MÜHÜR -->
             <div class="seal-box" id="sealBox" onclick="openEnvelope()">
                 <div class="seal-part seal-left"></div>
@@ -511,7 +492,7 @@
         </div>
     </div>
 
-    <!-- ANA DAVETİYE KARTI -->
+    <!-- ANA DAVETİYE KARTI (ARKA PLAN RESMİ KESİN ŞEKİLDE ÇALIŞACAK HALE GETİRİLDİ) -->
     <div class="main-card">
         <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
         
@@ -613,7 +594,7 @@
     </div>
 
     <!-- JAVASCRIPT ANIMASYON VE ZAMANLAYICI AKIŞLARI -->
-    <script>
+    <script {nonce}>
         var isMusicPlaying = false;
 
         function playYoutubeVideo() {
