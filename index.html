@@ -1,231 +1,349 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rashidam & Hasan Soner Düğün Davetiyesi</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>Rashidam & Hasan Soner</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html,
+body{
+
+width:100%;
+height:100%;
+overflow:hidden;
+
+font-family:'Montserrat',sans-serif;
+
+background:#000;
+
+}
+
+body{
+
+position:relative;
+
+}
+
+/*=============================
+MÜZİK
+=============================*/
+
+audio{
+
+display:none;
+
+}
+
+/*=============================
+GENEL EKRANLAR
+=============================*/
+
+.screen{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+overflow:hidden;
+
+}
+
+/*=============================
+ÖN ZARF
+=============================*/
+
+#envelope-screen{
+
+z-index:9999;
+
+background:
+
+url("zarf-on.png.PNG")
+
+center center/
+
+cover
+
+no-repeat;
+
+}
+
+/*=============================
+İÇ DAVETİYE
+=============================*/
+
+#card-screen{
+
+position:absolute;
+
+inset:0;
+
+background:#f8f5ef;
+
+display:none;
+
+overflow-y:auto;
+
+-webkit-overflow-scrolling:touch;
+
+}
+
+/*=============================
+DAVETİYE GÖRSELİ
+=============================*/
+
+.invitation-top{
+
+position:relative;
+
+width:100%;
+
+max-width:700px;
+
+margin:auto;
+
+}
+
+.invitation-image{
+
+display:block;
+
+width:100%;
+
+height:auto;
+
+}
+
+/*=============================
+BİLGİLER
+=============================*/
+
+.info-area{
+
+width:100%;
+
+max-width:700px;
+
+margin:auto;
+
+padding:40px 24px 80px;
+
+background:#faf7f2;
+
+}
+/*==================================
+MÜHÜR TIKLAMA ALANI
+==================================*/
+
+#seal-hitbox{
+
+position:absolute;
+
+left:50%;
+top:53%;
+
+width:150px;
+height:150px;
+
+transform:translate(-50%,-50%);
+
+cursor:pointer;
+
+z-index:100;
+
+border-radius:50%;
+
+background:transparent;
+
+}
+
+/*==================================
+ZARF AÇILIŞI
+==================================*/
+
+#envelope-screen.open{
+
+animation:
+
+openEnvelope 1.8s ease forwards;
+
+}
+
+@keyframes openEnvelope{
+
+0%{
+
+transform:
+scale(1);
+
+opacity:1;
+
+}
+
+35%{
+
+transform:
+scale(1.02);
+
+}
+
+100%{
+
+transform:
+translateY(-100%);
+
+opacity:0;
+
+}
+
+}
+
+/*==================================
+DAVETİYE
+==================================*/
+
+#card-screen.show{
+
+display:block;
+
+animation:
+
+cardUp 1.4s ease;
+
+}
+
+@keyframes cardUp{
+
+0%{
+
+opacity:0;
+
+transform:
+translateY(120px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+translateY(0);
+
+}
+
+}
     
-    <!-- Premium İkon Kütüphanesi -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* SIFIRLAMA VE GENEL TANIMLAR */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-        
-        body, html { 
-            width: 100vw; 
-            height: 100vh; 
-            background-color: #0c0c0c; 
-            -webkit-tap-highlight-color: transparent;
-            overflow: hidden; /* Tam ekranda kaydırma çubuklarını tamamen engelliyoruz */
-        }
+</style>
 
-        /* GİZLİ YOUTUBE OYNATICI */
-        #music-player { 
-            position: absolute; 
-            width: 0; 
-            height: 0; 
-            border: 0; 
-            visibility: hidden; 
-        }
-
-        /* PREMIUM MÜZİK BUTONU */
-        .audio-control {
-            position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            z-index: 2000;
-            background: rgba(255, 255, 255, 0.9); 
-            border: 1px solid #b89754;
-            color: #b89754; 
-            width: 44px; 
-            height: 44px; 
-            border-radius: 50%;
-            display: none; 
-            align-items: center; 
-            justify-content: center;
-            cursor: pointer; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: all 0.3s ease;
-        }
-
-        /* ZARF EKRANI (TAM EKRAN KAPAK) */
-        #envelope-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 9999;
-            background-color: #0c0c0c;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.2s ease;
-            will-change: transform;
-        }
-
-        #envelope-overlay.removed {
-            transform: translateY(-100vh);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Zarfın Ön Yüz Tasarımı - Tam Ekran ve Boşluksuz */
-        .envelope-front {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-image: url('zarf-on.png.PNG');
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover; /* Zarf görselinin ekranı tamamen, boşluksuz kaplamasını sağlar */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end; 
-            align-items: center;
-            padding-bottom: 50px;
-        }
-
-        /* Şeffaf Dokunma Alanı (Görseldeki mührün üzerine denk gelen tıklama alanı) */
-        .seal-trigger {
-            position: absolute;
-            bottom: 35%;
-            left: 50%;
-            transform: translate3d(-50%, 0, 0);
-            width: 140px; 
-            height: 140px;
-            cursor: pointer;
-            z-index: 50;
-            background-color: rgba(255, 0, 0, 0);
-            border-radius: 50%;
-        }
-
-        /* Alt İpucu Alanı */
-        .navigation-hint {
-            text-align: center;
-            z-index: 10;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6); /* Karanlıkta daha rahat okunması için gölge */
-        }
-        .nav-arrow { 
-            color: #bf953f; 
-            font-size: 2rem; 
-            animation: pulseArrow 2s infinite; 
-        }
-        .nav-label { 
-            font-family: sans-serif; 
-            font-size: 0.8rem; 
-            color: #bf953f; 
-            letter-spacing: 4px; 
-            margin-top: 8px; 
-            font-weight: 600;
-        }
-
-        @keyframes pulseArrow {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-
-        /* ANA DAVETİYE ALANI (TAM EKRAN KONTEYNER) */
-        .main-card-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f6efe2;
-        }
-
-        /* SADECE SİZİN DAVETİYE GÖRSELİNİZ (Tam Ekran Arka Plan Gibi) */
-        .invitation-image {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover; /* Görseli ekrana sıfıra sıfır sığdırır ve boşluk bırakmaz */
-            display: block;
-        }
-    </style>
 </head>
+
 <body>
 
-    <!-- ARKA PLAN MÜZİK PLAYER -->
-    <div id="player-container">
-        <iframe id="music-player" src="https://www.youtube.com/embed/Gcxv7i02lXc?enablejsapi=1&controls=0&rel=0" allow="autoplay"></iframe>
-    </div>
+<audio
+id="music"
+preload="auto">
 
-    <!-- SES KONTROL BUTONU -->
-    <button class="audio-control" id="audioToggle" onclick="toggleMusic()">
-        <i class="fas fa-volume-up"></i>
-    </button>
+<source
+src="Por uno .mp3"
+type="audio/mpeg">
 
-    <!-- ZARF EKRANI (TAM EKRAN KAPAK) -->
-    <div id="envelope-overlay">
-        <div class="envelope-front">
-            
-            <!-- GÖRÜNMEZ MÜHÜR DOKUNMA ALANI -->
-            <div class="seal-trigger" id="sealTrigger" onclick="openEnvelope()"></div>
+</audio>
 
-            <!-- ALT YÖNLENDİRME -->
-            <div class="navigation-hint">
-                <div class="nav-arrow">↓</div>
-                <div class="nav-label">AÇMAK İÇİN MÜHRE DOKUNUNUZ</div>
-            </div>
+<div
+id="envelope-screen"
+class="screen">
 
-        </div>
-    </div>
+    <div id="seal-hitbox"></div>
 
-    <!-- ANA DAVETİYE ALANI (TAM EKRAN SIFIRA SIFIR GÖRSEL) -->
-    <div class="main-card-container">
-        <img class="invitation-image" src="davetiye-ic.png.PNG" alt="Düğün Davetiyesi">
-    </div>
+</div>
 
-    <!-- JAVASCRIPT AKIŞLARI -->
-    <script {nonce}>
-        var isMusicPlaying = false;
+<div
+id="card-screen"
+class="screen">
 
-        function playYoutubeVideo() {
-            var iframe = document.getElementById("music-player");
-            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-            isMusicPlaying = true;
-            document.getElementById("audioToggle").innerHTML = '<i class="fas fa-volume-up"></i>';
-        }
+<div
+class="invitation-top">
 
-        function pauseYoutubeVideo() {
-            var iframe = document.getElementById("music-player");
-            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-            isMusicPlaying = false;
-            document.getElementById("audioToggle").innerHTML = '<i class="fas fa-volume-mute"></i>';
-        }
+<img
 
-        // ZARF AÇMA ALGORİTMASI
-        function openEnvelope() {
-            var overlay = document.getElementById("envelope-overlay");
-            var audioBtn = document.getElementById("audioToggle");
+src="davetiye-ic.png.PNG"
 
-            // Zarf ekranı yukarı kayarak kaybolmaya başlar
-            overlay.classList.add("removed");
+class="invitation-image"
 
-            // Animasyon bittiğinde zarf katmanını tamamen gizleyerek arkadaki resmi serbest bırakıyoruz
-            setTimeout(function() {
-                overlay.style.display = "none";
-                
-                // Müzik kontrolünü göster ve müziği aç
-                audioBtn.style.display = "flex";
-                playYoutubeVideo();
-            }, 1200);
-        }
+alt="Davetiye">
 
-        function toggleMusic() {
-            if (isMusicPlaying) {
-                pauseYoutubeVideo();
-            } else {
-                playYoutubeVideo();
-            }
-        }
-    </script>
+</div>
+
+<div
+class="info-area">
+
+<!-- Tarih -->
+
+<!-- Sayaç -->
+
+<!-- Salon -->
+
+<!-- Adres -->
+
+<!-- Haritada Aç -->
+
+<!-- Takvime Ekle -->
+
+</div>
+
+</div>
+<script>
+
+const seal = document.getElementById("seal-hitbox");
+const envelope = document.getElementById("envelope-screen");
+const card = document.getElementById("card-screen");
+const music = document.getElementById("music");
+
+let opened = false;
+
+seal.addEventListener("click", function () {
+
+    if (opened) return;
+
+    opened = true;
+
+    music.play().catch(() => {});
+
+    envelope.classList.add("open");
+
+    setTimeout(function () {
+
+        card.classList.add("show");
+
+    }, 1500);
+
+});
+
+</script>
+
 </body>
+
 </html>
