@@ -27,7 +27,7 @@
             cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: none;
         }
 
-        /* ZARF SİSTEMİ (Zarf Ön Görseli Arka Plana Giydirildi) */
+        /* ZARF SİSTEMİ */
         #envelope-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #0c0c0c;
@@ -36,6 +36,7 @@
             perspective: 2500px;
             overflow: hidden;
         }
+        /* Zarf açıldığında pürüzsüzce yukarı kayarak kaybolur */
         #envelope-screen.open {
             transform: translateY(-100vh); opacity: 0; pointer-events: none;
         }
@@ -50,12 +51,16 @@
             justify-content: space-between;
             align-items: center;
             padding: 90px 0 110px;
-            /* Zarf Ön Görseli Entegre Edildi */
             background: url('zarf-on.png.PNG') no-repeat center center;
             background-size: cover;
+            transition: transform 1.6s cubic-bezier(0.76, 0, 0.24, 1);
         }
 
-        /* Ağır karton dokusu efekti (Görselin üzerine premium his katması için hafifçe uygulandı) */
+        /* Zarf açılırken alt gövdenin de hafifçe aşağı kayarak iç sayfayı açması için */
+        #envelope-screen.active .envelope-body {
+            transform: translateY(20px);
+        }
+
         .envelope-body::before, .envelope-flap::before {
             content: "";
             position: absolute;
@@ -71,7 +76,7 @@
             background-size: 220% 100%;
         }
 
-        /* YAVAŞÇA YUKARI KATLANAN 3D ÜÇGEN KAPAK (Zarf Ön Görseli ile Birebir Uyumlu) */
+        /* 3D ÜÇGEN KAPAK */
         .envelope-flap {
             position: absolute;
             top: 0;
@@ -86,7 +91,6 @@
             transition: transform 1.8s cubic-bezier(.66,0,.34,1), opacity 1.6s ease;
         }
 
-        /* Zarf kapak arka planı gövde görseliyle eşleştirildi */
         .envelope-flap::before {
             content: "";
             position: absolute;
@@ -101,7 +105,6 @@
             z-index: 1;
         }
 
-        /* İç gölge illüzyonu */
         .envelope-flap-shadow {
             position: absolute; top: 0; left: 0; width: 100%; height: 55%;
             clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
@@ -121,13 +124,11 @@
             opacity: 0;
         }
 
-        /* Altın Çerçeve Çizgileri */
         .envelope-gold-frame {
             position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
             border: 1px solid rgba(191, 149, 63, 0.3); pointer-events: none; z-index: 12;
         }
 
-        /* Üst Bölüm Yazıları */
         .envelope-flap .envelope-header {
             position: absolute; top: 18%; left: 50%; transform: translateX(-50%);
             text-align: center; width: 85%; z-index: 110;
@@ -144,14 +145,14 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* BÖLÜNEN MÜHÜR SİSTEMİ */
+        /* MÜHÜR DÜZELTİLMİŞ YENİ YAPI */
         .seal-wrapper {
             position: absolute;
-            bottom: -45px; 
+            bottom: -50px; 
             left: 50%;
             transform: translateX(-50%);
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -173,26 +174,27 @@
         .seal-left-side { left: 0; }
         .seal-right-side { right: 0; }
 
+        /* Mühür resminin tam ortalanması ve bozulmadan birleşmesi için hassas ayarlar */
         .seal-half-box img {
             position: absolute;
             top: 0;
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             max-width: none;
             object-fit: contain;
             user-select: none;
             pointer-events: none;
         }
         .seal-left-side img { left: 0; }
-        .seal-right-side img { right: -45px; }
+        .seal-right-side img { right: -50px; }
 
-        /* Kırılma tetiklendiğinde iki yana kayma ve kaybolma animasyonu */
+        /* Kırılma tetiklendiğinde pürüzsüzce iki yana açılma animasyonu */
         .seal-wrapper.break .seal-left-side {
-            transform: translateX(-40px) rotate(-15deg);
+            transform: translateX(-50px) rotate(-20deg);
             opacity: 0;
         }
         .seal-wrapper.break .seal-right-side {
-            transform: translateX(40px) rotate(15deg);
+            transform: translateX(50px) rotate(20deg);
             opacity: 0;
         }
 
@@ -210,7 +212,7 @@
             60% { transform: translateY(-4px); }
         }
 
-        /* İÇ DAVETİYE KARTI TASARIMI (Görseliniz Arka Plana Giydirildi) */
+        /* İÇ DAVETİYE KARTI TASARIMI */
         .main-card {
             width: 100%; max-width: 500px; margin: 0 auto; min-height: 100vh;
             background: #fffdf8 url('davetiye-kart.png.PNG') no-repeat center center;
@@ -343,7 +345,7 @@
 </head>
 <body>
 
-    <!-- SESSİZ ARKA PLAN YOUTUBE MÜZİK OYNATICI -->
+    <!-- ARKA PLAN MÜZİK OYNATICI -->
     <div id="player-container">
         <iframe id="music-player" src="https://www.youtube.com/embed/Gcxv7i02lXc?enablejsapi=1&controls=0&rel=0" allow="autoplay"></iframe>
     </div>
@@ -353,16 +355,15 @@
         <i class="fas fa-volume-up"></i>
     </button>
 
-    <!-- KOMPLE KÂĞIT DOKULU LÜKS ZARF SİSTEMİ -->
+    <!-- KÂĞIT DOKULU ZARF SİSTEMİ -->
     <div id="envelope-screen">
         <div class="sparkle" style="top:20%; left:20%; animation-delay: 0s;"></div>
         <div class="sparkle" style="top:40%; left:80%; animation-delay: 0.5s;"></div>
         <div class="sparkle" style="top:70%; left:15%; animation-delay: 1s;"></div>
         <div class="sparkle" style="top:85%; left:75%; animation-delay: 1.5s;"></div>
 
-        <!-- ZARF GÖVDESİ (Arka planında zarf-on.png.PNG var) -->
+        <!-- ZARF GÖVDESİ -->
         <div class="envelope-body">
-            <!-- Saray Tarzı Köşe Süsleri -->
             <div class="envelope-ornament-frame">
                 <div class="ornament top-left"></div>
                 <div class="ornament top-right"></div>
@@ -370,19 +371,14 @@
                 <div class="ornament bottom-right"></div>
             </div>
 
-            <!-- ÜST YAZI VE BAŞLIK -->
             <div class="envelope-header">
                 <div class="env-quote">DÜĞÜN DAVETİYESİ</div>
                 <div class="env-names">Rashidam & Hasan Soner</div>
             </div>
 
-            <!-- ENVELOPE FLAP SHADOW -->
             <div class="envelope-flap-shadow"></div>
-
-            <!-- ALTIN İÇ ÇERÇEVE -->
             <div class="envelope-gold-frame"></div>
 
-            <!-- ALTTAN OK VE HİNT KONTEYNERİ -->
             <div class="hint-container">
                 <div class="hint-arrow">↓</div>
                 <div class="hint-text">AÇMAK İÇİN MÜHRE DOKUNUNUZ</div>
@@ -391,7 +387,7 @@
 
         <!-- KATLANAN ÜÇGEN KAPAK -->
         <div class="envelope-flap">
-            <!-- İKİYE BÖLÜNEN VAX SEAL (MÜHÜR) -->
+            <!-- DÜZELTİLMİŞ BÖLÜNEN MÜHÜR -->
             <div class="seal-wrapper" id="waxSeal" onclick="executeEnvelopeOpening()">
                 <div class="seal-half-box seal-left-side">
                     <img src="muhur.png.PNG" alt="Mühür Sol">
@@ -403,7 +399,7 @@
         </div>
     </div>
 
-    <!-- İÇ DAVETİYE KARTI (Arka planında davetıye-kart.png.PNG var) -->
+    <!-- İÇ DAVETİYE KARTI (davetıye-kart.png.PNG yüklendiğinde arka planı oluşturacak) -->
     <div class="main-card">
         <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
         
@@ -419,7 +415,7 @@
         
         <div class="card-date-main">21 AĞUSTOS 2026</div>
 
-        <!-- DÜĞÜN GERİ SAYIM SAYACI -->
+        <!-- GERİ SAYIM SAYACI -->
         <div class="counter-section">
             <div class="counter-title">SONSUZLUĞA GİDEN SÜRE</div>
             <div class="counter-grid">
@@ -442,7 +438,7 @@
             </div>
         </div>
 
-        <!-- İKONLU GEZİNTİ MENÜSÜ -->
+        <!-- GEZİNTİ MENÜSÜ -->
         <div class="nav-menu-grid">
             <a href="#detaylar" class="nav-btn-item">
                 <i class="fas fa-calendar-alt"></i>
@@ -480,7 +476,7 @@
             </div>
         </div>
 
-        <!-- MODERN HARİTA KARTI -->
+        <!-- KONUM BİLGİSİ -->
         <div id="harita">
             <div class="map-section-title">ULAŞIM VE KONUM BİLGİSİ</div>
             <div class="map-embed-box">
@@ -495,7 +491,7 @@
             </div>
         </div>
 
-        <!-- SÖZ / ŞİİR VE ALT ALAN -->
+        <!-- SÖZ ALANI -->
         <div class="footer-poem-area">
             <div class="footer-main-quote">Yol Arkadaşım...</div>
             <div class="footer-sub-text">
@@ -522,19 +518,23 @@
             document.getElementById("audioToggle").innerHTML = '<i class="fas fa-volume-mute"></i>';
         }
 
-        // Zarf Açma Fonksiyonu
+        // Düzeltilmiş Açılma Animasyonu Akışı
         function executeEnvelopeOpening() {
             var seal = document.getElementById("waxSeal");
             var envelope = document.getElementById("envelope-screen");
             var audioBtn = document.getElementById("audioToggle");
 
+            // 1. Mühür pürüzsüzce iki yana açılır
             seal.classList.add("break");
 
+            // 2. Üçgen kapak ve zarf gövdesi animasyonu başlar
             setTimeout(function() {
                 envelope.classList.add("active");
-            }, 550);
+            }, 500);
 
+            // 3. Tüm zarf sistemi yukarı kayarak arkadaki ana davetiyeyi görünür kılar
             setTimeout(function() {
+                envelope.classList.open = false; // Temizlik
                 envelope.classList.add("open");
                 audioBtn.style.display = "flex";
                 playYoutubeVideo();
