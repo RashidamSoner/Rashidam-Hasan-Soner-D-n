@@ -1,364 +1,79 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-
-<title>Rashidam & Hasan Soner</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html,
-body{
-
-width:100%;
-min-height:100vh;
-overflow:hidden;
-
-font-family:'Montserrat',sans-serif;
-
-background:#000;
-
-}
-
-body{
-
-position:relative;
-
-}
-
-/*=============================
-MÜZİK
-=============================*/
-
-audio{
-
-display:none;
-
-}
-
-/*=============================
-GENEL EKRANLAR
-=============================*/
-
-.screen{
-
-position:fixed;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-overflow:hidden;
-
-}
-
-/*=============================
-ÖN ZARF
-=============================*/
-
-#envelope-screen{
-
-z-index:9999;
-
-background:
-
-url("zarf-on.png.PNG")
-
-center center/
-
-cover
-
-no-repeat;
-
-}
-
-/*=============================
-İÇ DAVETİYE
-=============================*/
-
-#card-screen{
-
-position:fixed;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:#f8f5ef;
-
-opacity:0;
-visibility:hidden;
-
-overflow-y:auto;
-
--webkit-overflow-scrolling:touch;
-
-z-index:1;
-
-transition:opacity .8s ease;
-
-}
-/*=============================
-DAVETİYE GÖRSELİ
-=============================*/
-
-.invitation-top{
-
-position:relative;
-
-width:100%;
-
-max-width:700px;
-
-margin:auto;
-
-}
-
-.invitation-image{
-
-display:block;
-
-width:100%;
-
-max-width:700px;
-
-margin:auto;
-
-height:auto;
-
-object-fit:contain;
-
-}
-
-/*=============================
-BİLGİLER
-=============================*/
-
-.info-area{
-
-width:100%;
-
-max-width:700px;
-
-margin:auto;
-
-padding:40px 24px 80px;
-
-background:#faf7f2;
-
-}
-/*==================================
-MÜHÜR TIKLAMA ALANI
-==================================*/
-
-#seal-hitbox{
-
-position:absolute;
-
-left:50%;
-top:53%;
-
-width:150px;
-height:150px;
-
-transform:translate(-50%,-50%);
-
-cursor:pointer;
-
-z-index:100;
-
-border-radius:50%;
-
-background:transparent;
-
-}
-
-/*==================================
-ZARF AÇILIŞI
-==================================*/
-
-#envelope-screen.open{
-
-animation:
-
-openEnvelope 1.8s ease forwards;
-
-}
-
-@keyframes openEnvelope{
-
-0%{
-
-transform:
-scale(1);
-
-opacity:1;
-
-}
-
-35%{
-
-transform:
-scale(1.02);
-
-}
-
-100%{
-
-transform:
-translateY(-100%);
-
-opacity:0;
-
-}
-
-}
-    
-#envelope-screen.open{
-
-pointer-events:none;
-
-visibility:hidden;
-
-}
-
-/*==================================
-DAVETİYE
-==================================*/
-
-#card-screen.show{
-
-opacity:1;
-
-visibility:visible;
-
-animation:cardUp 1.4s ease;
-
-}
-
-@keyframes cardUp{
-
-0%{
-
-opacity:0;
-
-transform:
-translateY(120px);
-
-}
-
-100%{
-
-opacity:1;
-
-transform:
-translateY(0);
-
-}
-
-}
-    
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rashidam & Hasan Soner</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        
+        /* Dış katmanı her zaman tam ekran yapıyoruz */
+        html, body { width: 100%; min-height: 100%; background: #000; }
+
+        /* ZARF EKRANI */
+        #envelope-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 999;
+            background: url("zarf.png") center/cover no-repeat;
+            transition: opacity 1s ease;
+        }
+
+        /* İÇ KART EKRANI - Burası artık sabit durmuyor, içeriğiyle uzuyor */
+        #card-screen {
+            display: none; /* İlk başta gizli */
+            width: 100%;
+            background: #f8f5ef;
+            min-height: 100vh;
+        }
+
+        /* RESİM AYARI - Genişliği %100 yapıyoruz, yükseklik otomatik (auto) kalsın ki resim uzadıkça sayfa uzasın */
+        .invitation-image {
+            display: block;
+            width: 100%;
+            height: auto; /* ÖNEMLİ: Resim kendi orijinal boy oranını korur ve sayfayı aşağı uzatır */
+        }
+
+        #seal-hitbox {
+            position: absolute;
+            left: 50%; top: 55%;
+            width: 150px; height: 150px;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .hidden { opacity: 0; pointer-events: none; }
+    </style>
 </head>
-
 <body>
 
-<audio
-id="music"
-preload="auto">
+    <audio id="music" src="muzik.mp3" preload="auto"></audio>
 
-<source
-src="Por uno .mp3"
-type="audio/mpeg">
+    <div id="envelope-screen">
+        <div id="seal-hitbox"></div>
+    </div>
 
-</audio>
+    <!-- Davetiye açılınca burası görünecek -->
+    <div id="card-screen">
+        <img src="davetiye.png" class="invitation-image" alt="Davetiye">
+    </div>
 
-<div
-id="envelope-screen"
-class="screen">
+    <script>
+        const seal = document.getElementById("seal-hitbox");
+        const env = document.getElementById("envelope-screen");
+        const card = document.getElementById("card-screen");
+        const music = document.getElementById("music");
 
-    <div id="seal-hitbox"></div>
-
-</div>
-
-<div
-id="card-screen"
-class="screen">
-
-<div
-class="invitation-top">
-
-<img src="davetiye-ic.png.PNG" class="invitation-image" alt="Davetiye">
-</div>
-
-<div
-class="info-area">
-
-<!-- Tarih -->
-
-<!-- Sayaç -->
-
-<!-- Salon -->
-
-<!-- Adres -->
-
-<!-- Haritada Aç -->
-
-<!-- Takvime Ekle -->
-
-</div>
-
-</div>
-<script>
-
-const seal = document.getElementById("seal-hitbox");
-const envelope = document.getElementById("envelope-screen");
-const card = document.getElementById("card-screen");
-const music = document.getElementById("music");
-
-let opened = false;
-
-seal.addEventListener("click", function () {
-
-    if (opened) return;
-
-    opened = true;
-
-    music.play().catch(() => {});
-
-    envelope.classList.add("open");
-
-    setTimeout(function () {
-
-        card.classList.add("show");
-
-    }, 1500);
-
-});
-
-</script>
-
+        seal.addEventListener("click", () => {
+            music.play();
+            env.classList.add("hidden");
+            // Zarf kaybolduktan sonra iç kartı göster
+            setTimeout(() => {
+                env.style.display = "none";
+                card.style.display = "block";
+            }, 1000);
+        });
+    </script>
 </body>
-
 </html>
