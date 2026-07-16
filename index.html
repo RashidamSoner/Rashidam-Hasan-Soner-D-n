@@ -72,7 +72,7 @@
             width: 100%;
             height: 100%;
             z-index: 9999;
-            background-color: #0c0c0c; /* Zarfın arkasında kalan asil koyu arka plan */
+            background-color: #0c0c0c;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -80,24 +80,23 @@
             will-change: transform;
         }
 
-        /* Zarf açıldığında yukarı kayıp yok olur */
         #envelope-overlay.removed {
             transform: translateY(-100vh);
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Zarfın Ön Yüz Tasarımı - Motiflerin kırpılmaması için 'contain' yapıldı */
+        /* Zarfın Ön Yüz Tasarımı */
         .envelope-front {
             position: relative;
             width: 100%;
             height: 100%;
-            max-width: 500px; /* Mobil ekran genişliği sınırlandırması */
+            max-width: 500px;
             margin: 0 auto;
             background-image: url('zarf-on.png.PNG');
             background-repeat: no-repeat;
             background-position: center center;
-            background-size: contain; /* Görselin hiçbir motifi kırpılmaz, ekrana tam sığar */
+            background-size: contain;
             display: flex;
             flex-direction: column;
             justify-content: flex-end; 
@@ -105,18 +104,17 @@
             padding-bottom: 30px;
         }
 
-        /* GÖRÜNMEZ MÜHÜR TETİKLEYİCİ ALAN */
-        /* Zarf görselindeki mührün olduğu yere denk gelecek şekilde ortalandı */
+        /* Şeffaf Dokunma Alanı */
         .seal-trigger {
             position: absolute;
-            bottom: 35%; /* Mührün görsel üzerindeki yaklaşık dikey konumu */
+            bottom: 35%;
             left: 50%;
             transform: translate3d(-50%, 0, 0);
             width: 120px; 
             height: 120px;
             cursor: pointer;
             z-index: 50;
-            background-color: rgba(255, 0, 0, 0); /* Tamamen şeffaf / görünmezdir */
+            background-color: rgba(255, 0, 0, 0);
             border-radius: 50%;
         }
 
@@ -145,27 +143,38 @@
             60% { transform: translateY(-5px); }
         }
 
-        /* İÇ DAVETİYE KARTI */
+        /* İÇ DAVETİYE KARTI KONTEYNERİ */
         .main-card {
             width: 100%; 
             max-width: 500px; 
             margin: 0 auto; 
             min-height: 100vh;
-            
-            /* Görselin telefonda tam yüklenip net görünmesi için düzeltmeler */
-            background-image: url('davetiye-ic.png.PNG');
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-size: cover; 
-            background-color: #fffdf8;
-            
-            padding: 60px 24px 80px 24px;
-            box-shadow: 0 0 40px rgba(163, 132, 80, 0.15);
-            text-align: center; 
             position: relative;
-            z-index: 1; /* Safari render katmanı düzeltmesi */
-            transform: translate3d(0, 0, 0); /* Safari GPU zorlaması */
-            will-change: transform;
+            background-color: #fffdf8;
+            box-shadow: 0 0 40px rgba(163, 132, 80, 0.15);
+            overflow: hidden;
+        }
+
+        /* TEMA RESMİ (HTML IMG OLARAK EN ARKA PLANDA) */
+        .card-theme-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Resmi kırpmadan alana yayar */
+            z-index: 1; /* En arkada kalması için */
+            pointer-events: none; /* Üzerine tıklanmasını engeller */
+        }
+
+        /* İÇERİK ALANI (TEMA RESMİNİN ÜZERİNE BİNER) */
+        .card-content {
+            position: relative;
+            z-index: 2; /* Resmin önünde görünmesi için */
+            width: 100%;
+            height: 100%;
+            padding: 60px 24px 80px 24px;
+            text-align: center;
         }
 
         .card-headline { 
@@ -463,101 +472,108 @@
 
     <!-- ANA DAVETİYE KARTI -->
     <div class="main-card">
-        <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
         
-        <div class="card-names">
-            RASHIDAM
-            <span class="card-ampersand">&</span>
-            HASAN SONER
-        </div>
+        <!-- HTML IMG TEMA RESMİ (Tarayıcı anında yüklesin diye) -->
+        <img class="card-theme-bg" src="davetiye-ic.png.PNG" alt="Davetiye İç Kartı Teması">
 
-        <div class="divider-heart">
-            <i class="fas fa-heart"></i>
-        </div>
-        
-        <div class="card-date-main">21 AĞUSTOS 2026</div>
+        <!-- ÜSTÜNE BİNEN İÇERİKLER -->
+        <div class="card-content">
+            <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
+            
+            <div class="card-names">
+                RASHIDAM
+                <span class="card-ampersand">&</span>
+                HASAN SONER
+            </div>
 
-        <!-- GERİ SAYIM SAYACI -->
-        <div class="counter-section">
-            <div class="counter-title">SONSUZLUĞA GİDEN SÜRE</div>
-            <div class="counter-grid">
-                <div class="counter-box">
-                    <div class="counter-num" id="days">00</div>
-                    <div class="counter-label">Gün</div>
-                </div>
-                <div class="counter-box">
-                    <div class="counter-num" id="hours">00</div>
-                    <div class="counter-label">Saat</div>
-                </div>
-                <div class="counter-box">
-                    <div class="counter-num" id="minutes">00</div>
-                    <div class="counter-label">Dk</div>
-                </div>
-                <div class="counter-box">
-                    <div class="counter-num" id="seconds">00</div>
-                    <div class="counter-label">Sn</div>
+            <div class="divider-heart">
+                <i class="fas fa-heart"></i>
+            </div>
+            
+            <div class="card-date-main">21 AĞUSTOS 2026</div>
+
+            <!-- GERİ SAYIM SAYACI -->
+            <div class="counter-section">
+                <div class="counter-title">SONSUZLUĞA GİDEN SÜRE</div>
+                <div class="counter-grid">
+                    <div class="counter-box">
+                        <div class="counter-num" id="days">00</div>
+                        <div class="counter-label">Gün</div>
+                    </div>
+                    <div class="counter-box">
+                        <div class="counter-num" id="hours">00</div>
+                        <div class="counter-label">Saat</div>
+                    </div>
+                    <div class="counter-box">
+                        <div class="counter-num" id="minutes">00</div>
+                        <div class="counter-label">Dk</div>
+                    </div>
+                    <div class="counter-box">
+                        <div class="counter-num" id="seconds">00</div>
+                        <div class="counter-label">Sn</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- BUTON KONTROLLERİ -->
-        <div class="nav-menu-grid">
-            <a href="#detaylar" class="nav-btn-item">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Program</span>
-            </a>
-            <a href="#harita" class="nav-btn-item">
-                <i class="fas fa-map-marked-alt"></i>
-                <span>Konum</span>
-            </a>
-            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rashidam+%26+Hasan+Soner+Wedding&dates=20260821T160000Z/20260821T210000Z" target="_blank" class="nav-btn-item">
-                <i class="fas fa-clock"></i>
-                <span>Takvime Ekle</span>
-            </a>
-        </div>
-
-        <!-- PROGRAM DETAYLARI -->
-        <div id="detaylar">
-            <div class="details-title">ETKİNLİK DETAYLARI</div>
-            <div class="details-row">
-                <div class="detail-block">
-                    <i class="fas fa-church"></i>
-                    <h4>Nikah</h4>
-                    <p>Saat: 16:00</p>
-                </div>
-                <div class="detail-block">
-                    <i class="fas fa-glass-cheers"></i>
-                    <h4>Kokteyl</h4>
-                    <p>Saat: 17:30</p>
-                </div>
-                <div class="detail-block">
-                    <i class="fas fa-music"></i>
-                    <h4>Eğlence</h4>
-                    <p>Saat: 19:00</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- MAPS / LOKASYON BÖLÜMÜ -->
-        <div id="harita">
-            <div class="map-section-title">ULAŞIM VE KONUM BİLGİSİ</div>
-            <div class="map-embed-box">
-                <div class="map-info-text">
-                    <h3>Lüks Düğün Sarayı</h3>
-                    <p>Örnek Mahallesi, Altın Caddesi No:12, İstanbul</p>
-                </div>
-                <a href="https://maps.google.com" target="_blank" class="map-button">
-                    <i class="fas fa-location-arrow" style="margin-right: 8px;"></i>Yol Tarifi Al
+            <!-- BUTON KONTROLLERİ -->
+            <div class="nav-menu-grid">
+                <a href="#detaylar" class="nav-btn-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Program</span>
                 </a>
-                <iframe class="map-iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d192078.24354228494!2d28.82394539169824!3d41.01513700057283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa7040068086b%3A0xe1cc1914d689a1!2sIstanbul!5e0!3m2!1sen!2str!4v1688550000000!5m2!1sen!2str" allowfullscreen="" loading="lazy"></iframe>
+                <a href="#harita" class="nav-btn-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Konum</span>
+                </a>
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rashidam+%26+Hasan+Soner+Wedding&dates=20260821T160000Z/20260821T210000Z" target="_blank" class="nav-btn-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Takvime Ekle</span>
+                </a>
             </div>
-        </div>
 
-        <!-- ALT ŞİİR / SÖZ -->
-        <div class="footer-poem-area">
-            <div class="footer-main-quote">Yol Arkadaşım...</div>
-            <div class="footer-sub-text">
-                "Hayatımızın en anlamlı gününe adım atarken, yanımızda olup neşemizi paylaşmanız bize onur verecektir."
+            <!-- PROGRAM DETAYLARI -->
+            <div id="detaylar">
+                <div class="details-title">ETKİNLİK DETAYLARI</div>
+                <div class="details-row">
+                    <div class="detail-block">
+                        <i class="fas fa-church"></i>
+                        <h4>Nikah</h4>
+                        <p>Saat: 16:00</p>
+                    </div>
+                    <div class="detail-block">
+                        <i class="fas fa-glass-cheers"></i>
+                        <h4>Kokteyl</h4>
+                        <p>Saat: 17:30</p>
+                    </div>
+                    <div class="detail-block">
+                        <i class="fas fa-music"></i>
+                        <h4>Eğlence</h4>
+                        <p>Saat: 19:00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAPS / LOKASYON BÖLÜMÜ -->
+            <div id="harita">
+                <div class="map-section-title">ULAŞIM VE KONUM BİLGİSİ</div>
+                <div class="map-embed-box">
+                    <div class="map-info-text">
+                        <h3>Lüks Düğün Sarayı</h3>
+                        <p>Örnek Mahallesi, Altın Caddesi No:12, İstanbul</p>
+                    </div>
+                    <a href="https://maps.google.com" target="_blank" class="map-button">
+                        <i class="fas fa-location-arrow" style="margin-right: 8px;"></i>Yol Tarifi Al
+                    </a>
+                    <iframe class="map-iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d192078.24354228494!2d28.82394539169824!3d41.01513700057283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa7040068086b%3A0xe1cc1914d689a1!2sIstanbul!5e0!3m2!1sen!2str!4v1688550000000!5m2!1sen!2str" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <!-- ALT ŞİİR / SÖZ -->
+            <div class="footer-poem-area">
+                <div class="footer-main-quote">Yol Arkadaşım...</div>
+                <div class="footer-sub-text">
+                    "Hayatımızın en anlamlı gününe adım atarken, yanımızda olup neşemizi paylaşmanız bize onur verecektir."
+                </div>
             </div>
         </div>
     </div>
@@ -588,8 +604,8 @@
             // Zarf ekranı yukarı kayarak kaybolmaya başlar
             overlay.classList.add("removed");
 
-            // Animasyon tamamlandığında (1.2 saniye sonra) zarfı DOM'dan tamamen gizleyerek
-            // Safari/Chrome'un arkadaki iç kartı kusursuzca yüklemesini sağlıyoruz.
+            // Animasyon tamamlandığında zarfı DOM'dan gizleyerek
+            // Safari/Chrome'un arkadaki iç kartı kusursuzca göstermesini sağlıyoruz.
             setTimeout(function() {
                 overlay.style.display = "none";
                 
