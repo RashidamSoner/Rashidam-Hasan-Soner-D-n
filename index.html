@@ -12,255 +12,322 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; min-height: 100vh; font-family: 'Montserrat', sans-serif; background-color: #f6efe2; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-
-        /* GİZLİ YOUTUBE MÜZİK OYNATICI */
-        #music-player { position: absolute; width: 0; height: 0; border: 0; visibility: hidden; }
-
-        /* LÜKS MÜZİK BUTONU */
-        .audio-control {
-            position: fixed; top: 20px; right: 20px; z-index: 2000;
-            background: rgba(255, 255, 255, 0.85); border: 1px solid #b89754;
-            color: #b89754; width: 42px; height: 42px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: none;
+        /* SIFIRLAMA VE GENEL TANIMLAR */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body, html { 
+            width: 100%; 
+            min-height: 100vh; 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #f6efe2; 
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* ZARF SİSTEMİ */
-        #envelope-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #0c0c0c;
-            z-index: 9999; display: flex; justify-content: center; align-items: center;
-            transition: transform 1.6s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.6s ease;
-            perspective: 2500px;
+        /* Başlangıçta kaydırma kilitlidir, zarf açılınca açılır */
+        body {
             overflow: hidden;
         }
-        /* Zarf açıldığında pürüzsüzce yukarı kayarak kaybolur */
-        #envelope-screen.open {
-            transform: translateY(-100vh); opacity: 0; pointer-events: none;
+        body.active-scroll {
+            overflow-y: auto;
         }
 
-        .envelope-body {
-            position: absolute;
+        /* GİZLİ YOUTUBE OYNATICI */
+        #music-player { 
+            position: absolute; 
+            width: 0; 
+            height: 0; 
+            border: 0; 
+            visibility: hidden; 
+        }
+
+        /* PREMIUM MÜZİK BUTONU */
+        .audio-control {
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 2000;
+            background: rgba(255, 255, 255, 0.9); 
+            border: 1px solid #b89754;
+            color: #b89754; 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 50%;
+            display: none; 
+            align-items: center; 
+            justify-content: center;
+            cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        /* ZARF EKRANI (TÜM EKRANI KAPLAR) */
+        #envelope-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10;
+            z-index: 9999;
+            background-color: #0c0c0c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1.6s cubic-bezier(0.76, 0, 0.24, 1), opacity 1.6s ease;
+        }
+
+        /* Zarf açıldığında yukarı kayıp yok olur */
+        #envelope-overlay.removed {
+            transform: translateY(-100vh);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Zarfın Ön Yüz Tasarımı */
+        .envelope-front {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: url('zarf-on.png.PNG') no-repeat center center;
+            background-size: cover;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 90px 0 110px;
-            background: url('zarf-on.png.PNG') no-repeat center center;
-            background-size: cover;
-            transition: transform 1.6s cubic-bezier(0.76, 0, 0.24, 1);
+            padding: 100px 20px 120px 20px;
         }
 
-        /* Zarf açılırken alt gövdenin de hafifçe aşağı kayarak iç sayfayı açması için */
-        #envelope-screen.active .envelope-body {
-            transform: translateY(20px);
+        /* Zarf İçi Yazıları */
+        .envelope-info {
+            text-align: center;
+            z-index: 10;
         }
-
-        .envelope-body::before, .envelope-flap::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            pointer-events: none;
-            z-index: 1;
-            mix-blend-mode: overlay;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='%23fff' surfaceScale='1.5'%3E%3CfeDistantLight azimuth='45' elevation='60'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)' opacity='0.7'/%3E%3C/svg%3E");
-            background-size: 220% 100%;
+        .env-title {
+            font-family: 'Cinzel', serif; 
+            color: #bf953f; 
+            font-size: 0.9rem;
+            letter-spacing: 6px; 
+            margin-bottom: 20px;
         }
-
-        /* 3D ÜÇGEN KAPAK */
-        .envelope-flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 56%; 
-            transform-origin: top center;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            z-index: 60;
-            overflow: visible !important;
-            transition: transform 1.8s cubic-bezier(.66,0,.34,1), opacity 1.6s ease;
-        }
-
-        .envelope-flap::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('zarf-on.png.PNG') no-repeat center top;
-            background-size: cover;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%);
-            z-index: 1;
-        }
-
-        .envelope-flap-shadow {
-            position: absolute; top: 0; left: 0; width: 100%; height: 55%;
-            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-            background: transparent;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
-            z-index: 14;
-            pointer-events: none;
-            transition: opacity 1s ease;
-        }
-
-        /* Kapak Açılma Hareketi */
-        #envelope-screen.active .envelope-flap {
-            transform: rotateX(140deg);
-            opacity: 0.9;
-        }
-        #envelope-screen.active .envelope-flap-shadow {
-            opacity: 0;
-        }
-
-        .envelope-gold-frame {
-            position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
-            border: 1px solid rgba(191, 149, 63, 0.3); pointer-events: none; z-index: 12;
-        }
-
-        .envelope-flap .envelope-header {
-            position: absolute; top: 18%; left: 50%; transform: translateX(-50%);
-            text-align: center; width: 85%; z-index: 110;
-        }
-        .env-quote {
-            font-family: 'Cinzel', serif; color: #bf953f; font-size: 0.85rem;
-            letter-spacing: 6px; margin-bottom: 25px; opacity: 0.9;
-        }
-        .env-names {
-            font-family: 'Great Vibes', cursive; color: #fdf3cd;
-            font-size: 4rem; line-height: 1.1;
-            text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+        .env-couple-names {
+            font-family: 'Great Vibes', cursive; 
+            color: #fdf3cd;
+            font-size: 3.8rem; 
+            line-height: 1.2;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
             background: linear-gradient(135deg, #fcf6ba 0%, #bf953f 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
         }
 
-        /* MÜHÜR DÜZELTİLMİŞ YENİ YAPI */
-        .seal-wrapper {
+        /* CSS CLIP-PATH MÜHÜR SİSTEMİ */
+        .seal-box {
             position: absolute;
-            bottom: -50px; 
+            bottom: 22%;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 110px;
+            height: 110px;
             cursor: pointer;
-            z-index: 120;
+            z-index: 50;
             transition: transform 0.3s ease;
         }
-        .seal-wrapper:hover {
+        .seal-box:hover {
             transform: translateX(-50%) scale(1.05);
         }
 
-        .seal-half-box {
-            position: absolute;
-            width: 50%;
-            height: 100%;
-            overflow: hidden;
-            transition: transform 1.4s cubic-bezier(.66,0,.34,1), opacity 0.8s ease;
-        }
-        .seal-left-side { left: 0; }
-        .seal-right-side { right: 0; }
-
-        /* Mühür resminin tam ortalanması ve bozulmadan birleşmesi için hassas ayarlar */
-        .seal-half-box img {
+        /* İki parçanın ortak özellikleri */
+        .seal-part {
             position: absolute;
             top: 0;
-            width: 100px;
-            height: 100px;
-            max-width: none;
-            object-fit: contain;
-            user-select: none;
-            pointer-events: none;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('muhur.png.PNG') no-repeat center center;
+            background-size: contain;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
         }
-        .seal-left-side img { left: 0; }
-        .seal-right-side img { right: -50px; }
 
-        /* Kırılma tetiklendiğinde pürüzsüzce iki yana açılma animasyonu */
-        .seal-wrapper.break .seal-left-side {
-            transform: translateX(-50px) rotate(-20deg);
+        /* clip-path ile pikselsel olarak bölme */
+        .seal-left {
+            clip-path: inset(0 50% 0 0);
+            -webkit-clip-path: inset(0 50% 0 0);
+        }
+        .seal-right {
+            clip-path: inset(0 0 0 50%);
+            -webkit-clip-path: inset(0 0 0 50%);
+        }
+
+        /* Kırılma efekti tetiklendiğinde iki yana kayış */
+        .seal-box.broken .seal-left {
+            transform: translateX(-40px) rotate(-15deg);
             opacity: 0;
         }
-        .seal-wrapper.break .seal-right-side {
-            transform: translateX(50px) rotate(20deg);
+        .seal-box.broken .seal-right {
+            transform: translateX(40px) rotate(15deg);
             opacity: 0;
         }
 
-        /* Alttaki Ok ve Yazı */
-        .hint-container {
-            position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%);
-            text-align: center; z-index: 15;
+        /* Alt İpucu Alanı */
+        .navigation-hint {
+            text-align: center;
+            z-index: 10;
         }
-        .hint-arrow { color: #bf953f; font-size: 1.5rem; animation: bounce 2s infinite; }
-        .hint-text { font-family: 'Cinzel', serif; font-size: 0.8rem; color: #bf953f; letter-spacing: 3px; margin-top: 5px; }
+        .nav-arrow { 
+            color: #bf953f; 
+            font-size: 1.8rem; 
+            animation: pulseArrow 2s infinite; 
+        }
+        .nav-label { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.75rem; 
+            color: #bf953f; 
+            letter-spacing: 4px; 
+            margin-top: 8px; 
+        }
 
-        @keyframes bounce {
+        @keyframes pulseArrow {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            60% { transform: translateY(-4px); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
-        /* İÇ DAVETİYE KARTI TASARIMI */
+        /* İÇ DAVETİYE KARTI (Dosya ismi davetiye-ic.png.PNG olarak güncellendi) */
         .main-card {
-            width: 100%; max-width: 500px; margin: 0 auto; min-height: 100vh;
-            background: #fffdf8 url('davetiye-kart.png.PNG') no-repeat center center;
+            width: 100%; 
+            max-width: 500px; 
+            margin: 0 auto; 
+            min-height: 100vh;
+            background: #fffdf8 url('davetiye-ic.png.PNG') no-repeat center center;
             background-size: cover;
-            padding: 50px 24px 80px 24px;
+            padding: 60px 24px 80px 24px;
             box-shadow: 0 0 40px rgba(163, 132, 80, 0.15);
-            text-align: center; position: relative;
+            text-align: center; 
+            position: relative;
         }
 
-        .card-headline { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 4px; color: #8a7343; margin-bottom: 25px; margin-top: 30px; font-weight: 600; }
-        .card-names { font-family: 'Cinzel', serif; font-size: 2.2rem; color: #b89754; font-weight: 400; letter-spacing: 2px; line-height: 1.4; }
-        .card-ampersand { font-family: 'Great Vibes', cursive; font-size: 3.2rem; color: #9c8863; display: block; margin: 5px 0; }
-        .card-date-main { font-family: 'Cinzel', serif; font-size: 1.25rem; color: #524326; letter-spacing: 3px; margin: 30px 0; font-weight: 700; }
+        .card-headline { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.8rem; 
+            letter-spacing: 4px; 
+            color: #8a7343; 
+            margin-bottom: 25px; 
+            margin-top: 30px; 
+            font-weight: 600; 
+        }
+        .card-names { 
+            font-family: 'Cinzel', serif; 
+            font-size: 2.2rem; 
+            color: #b89754; 
+            font-weight: 400; 
+            letter-spacing: 2px; 
+            line-height: 1.4; 
+        }
+        .card-ampersand { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 3.2rem; 
+            color: #9c8863; 
+            display: block; 
+            margin: 5px 0; 
+        }
+        .card-date-main { 
+            font-family: 'Cinzel', serif; 
+            font-size: 1.25rem; 
+            color: #524326; 
+            letter-spacing: 3px; 
+            margin: 30px 0; 
+            font-weight: 700; 
+        }
 
-        .divider-heart { color: #b89754; font-size: 12px; margin: 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .divider-heart::before, .divider-heart::after { content: ""; width: 40px; height: 1px; background: rgba(184, 151, 84, 0.3); }
+        .divider-heart { 
+            color: #b89754; 
+            font-size: 12px; 
+            margin: 20px 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+        }
+        .divider-heart::before, .divider-heart::after { 
+            content: ""; 
+            width: 40px; 
+            height: 1px; 
+            background: rgba(184, 151, 84, 0.3); 
+        }
 
-        /* SAYAÇ ALANI */
-        .counter-section { margin: 40px 0; }
-        .counter-title { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 3px; color: #8a7343; margin-bottom: 20px; font-weight: 600; }
-        .counter-grid { display: flex; justify-content: center; gap: 12px; }
+        /* GERİ SAYIM */
+        .counter-section { 
+            margin: 40px 0; 
+        }
+        .counter-title { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.7rem; 
+            letter-spacing: 3px; 
+            color: #8a7343; 
+            margin-bottom: 20px; 
+            font-weight: 600; 
+        }
+        .counter-grid { 
+            display: flex; 
+            justify-content: center; 
+            gap: 12px; 
+        }
         .counter-box {
             background: linear-gradient(180deg, rgba(255, 254, 249, 0.9) 0%, rgba(250, 245, 234, 0.9) 100%);
             border: 2px solid rgba(212,175,55,.35);
             border-radius: 16px;
-            width: 74px; height: 74px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            width: 74px; 
+            height: 74px;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
             box-shadow: 0 12px 28px rgba(0,0,0,.12), inset 0 1px rgba(255,255,255,.9);
         }
         .counter-num {
-            font-family: 'Cinzel', serif; font-size: 1.65rem; font-weight: 700; line-height: 1; color: #c79b2b;
+            font-family: 'Cinzel', serif; 
+            font-size: 1.65rem; 
+            font-weight: 700; 
+            line-height: 1; 
+            color: #c79b2b;
             text-shadow: 0 1px 0 #fffbe6, 0 2px 4px rgba(255,255,255,.6), 0 6px 14px rgba(212,175,55,.28);
             letter-spacing: 1px;
         }
         .counter-label {
-            margin-top: 8px; font-family: 'Montserrat', sans-serif; font-size: .62rem; font-weight: 600; letter-spacing: 2.6px; text-transform: uppercase;
-            color: #8a7343; text-shadow: 0 1px 0 rgba(255,255,255,.65); opacity: .95;
+            margin-top: 8px; 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: .62rem; 
+            font-weight: 600; 
+            letter-spacing: 2.6px; 
+            text-transform: uppercase;
+            color: #8a7343; 
+            text-shadow: 0 1px 0 rgba(255,255,255,.65); 
+            opacity: .95;
         }
 
-        /* İKONLU GEZİNTİ MENÜSÜ */
+        /* HIZLI GEZİNTİ BUTONLARI */
         .nav-menu-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
-            border-top: 1px solid rgba(184, 151, 84, 0.2); border-bottom: 1px solid rgba(184, 151, 84, 0.2);
-            padding: 20px 0; margin: 40px 0;
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px;
+            border-top: 1px solid rgba(184, 151, 84, 0.2); 
+            border-bottom: 1px solid rgba(184, 151, 84, 0.2);
+            padding: 20px 0; 
+            margin: 40px 0;
         }
         .nav-btn-item {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-decoration: none; color: #7a6130; padding: 18px 10px; min-height: 92px; border-radius: 18px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            text-decoration: none; 
+            color: #7a6130; 
+            padding: 18px 10px; 
+            min-height: 92px; 
+            border-radius: 18px;
             background: linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(247,242,232,.96) 100%);
             border: 1px solid rgba(212,175,55,.25);
             box-shadow: 0 8px 22px rgba(0,0,0,.08), inset 0 1px rgba(255,255,255,.95);
@@ -274,132 +341,177 @@
             color: #5d4721;
         }
         .nav-btn-item i {
-            display: block; font-size: 1.55rem; margin-bottom: 10px; color: #c89d2b;
+            display: block; 
+            font-size: 1.55rem; 
+            margin-bottom: 10px; 
+            color: #c89d2b;
             text-shadow: 0 1px 0 #fff8cf, 0 3px 10px rgba(212,175,55,.35);
-            transition: transform .35s ease, color .35s ease, text-shadow .35s ease;
+            transition: transform .35s ease, color .35s ease;
         }
-        .nav-btn-item:hover i { transform: scale(1.12); color: #dcb648; }
+        .nav-btn-item:hover i { 
+            transform: scale(1.12); 
+            color: #dcb648; 
+        }
 
-        /* DETAY BLOKLARI */
-        .details-title { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 3px; color: #8a7343; margin-bottom: 25px; font-weight: 600; }
-        .details-row { display: flex; justify-content: space-around; margin-bottom: 40px; gap: 10px; }
-        .detail-block { flex: 1; border-right: 1px solid rgba(184, 151, 84, 0.25); padding: 0 5px; }
-        .detail-block:last-child { border-right: none; }
-        .detail-block i { font-size: 1.2rem; color: #b89754; margin-bottom: 8px; }
-        .detail-block h4 { font-family: 'Cinzel', serif; font-size: 0.7rem; color: #524326; margin-bottom: 4px; font-weight: 700; }
-        .detail-block p { font-size: 0.75rem; color: #666; line-height: 1.4; }
+        /* ETKİNLİK DETAYLARI */
+        .details-title { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.8rem; 
+            letter-spacing: 3px; 
+            color: #8a7343; 
+            margin-bottom: 25px; 
+            font-weight: 600; 
+        }
+        .details-row { 
+            display: flex; 
+            justify-content: space-around; 
+            margin-bottom: 40px; 
+            gap: 10px; 
+        }
+        .detail-block { 
+            flex: 1; 
+            border-right: 1px solid rgba(184, 151, 84, 0.25); 
+            padding: 0 5px; 
+        }
+        .detail-block:last-child { 
+            border-right: none; 
+        }
+        .detail-block i { 
+            font-size: 1.2rem; 
+            color: #b89754; 
+            margin-bottom: 8px; 
+        }
+        .detail-block h4 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.7rem; 
+            color: #524326; 
+            margin-bottom: 4px; 
+            font-weight: 700; 
+        }
+        .detail-block p { 
+            font-size: 0.75rem; 
+            color: #666; 
+            line-height: 1.4; 
+        }
 
-        /* HARİTA VE BUTON */
-        .map-section-title { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 3px; color: #8a7343; margin-bottom: 20px; font-weight: 600; }
+        /* HARİTA ALANI */
+        .map-section-title { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.8rem; 
+            letter-spacing: 3px; 
+            color: #8a7343; 
+            margin-bottom: 20px; 
+            font-weight: 600; 
+        }
         .map-embed-box {
-            background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(184, 151, 84, 0.2); border-radius: 12px;
-            padding: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.9); 
+            border: 1px solid rgba(184, 151, 84, 0.2); 
+            border-radius: 12px;
+            padding: 16px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.04); 
+            margin-bottom: 40px;
         }
-        .map-info-text { margin-bottom: 15px; }
-        .map-info-text h3 { font-family: 'Cinzel', serif; font-size: 0.9rem; color: #333; margin-bottom: 4px; }
-        .map-info-text p { font-size: 0.75rem; color: #666; margin-bottom: 12px; }
+        .map-info-text { 
+            margin-bottom: 15px; 
+        }
+        .map-info-text h3 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 0.9rem; 
+            color: #333; 
+            margin-bottom: 4px; 
+        }
+        .map-info-text p { 
+            font-size: 0.75rem; 
+            color: #666; 
+            margin-bottom: 12px; 
+        }
         
         .map-button {
-            display: inline-flex; align-items: center; justify-content: center;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
             background: linear-gradient(135deg, #bfa15f 0%, #8a6f3e 100%);
-            color: #ffffff !important; text-decoration: none !important;
-            padding: 12px 24px; border-radius: 30px; font-family: 'Montserrat', sans-serif;
-            font-size: 14px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(138, 111, 62, 0.3); transition: all 0.3s ease;
+            color: #ffffff !important; 
+            text-decoration: none !important;
+            padding: 12px 24px; 
+            border-radius: 30px; 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px; 
+            font-weight: 600; 
+            letter-spacing: 0.5px; 
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(138, 111, 62, 0.3); 
+            transition: all 0.3s ease;
         }
-        .map-button:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(138, 111, 62, 0.2); }
-        .map-iframe { width: 100%; height: 180px; border-radius: 8px; border: 0; }
+        .map-button:active { 
+            transform: scale(0.96); 
+        }
+        .map-iframe { 
+            width: 100%; 
+            height: 180px; 
+            border-radius: 8px; 
+            border: 0; 
+        }
 
-        /* SÖZ ALANI */
-        .footer-poem-area { margin-top: 40px; padding: 0 10px; }
-        .footer-main-quote { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #8a7343; margin-bottom: 15px; line-height: 1.3; }
-        .footer-sub-text { font-size: 0.8rem; color: #555; line-height: 1.7; max-width: 90%; margin: 0 auto; }
-
-        /* SÜSLEMELER VE PARILTILAR */
-        .envelope-ornament-frame{ position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; pointer-events: none; z-index: 80; }
-        .envelope-ornament-frame::after {
-            content: ""; position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
-            border: 2px solid rgba(212, 175, 55, 0.45);
+        /* KAPANIŞ ŞİİRİ / SÖZÜ */
+        .footer-poem-area { 
+            margin-top: 40px; 
+            padding: 0 10px; 
         }
-        .ornament {
-            position: absolute; width: 78px; height: 78px; opacity: 1;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M0,0 C30,0 50,10 60,30 C65,40 55,50 45,45 C35,40 40,25 25,25 C15,25 15,35 25,35 C35,35 30,55 50,60 C70,65 80,45 80,20 C80,10 90,0 100,0 M0,0 C0,30 10,50 30,60 C40,65 50,55 45,45 C40,35 25,40 25,25 C25,15 35,15 35,25 C35,35 55,30 60,50 C65,70 45,80 20,80 C10,80 0,90 0,100' fill='none' stroke='%23d4af37' stroke-width='3.8'/%3E%3Ccircle cx='25' cy='25' r='3' fill='%23d4af37'/%3E%3Ccircle cx='45' cy='45' r='2.5' fill='%23d4af37'/%3E%3C/svg%3E");
-            background-size: contain; background-repeat: no-repeat;
-            filter: drop-shadow(0 0 3px rgba(255,220,120,.45)) drop-shadow(0 0 10px rgba(212,175,55,.18));
+        .footer-main-quote { 
+            font-family: 'Great Vibes', cursive; 
+            font-size: 2.2rem; 
+            color: #8a7343; 
+            margin-bottom: 15px; 
+            line-height: 1.3; 
         }
-        .top-left { top: -10px; left: -10px; }
-        .top-right { top: -10px; right: -10px; transform: rotate(90deg); }
-        .bottom-left { bottom: -10px; left: -10px; transform: rotate(-90deg); }
-        .bottom-right { bottom: -10px; right: -10px; transform: rotate(180deg); }
-
-        .sparkle {
-            position: absolute; width: 4px; height: 4px; border-radius: 50%;
-            background: #d4af37; box-shadow: 0 0 10px #ffd86a; animation: sparkle 3.5s infinite;
-        }
-        @keyframes sparkle {
-            0% { transform: translateY(0) scale(1); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-25px) scale(1.4); opacity: 0; }
+        .footer-sub-text { 
+            font-size: 0.8rem; 
+            color: #555; 
+            line-height: 1.7; 
+            max-width: 90%; 
+            margin: 0 auto; 
         }
     </style>
 </head>
 <body>
 
-    <!-- ARKA PLAN MÜZİK OYNATICI -->
+    <!-- ARKA PLAN MÜZİK PLAYER -->
     <div id="player-container">
         <iframe id="music-player" src="https://www.youtube.com/embed/Gcxv7i02lXc?enablejsapi=1&controls=0&rel=0" allow="autoplay"></iframe>
     </div>
 
-    <!-- MÜZİK KONTROL BUTONU -->
+    <!-- SES KONTROL BUTONU -->
     <button class="audio-control" id="audioToggle" onclick="toggleMusic()">
         <i class="fas fa-volume-up"></i>
     </button>
 
-    <!-- KÂĞIT DOKULU ZARF SİSTEMİ -->
-    <div id="envelope-screen">
-        <div class="sparkle" style="top:20%; left:20%; animation-delay: 0s;"></div>
-        <div class="sparkle" style="top:40%; left:80%; animation-delay: 0.5s;"></div>
-        <div class="sparkle" style="top:70%; left:15%; animation-delay: 1s;"></div>
-        <div class="sparkle" style="top:85%; left:75%; animation-delay: 1.5s;"></div>
-
-        <!-- ZARF GÖVDESİ -->
-        <div class="envelope-body">
-            <div class="envelope-ornament-frame">
-                <div class="ornament top-left"></div>
-                <div class="ornament top-right"></div>
-                <div class="ornament bottom-left"></div>
-                <div class="ornament bottom-right"></div>
+    <!-- ZARF EKRANI -->
+    <div id="envelope-overlay">
+        <div class="envelope-front">
+            
+            <!-- ÜST BİLGİ -->
+            <div class="envelope-info">
+                <div class="env-title">DÜĞÜN DAVETİYESİ</div>
+                <div class="env-couple-names">Rashidam & Hasan Soner</div>
             </div>
 
-            <div class="envelope-header">
-                <div class="env-quote">DÜĞÜN DAVETİYESİ</div>
-                <div class="env-names">Rashidam & Hasan Soner</div>
+            <!-- CSS CLIP-PATH İLE KUSURSUZ BÖLÜNEN MÜHÜR -->
+            <div class="seal-box" id="sealBox" onclick="openEnvelope()">
+                <div class="seal-part seal-left"></div>
+                <div class="seal-part seal-right"></div>
             </div>
 
-            <div class="envelope-flap-shadow"></div>
-            <div class="envelope-gold-frame"></div>
-
-            <div class="hint-container">
-                <div class="hint-arrow">↓</div>
-                <div class="hint-text">AÇMAK İÇİN MÜHRE DOKUNUNUZ</div>
+            <!-- ALT YÖNLENDİRME -->
+            <div class="navigation-hint">
+                <div class="nav-arrow">↓</div>
+                <div class="nav-label">AÇMAK İÇİN MÜHRE DOKUNUNUZ</div>
             </div>
-        </div>
 
-        <!-- KATLANAN ÜÇGEN KAPAK -->
-        <div class="envelope-flap">
-            <!-- DÜZELTİLMİŞ BÖLÜNEN MÜHÜR -->
-            <div class="seal-wrapper" id="waxSeal" onclick="executeEnvelopeOpening()">
-                <div class="seal-half-box seal-left-side">
-                    <img src="muhur.png.PNG" alt="Mühür Sol">
-                </div>
-                <div class="seal-half-box seal-right-side">
-                    <img src="muhur.png.PNG" alt="Mühür Sağ">
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- İÇ DAVETİYE KARTI (davetıye-kart.png.PNG yüklendiğinde arka planı oluşturacak) -->
+    <!-- ANA DAVETİYE KARTI -->
     <div class="main-card">
         <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
         
@@ -438,7 +550,7 @@
             </div>
         </div>
 
-        <!-- GEZİNTİ MENÜSÜ -->
+        <!-- BUTON KONTROLLERİ -->
         <div class="nav-menu-grid">
             <a href="#detaylar" class="nav-btn-item">
                 <i class="fas fa-calendar-alt"></i>
@@ -476,7 +588,7 @@
             </div>
         </div>
 
-        <!-- KONUM BİLGİSİ -->
+        <!-- MAPS / LOKASYON BÖLÜMÜ -->
         <div id="harita">
             <div class="map-section-title">ULAŞIM VE KONUM BİLGİSİ</div>
             <div class="map-embed-box">
@@ -491,7 +603,7 @@
             </div>
         </div>
 
-        <!-- SÖZ ALANI -->
+        <!-- ALT ŞİİR / SÖZ -->
         <div class="footer-poem-area">
             <div class="footer-main-quote">Yol Arkadaşım...</div>
             <div class="footer-sub-text">
@@ -500,7 +612,7 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT KONTROLLERİ -->
+    <!-- JAVASCRIPT ANIMASYON VE ZAMANLAYICI AKIŞLARI -->
     <script>
         var isMusicPlaying = false;
 
@@ -518,27 +630,26 @@
             document.getElementById("audioToggle").innerHTML = '<i class="fas fa-volume-mute"></i>';
         }
 
-        // Düzeltilmiş Açılma Animasyonu Akışı
-        function executeEnvelopeOpening() {
-            var seal = document.getElementById("waxSeal");
-            var envelope = document.getElementById("envelope-screen");
+        // ZARF AÇMA ALGORİTMASI
+        function openEnvelope() {
+            var seal = document.getElementById("sealBox");
+            var overlay = document.getElementById("envelope-overlay");
             var audioBtn = document.getElementById("audioToggle");
 
-            // 1. Mühür pürüzsüzce iki yana açılır
-            seal.classList.add("break");
+            // Mühür ikiye bölünür
+            seal.classList.add("broken");
 
-            // 2. Üçgen kapak ve zarf gövdesi animasyonu başlar
+            // Zarf ekranı kayarak kaybolur
             setTimeout(function() {
-                envelope.classList.add("active");
-            }, 500);
-
-            // 3. Tüm zarf sistemi yukarı kayarak arkadaki ana davetiyeyi görünür kılar
-            setTimeout(function() {
-                envelope.classList.open = false; // Temizlik
-                envelope.classList.add("open");
+                overlay.classList.add("removed");
+                
+                // Sayfayı kaydırılabilir yap
+                document.body.classList.add("active-scroll");
+                
+                // Müzik kontrolünü göster ve müziği aç
                 audioBtn.style.display = "flex";
                 playYoutubeVideo();
-            }, 1900);
+            }, 800);
         }
 
         function toggleMusic() {
