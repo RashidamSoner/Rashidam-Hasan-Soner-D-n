@@ -27,7 +27,7 @@
             cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: none;
         }
 
-        /* KOMPLE MAT SİYAH KÂĞIT DOKULU ZARF SİSTEMİ */
+        /* ZARF SİSTEMİ (Zarf Ön Görseli Arka Plana Giydirildi) */
         #envelope-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #0c0c0c;
@@ -50,10 +50,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 90px 0 110px;
-            background: radial-gradient(circle at center, #181818 0%, #0d0d0d 100%);
+            /* Zarf Ön Görseli Entegre Edildi */
+            background: url('zarf-on.png.PNG') no-repeat center center;
+            background-size: cover;
         }
 
-        /* Fotoğraftaki lüks ağır karton/deri dokusu efekti */
+        /* Ağır karton dokusu efekti (Görselin üzerine premium his katması için hafifçe uygulandı) */
         .envelope-body::before, .envelope-flap::before {
             content: "";
             position: absolute;
@@ -61,7 +63,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.15;
+            opacity: 0.1;
             pointer-events: none;
             z-index: 1;
             mix-blend-mode: overlay;
@@ -69,7 +71,7 @@
             background-size: 220% 100%;
         }
 
-        /* YAVAŞÇA YUKARI KATLANAN 3D ÜÇGEN KAPAK (Gövde ile Birebir Aynı Renk Tasarımı) */
+        /* YAVAŞÇA YUKARI KATLANAN 3D ÜÇGEN KAPAK (Zarf Ön Görseli ile Birebir Uyumlu) */
         .envelope-flap {
             position: absolute;
             top: 0;
@@ -84,7 +86,7 @@
             transition: transform 1.8s cubic-bezier(.66,0,.34,1), opacity 1.6s ease;
         }
 
-        /* Gövde rengiyle kusursuz eşleşen kapak arka planı */
+        /* Zarf kapak arka planı gövde görseliyle eşleştirildi */
         .envelope-flap::before {
             content: "";
             position: absolute;
@@ -92,7 +94,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #181818 0%, #0d0d0d 100%) !important;
+            background: url('zarf-on.png.PNG') no-repeat center top;
+            background-size: cover;
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%);
             z-index: 1;
@@ -121,7 +124,7 @@
         /* Altın Çerçeve Çizgileri */
         .envelope-gold-frame {
             position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
-            border: 1px solid rgba(191, 149, 63, 0.4); pointer-events: none; z-index: 12;
+            border: 1px solid rgba(191, 149, 63, 0.3); pointer-events: none; z-index: 12;
         }
 
         /* Üst Bölüm Yazıları */
@@ -181,7 +184,7 @@
             pointer-events: none;
         }
         .seal-left-side img { left: 0; }
-        .seal-right-side img { right: -45px; } /* Sağ görseli tam ortadan kesmek için kaydırıyoruz */
+        .seal-right-side img { right: -45px; }
 
         /* Kırılma tetiklendiğinde iki yana kayma ve kaybolma animasyonu */
         .seal-wrapper.break .seal-left-side {
@@ -207,11 +210,11 @@
             60% { transform: translateY(-4px); }
         }
 
-        /* İÇ DAVETİYE KARTI TASARIMI */
+        /* İÇ DAVETİYE KARTI TASARIMI (Görseliniz Arka Plana Giydirildi) */
         .main-card {
             width: 100%; max-width: 500px; margin: 0 auto; min-height: 100vh;
-            background: #fffdf8;
-            background-image: radial-gradient(circle at top, #fbf7ee 0%, #f3eae0 70%, #e6d9c5 100%);
+            background: #fffdf8 url('davetiye-kart.png.PNG') no-repeat center center;
+            background-size: cover;
             padding: 50px 24px 80px 24px;
             box-shadow: 0 0 40px rgba(163, 132, 80, 0.15);
             text-align: center; position: relative;
@@ -230,7 +233,7 @@
         .counter-title { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 3px; color: #8a7343; margin-bottom: 20px; font-weight: 600; }
         .counter-grid { display: flex; justify-content: center; gap: 12px; }
         .counter-box {
-            background: linear-gradient(180deg, #fffef9 0%, #faf5ea 100%);
+            background: linear-gradient(180deg, rgba(255, 254, 249, 0.9) 0%, rgba(250, 245, 234, 0.9) 100%);
             border: 2px solid rgba(212,175,55,.35);
             border-radius: 16px;
             width: 74px; height: 74px;
@@ -287,7 +290,7 @@
         /* HARİTA VE BUTON */
         .map-section-title { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 3px; color: #8a7343; margin-bottom: 20px; font-weight: 600; }
         .map-embed-box {
-            background: #ffffff; border: 1px solid rgba(184, 151, 84, 0.2); border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(184, 151, 84, 0.2); border-radius: 12px;
             padding: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); margin-bottom: 40px;
         }
         .map-info-text { margin-bottom: 15px; }
@@ -357,7 +360,7 @@
         <div class="sparkle" style="top:70%; left:15%; animation-delay: 1s;"></div>
         <div class="sparkle" style="top:85%; left:75%; animation-delay: 1.5s;"></div>
 
-        <!-- ZARF GÖVDESİ -->
+        <!-- ZARF GÖVDESİ (Arka planında zarf-on.png.PNG var) -->
         <div class="envelope-body">
             <!-- Saray Tarzı Köşe Süsleri -->
             <div class="envelope-ornament-frame">
@@ -400,7 +403,7 @@
         </div>
     </div>
 
-    <!-- İÇ DAVETİYE KARTI -->
+    <!-- İÇ DAVETİYE KARTI (Arka planında davetıye-kart.png.PNG var) -->
     <div class="main-card">
         <div class="card-headline">BU ÖZEL GÜNÜMÜZE DAVETLİSİNİZ</div>
         
@@ -488,7 +491,6 @@
                 <a href="https://maps.google.com" target="_blank" class="map-button">
                     <i class="fas fa-location-arrow" style="margin-right: 8px;"></i>Yol Tarifi Al
                 </a>
-                <!-- Görsel ve temiz bir harita iframe yapısı -->
                 <iframe class="map-iframe" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d192078.24354228494!2d28.82394539169824!3d41.01513700057283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa7040068086b%3A0xe1cc1914d689a1!2sIstanbul!5e0!3m2!1sen!2str!4v1688550000000!5m2!1sen!2str" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
@@ -506,7 +508,6 @@
     <script>
         var isMusicPlaying = false;
 
-        // YouTube Iframe API'si için postMessage yardımcı fonksiyonları
         function playYoutubeVideo() {
             var iframe = document.getElementById("music-player");
             iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
@@ -521,29 +522,25 @@
             document.getElementById("audioToggle").innerHTML = '<i class="fas fa-volume-mute"></i>';
         }
 
-        // Zarf Açılma Senaryosu
+        // Zarf Açma Fonksiyonu
         function executeEnvelopeOpening() {
             var seal = document.getElementById("waxSeal");
             var envelope = document.getElementById("envelope-screen");
             var audioBtn = document.getElementById("audioToggle");
 
-            // 1. Mührü ikiye böl
             seal.classList.add("break");
 
-            // 2. Çok kısa bir gecikmeyle zarf kapağını arkaya doğru katla
             setTimeout(function() {
                 envelope.classList.add("active");
             }, 550);
 
-            // 3. Zarfı komple yukarı kaydırarak ekranı terk etmesini sağla
             setTimeout(function() {
                 envelope.classList.add("open");
-                audioBtn.style.display = "flex"; // Müzik kontrol butonunu görünür yap
-                playYoutubeVideo(); // Müziği otomatik başlat
+                audioBtn.style.display = "flex";
+                playYoutubeVideo();
             }, 1900);
         }
 
-        // Müzik Aç / Kapat Buton Fonksiyonu
         function toggleMusic() {
             if (isMusicPlaying) {
                 pauseYoutubeVideo();
