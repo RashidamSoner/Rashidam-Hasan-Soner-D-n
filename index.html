@@ -113,9 +113,6 @@ visibility:hidden;
 
 overflow-x:hidden;
 overflow-y:auto;
-
-overflow-y:auto;
-
 -webkit-overflow-scrolling:touch;
 
 z-index:999;
@@ -284,7 +281,184 @@ translateY(0);
 }
 
 }
-    
+
+/*=============================
+ETKİNLİK
+=============================*/
+
+.event-box{
+
+text-align:center;
+padding:30px 20px;
+
+}
+
+.event-box h2{
+
+font-family:'Cinzel',serif;
+font-size:28px;
+font-weight:600;
+color:#b78d32;
+margin-bottom:18px;
+
+}
+
+.event-date{
+
+font-size:22px;
+font-weight:600;
+color:#222;
+margin-bottom:10px;
+
+}
+
+.event-time{
+
+font-size:18px;
+letter-spacing:2px;
+color:#666;
+
+}
+
+/*=============================
+GERİ SAYIM
+=============================*/
+
+#countdown{
+
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap;
+
+padding-bottom:35px;
+
+}
+
+.counter-box{
+
+width:75px;
+height:75px;
+
+background:#111;
+
+border-radius:14px;
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+}
+
+.counter-box span{
+
+font-size:28px;
+font-weight:700;
+color:#d4af37;
+line-height:1;
+
+}
+
+.counter-box small{
+
+margin-top:6px;
+
+font-size:12px;
+
+color:#fff;
+
+letter-spacing:1px;
+
+text-transform:uppercase;
+
+}
+
+/*=============================
+SALON
+=============================*/
+
+.venue-box{
+
+text-align:center;
+
+padding:20px 25px;
+
+}
+
+.venue-box h2{
+
+font-family:'Cinzel',serif;
+
+font-size:24px;
+
+color:#b78d32;
+
+margin-bottom:15px;
+
+}
+
+.venue-box h3{
+
+font-size:22px;
+
+font-weight:700;
+
+color:#222;
+
+margin-bottom:12px;
+
+}
+
+.venue-box p{
+
+font-size:16px;
+
+line-height:1.8;
+
+color:#555;
+
+}
+
+/*=============================
+BUTON
+=============================*/
+
+.button-area{
+
+text-align:center;
+
+padding:15px 20px 40px;
+
+}
+
+.gold-button{
+
+display:inline-block;
+
+padding:14px 34px;
+
+background:#b78d32;
+
+color:#fff;
+
+text-decoration:none;
+
+border-radius:40px;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.gold-button:hover{
+
+background:#8d6820;
+
+}
 </style>
 
 </head>
@@ -323,16 +497,84 @@ class="screen">
 <div class="info-area">
 
 <!-- Tarih -->
+<div class="event-box">
 
+    <h2>Düğün Merasimi</h2>
+
+    <div class="event-date">
+        21 Ağustos 2026
+    </div>
+
+    <div class="event-time">
+        Saat 19:00
+    </div>
+
+</div>
+    
 <!-- Sayaç -->
+    
+<div id="countdown">
 
-<!-- Salon -->
+    <div class="counter-box">
+        <span id="days">00</span>
+        <small>Gün</small>
+    </div>
 
-<!-- Adres -->
+    <div class="counter-box">
+        <span id="hours">00</span>
+        <small>Saat</small>
+    </div>
 
-<!-- Haritada Aç -->
+    <div class="counter-box">
+        <span id="minutes">00</span>
+        <small>Dakika</small>
+    </div>
 
-<!-- Takvime Ekle -->
+    <div class="counter-box">
+        <span id="seconds">00</span>
+        <small>Saniye</small>
+    </div>
+
+</div>
+    
+<div class="venue-box">
+
+    <h2>📍 Düğün Salonu</h2>
+
+    <h3>ALTINKUM SOSYAL TESİSLERİ</h3>
+
+    <p>
+        Çakırlar Yalı, 6273. Sk. No:14<br>
+        55270 Atakum / Samsun
+    </p>
+
+</div>
+
+<div class="button-area">
+
+    <a
+        href="https://maps.app.goo.gl/yJZUeLYu2yHa4QbC6"
+        target="_blank"
+        class="gold-button">
+
+        📍 Haritada Aç
+
+    </a>
+
+</div>
+
+<div class="button-area">
+
+    <a
+        href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rashidam%20%26%20Hasan%20Soner%20Düğünü&dates=20260821T160000Z/20260821T200000Z&location=ALTINKUM%20SOSYAL%20TESİSLERİ,%20Atakum,%20Samsun&details=Sizleri%20düğünümüze%20bekliyoruz."
+        target="_blank"
+        class="gold-button">
+
+        📅 Takvime Ekle
+
+    </a>
+
+</div>
 
 </div>
 
@@ -358,16 +600,47 @@ seal.addEventListener("click", function () {
 
     setTimeout(function () {
 
-    envelope.style.display = "none";
+        envelope.style.display = "none";
 
-    card.classList.add("show");
+        card.classList.add("show");
 
-}, 1800);
+    }, 1800);
 
 });
+
+const weddingDate = new Date("2026-08-21T19:00:00").getTime();
+
+function updateCountdown(){
+
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    if(distance <= 0){
+
+        document.getElementById("days").textContent="00";
+        document.getElementById("hours").textContent="00";
+        document.getElementById("minutes").textContent="00";
+        document.getElementById("seconds").textContent="00";
+
+        return;
+    }
+
+    const days = Math.floor(distance/(1000*60*60*24));
+    const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+    const seconds = Math.floor((distance%(1000*60))/1000);
+
+    document.getElementById("days").textContent = String(days).padStart(2,"0");
+    document.getElementById("hours").textContent = String(hours).padStart(2,"0");
+    document.getElementById("minutes").textContent = String(minutes).padStart(2,"0");
+    document.getElementById("seconds").textContent = String(seconds).padStart(2,"0");
+
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
 
 </script>
 
 </body>
-
 </html>
