@@ -178,29 +178,25 @@ z-index:1;
 BİLGİLER
 =============================*/
 
-.info-area{
+.hero-info{
 
-width:100%;
+position:absolute;
 
-max-width:700px;
+left:0;
 
-margin:-230px auto 0;
+right:0;
 
-padding:45px 24px 80px;
+bottom:35px;
 
-background:#faf7f2;
+padding:0 28px;
 
-border-radius:30px 30px 0 0;
+z-index:30;
 
-position:relative;
-
-z-index:20;
-
-box-shadow:0 -8px 30px rgba(0,0,0,.08);
+background:transparent;
 
 }
 
-.info-area::before{
+.hero-info::before{
 
 content:"";
 
@@ -618,9 +614,7 @@ class="screen">
         class="invitation-image"
         alt="Davetiye">
 
-</div>
-
-<div class="info-area">
+    <div class="hero-info">
 
 <!-- Tarih -->
 <div class="event-box">
@@ -733,9 +727,10 @@ class="screen">
     </div>
 
 </div>
-</div>
+    </div>
 
 </div>
+
 <script>
 
 const seal = document.getElementById("seal-hitbox");
