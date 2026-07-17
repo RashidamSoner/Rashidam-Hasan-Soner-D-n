@@ -154,6 +154,104 @@ object-fit:contain;
 
 }
 
+.hero-card{
+
+position:relative;
+
+max-width:700px;
+
+margin:auto;
+
+overflow:hidden;
+
+border-radius:22px;
+
+box-shadow:0 25px 60px rgba(0,0,0,.22);
+
+}
+
+.hero-overlay{
+
+position:absolute;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+pointer-events:none;
+
+}
+
+.hero-gradient{
+
+position:absolute;
+
+left:0;
+right:0;
+bottom:0;
+
+height:35%;
+
+background:linear-gradient(
+to top,
+rgba(0,0,0,.45),
+rgba(0,0,0,0)
+);
+
+}
+
+.hero-content{
+
+position:absolute;
+
+left:0;
+right:0;
+bottom:35px;
+
+text-align:center;
+
+padding:0 20px;
+
+color:#fff;
+
+}
+
+.hero-content h1{
+
+font-family:'Great Vibes',cursive;
+
+font-size:52px;
+
+font-weight:400;
+
+text-shadow:0 3px 10px rgba(0,0,0,.45);
+
+}
+
+.hero-content span{
+
+font-family:'Cinzel',serif;
+
+font-size:32px;
+
+margin:0 8px;
+
+}
+
+.hero-date{
+
+margin-top:10px;
+
+font-size:18px;
+
+letter-spacing:1px;
+
+text-shadow:0 2px 8px rgba(0,0,0,.4);
+
+}
+    
 /*=============================
 BİLGİLER
 =============================*/
@@ -164,11 +262,41 @@ width:100%;
 
 max-width:700px;
 
-margin:auto;
+margin:-35px auto 0;
 
-padding:40px 24px 80px;
+padding:55px 24px 80px;
 
 background:#faf7f2;
+
+border-radius:30px 30px 0 0;
+
+position:relative;
+
+z-index:5;
+
+box-shadow:0 -8px 30px rgba(0,0,0,.08);
+
+}
+
+.info-area::before{
+
+content:"";
+
+position:absolute;
+
+top:18px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:90px;
+
+height:3px;
+
+background:#d4af37;
+
+border-radius:20px;
 
 }
 /*==================================
@@ -289,34 +417,53 @@ ETKİNLİK
 .event-box{
 
 text-align:center;
-padding:30px 20px;
+
+padding:20px 20px 35px;
+
+position:relative;
 
 }
 
 .event-box h2{
 
 font-family:'Cinzel',serif;
-font-size:28px;
+
+font-size:32px;
+
 font-weight:600;
+
 color:#b78d32;
+
+letter-spacing:2px;
+
 margin-bottom:18px;
 
 }
 
 .event-date{
 
-font-size:22px;
+font-family:'Cinzel',serif;
+
+font-size:30px;
+
 font-weight:600;
+
 color:#222;
-margin-bottom:10px;
+
+margin-bottom:8px;
 
 }
-
 .event-time{
 
-font-size:18px;
-letter-spacing:2px;
-color:#666;
+font-size:16px;
+
+letter-spacing:4px;
+
+text-transform:uppercase;
+
+color:#9b7a2f;
+
+font-weight:600;
 
 }
 
@@ -327,50 +474,67 @@ GERİ SAYIM
 #countdown{
 
 display:flex;
+
 justify-content:center;
-gap:12px;
+
+gap:18px;
+
 flex-wrap:wrap;
 
-padding-bottom:35px;
+padding:15px 0 40px;
 
 }
 
 .counter-box{
 
-width:75px;
-height:75px;
+width:82px;
+height:92px;
 
-background:#111;
+background:#fff;
 
-border-radius:14px;
+border:2px solid #d4af37;
+
+border-radius:18px;
 
 display:flex;
+
 flex-direction:column;
+
 justify-content:center;
+
 align-items:center;
 
-box-shadow:0 8px 20px rgba(0,0,0,.15);
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+transition:.3s;
 
 }
 
 .counter-box span{
 
-font-size:28px;
+font-size:34px;
+
 font-weight:700;
-color:#d4af37;
+
+color:#b78d32;
+
 line-height:1;
+
+font-family:'Cinzel',serif;
 
 }
 
 .counter-box small{
 
-margin-top:6px;
+margin-top:8px;
 
-font-size:12px;
+font-size:11px;
 
-color:#fff;
+font-weight:600;
 
-letter-spacing:1px;
+color:#777;
+
+letter-spacing:2px;
 
 text-transform:uppercase;
 
@@ -382,9 +546,19 @@ SALON
 
 .venue-box{
 
-text-align:center;
+background:#fff;
 
-padding:20px 25px;
+margin:20px 0 30px;
+
+padding:35px 25px;
+
+border-radius:24px;
+
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+border:1px solid rgba(183,141,50,.25);
+
+text-align:center;
 
 }
 
@@ -392,23 +566,31 @@ padding:20px 25px;
 
 font-family:'Cinzel',serif;
 
-font-size:24px;
+font-size:18px;
+
+letter-spacing:3px;
+
+text-transform:uppercase;
 
 color:#b78d32;
 
-margin-bottom:15px;
+margin-bottom:12px;
 
 }
 
 .venue-box h3{
 
-font-size:22px;
+font-family:'Cinzel',serif;
 
-font-weight:700;
+font-size:28px;
+
+font-weight:600;
+
+line-height:1.4;
 
 color:#222;
 
-margin-bottom:12px;
+margin-bottom:18px;
 
 }
 
@@ -438,17 +620,23 @@ padding:15px 20px 40px;
 
 display:inline-block;
 
-padding:14px 34px;
+min-width:230px;
 
-background:#b78d32;
+padding:16px 28px;
+
+background:linear-gradient(135deg,#d4af37,#b78d32);
 
 color:#fff;
 
 text-decoration:none;
 
-border-radius:40px;
+border-radius:50px;
 
 font-weight:600;
+
+letter-spacing:.5px;
+
+box-shadow:0 10px 24px rgba(183,141,50,.35);
 
 transition:.3s;
 
@@ -485,13 +673,28 @@ class="screen">
 id="card-screen"
 class="screen">
 
-<div class="invitation-top">
+<div class="hero-card">
 
     <img
         src="one.PNG"
         class="invitation-image"
         alt="Davetiye">
 
+   <div class="hero-overlay">
+
+    <div class="hero-gradient"></div>
+
+    <div class="hero-content">
+
+        <h1>Rashidam <span>&</span> Hasan Soner</h1>
+
+        <p class="hero-date">
+            21 Ağustos 2026 • Saat 19:00
+        </p>
+
+    </div>
+
+</div>
 </div>
 
 <div class="info-area">
