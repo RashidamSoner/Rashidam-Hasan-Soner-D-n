@@ -1,98 +1,1278 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rashidam & Hasan Soner</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        
-        /* 1. Kilit nokta: Body'i sabitlemiyoruz, sayfa akışına izin veriyoruz */
-        html, body { 
-            width: 100%; 
-            min-height: 100%; 
-            background: #fbf8f2; 
-            font-family: 'Montserrat', sans-serif; 
-            overflow-x: hidden;
-        }
 
-        /* 2. Zarf Ekranı: Sabit kalmalı */
-        #envelope-screen {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 9999;
-            background: #000 url("zarf-on.png.PNG") center center/cover no-repeat;
-            transition: opacity 0.8s ease;
-        }
+<meta charset="UTF-8">
 
-        /* 3. İç Kart: Sayfa akışında olmalı (Absolute değil, block) */
-        #card-screen {
-            display: none; 
-            width: 100%;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-        #card-screen.show { display: block; opacity: 1; }
+<title>Rashidam & Hasan Soner</title>
 
-        /* Resimlerin düzgün görünmesi */
-        .invitation-image {
-            display: block;
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto;
-            height: auto;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        #seal-hitbox {
-            position: absolute;
-            left: 50%; top: 53%;
-            width: 150px; height: 150px;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-            z-index: 100;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-        .open-anim { animation: fadeOut 1.5s forwards; }
-        @keyframes fadeOut { to { opacity: 0; transform: translateY(-100%); } }
-    </style>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html,
+body{
+
+width:100%;
+min-height:100vh;
+overflow:hidden;
+
+font-family:'Montserrat',sans-serif;
+
+background:#000;
+
+}
+
+body{
+
+position:relative;
+
+-webkit-text-size-adjust:100%;
+text-size-adjust:100%;
+
+}
+
+/*=============================
+ÇİÇEKLİ KÖŞELER
+=============================*/
+
+.hero-card::before,
+.hero-card::after{
+
+content:"";
+
+position:absolute;
+
+width:140px;
+height:140px;
+
+opacity:.18;
+
+pointer-events:none;
+
+background-repeat:no-repeat;
+background-size:contain;
+
+}
+
+/*=============================
+MÜZİK
+=============================*/
+
+audio{
+
+display:none;
+
+}
+
+/*=============================
+GENEL EKRANLAR
+=============================*/
+
+.screen{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+}
+
+/*=============================
+ÖN ZARF
+=============================*/
+
+#envelope-screen{
+
+z-index:9999;
+
+background:#000 url("zarf-on.png.PNG") center center no-repeat;
+
+background-size:cover;
+
+}
+
+@media (min-width:768px){
+
+#envelope-screen{
+
+background-size:contain;
+
+}
+
+}
+
+/*=============================
+İÇ DAVETİYE
+=============================*/
+
+#card-screen{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:
+linear-gradient(
+180deg,
+#f7f1e8 0%,
+#f8f4ee 30%,
+#fbf8f3 100%);
+
+opacity:0;
+visibility:hidden;
+
+overflow-x:hidden;
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+
+z-index:999;
+
+transition:opacity .8s ease;
+    
+display:block;
+
+}
+/*=============================
+DAVETİYE GÖRSELİ
+=============================*/
+
+.invitation-top{
+
+position:relative;
+
+width:100%;
+
+max-width:700px;
+
+margin:auto;
+
+}
+
+.invitation-image{
+
+display:block;
+
+width:100%;
+
+height:auto;
+
+border-radius:24px;
+
+object-fit:cover;
+
+box-shadow:
+0 8px 24px rgba(0,0,0,.08);
+
+}
+
+.hero-card{
+
+position:relative;
+
+max-width:760px;
+
+margin:30px auto;
+
+padding:18px;
+
+background:#fbf8f2;
+
+border:1px solid rgba(200,161,90,.45);
+
+border-radius:32px;
+
+box-shadow:
+0 18px 45px rgba(0,0,0,.08);
+
+overflow:hidden;
+
+}
+    
+/*=============================
+BİLGİLER
+=============================*/
+
+.hero-info{
+
+margin-top:-180px;
+
+padding:0 24px 30px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+gap:28px;
+
+position:relative;
+
+z-index:10;
+
+}
+
+.hero-info::before{
+
+content:"";
+
+position:absolute;
+
+top:18px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:90px;
+
+height:3px;
+
+background:#d4af37;
+
+border-radius:20px;
+
+}
+
+/*=============================
+DAVET METNİ
+=============================*/
+
+.invite-text{
+
+max-width:600px;
+
+margin:45px auto 25px;
+
+padding:0 28px;
+
+text-align:center;
+
+}
+
+.invite-flower{
+
+font-size:22px;
+
+color:#c79b3b;
+
+margin-bottom:18px;
+
+}
+
+.invite-text p{
+
+font-family:'Montserrat',sans-serif;
+
+font-size:17px;
+
+line-height:2;
+
+color:#5b5347;
+
+font-weight:400;
+
+}
+/*==================================
+MÜHÜR TIKLAMA ALANI
+==================================*/
+
+#seal-hitbox{
+
+position:absolute;
+
+left:50%;
+top:53%;
+
+width:150px;
+height:150px;
+
+transform:translate(-50%,-50%);
+
+cursor:pointer;
+
+z-index:100;
+
+border-radius:50%;
+
+background:transparent;
+
+}
+
+/*==================================
+ZARF AÇILIŞI
+==================================*/
+
+#envelope-screen.open{
+
+animation:
+
+openEnvelope 1.8s ease forwards;
+
+}
+
+@keyframes openEnvelope{
+
+0%{
+
+transform:
+scale(1);
+
+opacity:1;
+
+}
+
+35%{
+
+transform:
+scale(1.02);
+
+}
+
+100%{
+
+transform:
+translateY(-100%);
+
+opacity:0;
+
+}
+
+}
+    
+#envelope-screen.open{
+
+pointer-events:none;
+
+visibility:hidden;
+
+}
+
+/*==================================
+DAVETİYE
+==================================*/
+
+#card-screen.show{
+
+opacity:1;
+
+visibility:visible;
+
+animation:cardUp 1.4s ease;
+
+}
+
+@keyframes cardUp{
+
+0%{
+
+opacity:0;
+
+transform:
+translateY(120px);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+translateY(0);
+
+}
+
+}
+
+/*=============================
+ETKİNLİK
+=============================*/
+
+.event-box{
+
+text-align:center;
+
+padding:20px 20px 35px;
+
+position:relative;
+
+}
+
+.event-box h2{
+
+font-family:'Cinzel',serif;
+
+font-size:24px;
+
+font-weight:600;
+
+color:#b4872d;
+
+letter-spacing:3px;
+
+text-transform:uppercase;
+
+text-align:center;
+
+margin:0 auto 30px;
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:18px;
+
+}
+
+.event-box h2::before,
+.event-box h2::after{
+
+content:"";
+
+display:block;
+
+width:80px;
+
+height:1px;
+
+background:linear-gradient(
+90deg,
+transparent,
+#d4af37,
+transparent);
+
+}
+
+.event-date{
+
+font-family:'Cinzel',serif;
+
+font-size:30px;
+
+font-weight:600;
+
+color:#222;
+
+margin-bottom:8px;
+
+}
+.event-time{
+
+font-size:16px;
+
+letter-spacing:4px;
+
+text-transform:uppercase;
+
+color:#9b7a2f;
+
+font-weight:600;
+
+}
+
+/*=============================
+PREMIUM GERİ SAYIM
+=============================*/
+
+#countdown{
+
+display:flex;
+justify-content:center;
+align-items:center;
+gap:24px;
+flex-wrap:wrap;
+
+margin:15px 0 35px;
+
+}
+
+.counter-box{
+
+position:relative;
+
+width:100px;
+height:100px;
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+border-radius:50%;
+
+background:
+radial-gradient(circle at 35% 30%,
+#ffffff 0%,
+#fbf6ec 45%,
+#efe1c3 100%);
+
+border:2px solid #cfa64d;
+
+box-shadow:
+0 10px 24px rgba(0,0,0,.08),
+inset 0 2px 4px rgba(255,255,255,.95),
+inset 0 -6px 12px rgba(190,150,70,.18);
+
+transition:.35s;
+
+}
+
+.counter-box:hover{
+
+transform:translateY(-4px);
+
+box-shadow:
+0 16px 30px rgba(0,0,0,.12),
+inset 0 2px 4px rgba(255,255,255,.95);
+
+}
+
+.counter-box::before{
+
+content:"";
+
+position:absolute;
+
+top:7px;
+left:7px;
+right:7px;
+bottom:7px;
+
+border:1px solid rgba(212,175,55,.55);
+
+border-radius:50%;
+
+}
+
+.counter-box::after{
+
+content:"❦";
+
+position:absolute;
+
+top:-10px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+font-size:14px;
+
+color:#d4af37;
+
+background:#fbf8f2;
+
+padding:0 5px;
+
+}
+
+.counter-box span{
+
+font-family:'Cinzel',serif;
+
+font-size:28px;
+
+font-weight:700;
+
+color:#b4872d;
+
+line-height:1;
+
+margin-bottom:8px;
+
+}
+
+.counter-box small{
+
+font-size:11px;
+
+letter-spacing:3px;
+
+font-weight:600;
+
+text-transform:uppercase;
+
+color:#7d7362;
+
+}
+
+/*=============================
+SALON
+=============================*/
+
+.gold-button{
+
+display:inline-block;
+
+min-width:180px;
+
+padding:16px 20px;
+
+background:linear-gradient(135deg,#d4af37,#b78d32);
+
+color:#fff;
+
+text-decoration:none;
+
+border-radius:50px;
+
+font-weight:600;
+
+letter-spacing:.5px;
+
+box-shadow:0 10px 24px rgba(183,141,50,.35);
+
+transition:.3s;
+
+}
+
+.button-group{
+
+display:flex;
+
+justify-content:center;
+
+gap:14px;
+
+flex-wrap:wrap;
+
+margin-top:20px;
+
+}
+
+.info-grid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+margin:30px 0;
+
+border-top:1px solid rgba(212,175,55,.25);
+
+border-bottom:1px solid rgba(212,175,55,.25);
+
+}
+
+.info-box{
+
+padding:20px 12px;
+
+text-align:center;
+
+}
+
+.info-box:not(:last-child){
+
+border-right:1px solid rgba(212,175,55,.25);
+
+}
+
+.info-icon{
+
+font-size:16px;
+
+width:42px;
+
+height:42px;
+
+margin:0 auto 12px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+border:1.5px solid rgba(212,175,55,.35);
+
+border-radius:50%;
+
+background:#fffdf9;
+
+box-shadow:0 2px 8px rgba(0,0,0,.04);
+
+}
+
+.info-title{
+
+font-family:'Cinzel',serif;
+
+font-size:11px;
+
+letter-spacing:2px;
+
+color:#b4872d;
+
+margin-bottom:14px;
+
+}
+
+.info-value{
+
+font-size:14px;
+
+line-height:1.7;
+
+font-weight:600;
+
+color:#444;
+
+}
+
+.gold-button:hover{
+
+background:#8d6820;
+
+}
+
+.full-card,
+.small-card{
+
+width:100%;
+max-width:760px;
+
+margin:0 auto 35px;
+
+background:linear-gradient(
+180deg,
+#fffefb 0%,
+#fcf8ef 55%,
+#f7f0e3 100%);
+
+border:1px solid rgba(212,175,55,.45);
+
+border-radius:30px;
+
+padding:34px;
+
+position:relative;
+
+overflow:hidden;
+
+box-sizing:border-box;
+
+box-shadow:
+0 18px 45px rgba(0,0,0,.08),
+0 3px 10px rgba(212,175,55,.10);
+
+}
+
+.full-card::before,
+.small-card::before{
+
+content:"✦";
+
+position:absolute;
+
+top:16px;
+left:18px;
+
+font-size:20px;
+
+color:#d4af37;
+
+opacity:.65;
+
+}
+
+.full-card::after,
+.small-card::after{
+
+content:"✦";
+
+position:absolute;
+
+right:18px;
+bottom:16px;
+
+font-size:20px;
+
+color:#d4af37;
+
+opacity:.65;
+
+}
+
+.full-card{
+
+margin-bottom:28px;
+
+}
+
+.cards-grid{
+
+max-width:760px;
+
+margin:55px auto 0;
+
+padding:0 18px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:35px;
+
+box-sizing:border-box;
+
+}
+
+.full-card h2,
+.small-card h2{
+
+font-family:'Cinzel',serif;
+
+font-size:28px;
+
+font-weight:600;
+
+letter-spacing:1px;
+
+color:#b4872d;
+
+text-align:center;
+
+margin-bottom:16px;
+
+position:relative;
+
+}
+
+.full-card p{
+
+line-height:1.9;
+
+color:#555;
+
+margin-bottom:25px;
+
+text-align:center;
+
+}
+
+.full-card h2::after,
+.small-card h2::after{
+
+content:"";
+
+display:block;
+
+width:70px;
+
+height:2px;
+
+margin:12px auto 0;
+
+background:linear-gradient(
+90deg,
+transparent,
+#d8b15a,
+transparent);
+
+}
+
+.info-title-top{
+
+font-family:'Cinzel',serif;
+
+font-size:13px;
+
+letter-spacing:5px;
+
+text-align:center;
+
+color:#b4872d;
+
+margin-bottom:20px;
+
+}
+
+.convoy-header{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:18px;
+
+margin-bottom:18px;
+
+}
+
+.car-icon{
+
+width:95px;
+
+height:auto;
+
+filter:drop-shadow(0 6px 12px rgba(0,0,0,.08));
+
+}
+
+.convoy-header h2{
+
+margin:0;
+
+font-family:'Cinzel',serif;
+
+font-size:36px;
+
+font-weight:600;
+
+color:#b4872d;
+
+letter-spacing:2px;
+
+}
+
+.convoy-header{
+
+position:relative;
+
+padding-bottom:18px;
+
+margin-bottom:30px;
+
+}
+
+.convoy-header::after{
+
+content:"";
+
+position:absolute;
+
+left:50%;
+
+bottom:0;
+
+transform:translateX(-50%);
+
+width:180px;
+
+height:2px;
+
+background:linear-gradient(
+90deg,
+transparent,
+#d4af37,
+transparent);
+
+}
+
+.info-item{
+
+margin-bottom:18px;
+
+font-size:17px;
+
+line-height:1.8;
+
+text-align:center;
+
+color:#444;
+
+}
+
+.full-card p{
+
+line-height:1.9;
+
+color:#555;
+
+margin-bottom:25px;
+
+text-align:center;
+
+}
+
+@media(min-width:700px){
+
+.cards-grid{
+
+grid-template-columns:1fr 1fr;
+
+}
+
+.full-card{
+
+grid-column:1 / span 2;
+
+}
+
+}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
+
 <body>
 
-    <audio id="music" src="./Por uno .mp3" preload="auto"></audio>
+<audio
+id="music"
+preload="auto">
 
-    <div id="envelope-screen">
-        <div id="seal-hitbox"></div>
+<source src="./Por uno .mp3" type="audio/mpeg">
+
+</audio>
+
+<div
+id="envelope-screen"
+class="screen">
+
+    <div id="seal-hitbox"></div>
+
+</div>
+
+<div
+id="card-screen"
+class="screen">
+
+<div class="hero-card">
+
+    <img
+        src="one.jpg"
+        class="invitation-image"
+        alt="Davetiye">
+
+<!-- Tarih -->
+
+<div class="invite-text">
+
+<div class="invite-flower">❦</div>
+
+<p>
+
+Hayatımızın en anlamlı yolculuğuna birlikte
+adım atarken, bu özel günümüzde mutluluğumuzu
+sizlerle paylaşmaktan büyük onur duyacağız.
+
+<br><br>
+
+Sevincimize ortak olmanız ve bu güzel
+anımızda yanımızda olmanız dileğiyle...
+
+</p>
+
+</div>
+
+<div class="event-box">
+
+    <h2>DÜĞÜNÜMÜZE KALAN SÜRE</h2>
+
+</div>
+    
+<!-- Sayaç -->
+    
+<div id="countdown">
+
+    <div class="counter-box">
+        <span id="days">00</span>
+        <small>Gün</small>
     </div>
 
-    <!-- Davetiye içeriği -->
-    <div id="card-screen">
-        <div class="invitation-top">
-            <img src="./davetiye-ic.png.PNG" class="invitation-image" alt="Davetiye">
+    <div class="counter-box">
+        <span id="hours">00</span>
+        <small>Saat</small>
+    </div>
+
+    <div class="counter-box">
+        <span id="minutes">00</span>
+        <small>Dakika</small>
+    </div>
+
+    <div class="counter-box">
+        <span id="seconds">00</span>
+        <small>Saniye</small>
+    </div>
+
+</div>
+<div class="info-card full-card">
+
+        <h2>Düğün Bilgileri</h2>
+
+       <div class="info-grid">
+
+    <div class="info-box">
+        <div class="info-icon">
+    <i class="fa-regular fa-calendar"></i>
+</div>
+        <div class="info-title">TARİH</div>
+        <div class="info-value">
+            21 Ağustos 2026
         </div>
-        <!-- Bilgileriniz burada aşağıya doğru uzayacak -->
     </div>
 
-    <script>
-        const seal = document.getElementById("seal-hitbox");
-        const env = document.getElementById("envelope-screen");
-        const card = document.getElementById("card-screen");
-        const music = document.getElementById("music");
+    <div class="info-box">
+        <div class="info-icon">
+    <i class="fa-regular fa-clock"></i>
+</div>
+        <div class="info-title">SAAT</div>
+        <div class="info-value">
+            19:00
+        </div>
+    </div>
 
-        seal.addEventListener("click", () => {
-            music.play().catch(e => console.log(e));
-            
-            // Zarfı animasyonla gönder
-            env.classList.add("open-anim");
-            
-            // 1.5 saniye sonra zarfı tamamen kaldır ve kartı göster
-            setTimeout(() => {
-                env.style.display = "none";
-                card.style.display = "block";
-                card.classList.add("show");
-            }, 1500);
-        });
-    </script>
+    <div class="info-box">
+        <div class="info-icon">
+    <i class="fa-solid fa-location-dot"></i>
+</div>
+        <div class="info-title">MEKAN</div>
+        <div class="info-value">
+            Altınkum Sosyal Tesisleri<br>
+            Atakum / Samsun
+        </div>
+    </div>
+
+</div>
+
+<div class="button-group">
+
+    <a
+    href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rashidam%20%26%20Hasan%20Soner%20Düğünü&dates=20260821T160000Z/20260821T200000Z&location=ALTINKUM%20SOSYAL%20TESİSLERİ,%20Atakum,%20Samsun&details=Sizleri%20düğünümüze%20bekliyoruz."
+    target="_blank"
+    class="gold-button">
+
+    📅 Takvime Ekle
+
+    </a>
+
+    <a
+    href="https://maps.app.goo.gl/yJZUeLYu2yHa4QbC6"
+    target="_blank"
+    class="gold-button">
+
+    📍 Haritada Aç
+
+    </a>
+
+</div>
+
+</div> <!-- hero-card -->
+
+<div class="cards-grid">
+
+    <div class="full-card">
+
+<div class="info-title-top">
+
+BİLGİLENDİRME
+
+</div>
+
+<div class="convoy-header">
+
+<img src="Car.PNG" class="car-icon" alt="Klasik Düğün Arabası">
+
+<h2>KONVOY</h2>
+
+</div>
+
+        <p>
+
+<strong>Saat 18:30</strong><br><br>
+
+Damat evinden hareket edilecektir.<br><br>
+
+Konvoyumuza katılarak bu özel günümüzde
+bizlerle birlikte olmanızdan büyük mutluluk duyarız.
+
+</p>
+
+    </div>
+
+</div> <!-- cards-grid -->
+
+<script>
+
+const seal = document.getElementById("seal-hitbox");
+const envelope = document.getElementById("envelope-screen");
+const card = document.getElementById("card-screen");
+const music = document.getElementById("music");
+
+let opened = false;
+
+seal.addEventListener("click", function () {
+
+    if (opened) return;
+
+    opened = true;
+
+    music.play().catch(() => {});
+
+    envelope.classList.add("open");
+
+    setTimeout(function () {
+
+        envelope.style.display = "none";
+
+        card.classList.add("show");
+
+    }, 1800);
+
+});
+
+const weddingDate = new Date("2026-08-21T19:00:00").getTime();
+
+function updateCountdown(){
+
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    if(distance <= 0){
+
+        document.getElementById("days").textContent="00";
+        document.getElementById("hours").textContent="00";
+        document.getElementById("minutes").textContent="00";
+        document.getElementById("seconds").textContent="00";
+
+        return;
+    }
+
+    const days = Math.floor(distance/(1000*60*60*24));
+    const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+    const seconds = Math.floor((distance%(1000*60))/1000);
+
+    document.getElementById("days").textContent = String(days).padStart(2,"0");
+    document.getElementById("hours").textContent = String(hours).padStart(2,"0");
+    document.getElementById("minutes").textContent = String(minutes).padStart(2,"0");
+    document.getElementById("seconds").textContent = String(seconds).padStart(2,"0");
+
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+</script>
+
 </body>
 </html>
