@@ -845,16 +845,93 @@ transparent);
 
 }
 
+.info-title-top{
+
+font-family:'Cinzel',serif;
+
+font-size:13px;
+
+letter-spacing:5px;
+
+text-align:center;
+
+color:#b4872d;
+
+margin-bottom:20px;
+
+}
+
+.convoy-header{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:18px;
+
+margin-bottom:18px;
+
+}
+
 .car-icon{
 
-display:block;
+width:95px;
 
-width:140px;
+height:auto;
 
-margin:0 auto 18px;
+filter:drop-shadow(0 6px 12px rgba(0,0,0,.08));
 
-filter:
-drop-shadow(0 8px 14px rgba(0,0,0,.08));
+}
+
+.convoy-header h2{
+
+margin:0;
+
+font-family:'Cinzel',serif;
+
+font-size:36px;
+
+font-weight:600;
+
+color:#b4872d;
+
+letter-spacing:2px;
+
+}
+
+.convoy-header{
+
+position:relative;
+
+padding-bottom:18px;
+
+margin-bottom:30px;
+
+}
+
+.convoy-header::after{
+
+content:"";
+
+position:absolute;
+
+left:50%;
+
+bottom:0;
+
+transform:translateX(-50%);
+
+width:180px;
+
+height:2px;
+
+background:linear-gradient(
+90deg,
+transparent,
+#d4af37,
+transparent);
 
 }
 
@@ -1037,10 +1114,19 @@ class="screen">
 
     <div class="small-card">
 
-        <h2>
+<div class="info-title-top">
+
+BİLGİLENDİRME
+
+</div>
+
+<div class="convoy-header">
+
 <img src="Car.PNG" class="car-icon" alt="Klasik Düğün Arabası">
-Konvoy
-</h2>
+
+<h2>KONVOY</h2>
+
+</div>
 
         <p>
 
