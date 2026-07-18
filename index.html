@@ -553,32 +553,66 @@ margin-top:25px;
 .full-card,
 .small-card{
 
-background:#fffdf8;
+background:linear-gradient(
+180deg,
+#fffefb 0%,
+#fcf7ee 100%);
 
-border:1px solid rgba(212,175,55,.45);
+border:1px solid rgba(212,175,55,.55);
 
-border-radius:24px;
+border-radius:28px;
 
-padding:30px;
+padding:24px;
 
-box-shadow:0 10px 25px rgba(0,0,0,.08);
+margin-top:18px;
+
+box-shadow:
+0 10px 22px rgba(0,0,0,.05);
 
 position:relative;
 
-}
+overflow:hidden;
 
+}
 .full-card h2,
 .small-card h2{
 
 font-family:'Cinzel',serif;
 
-color:#b78d32;
+font-size:28px;
 
-font-size:22px;
+font-weight:600;
 
-margin-bottom:20px;
+letter-spacing:1px;
+
+color:#b4872d;
 
 text-align:center;
+
+margin-bottom:16px;
+
+position:relative;
+
+}
+
+.full-card h2::after,
+.small-card h2::after{
+
+content:"";
+
+display:block;
+
+width:70px;
+
+height:2px;
+
+margin:12px auto 0;
+
+background:linear-gradient(
+90deg,
+transparent,
+#d8b15a,
+transparent);
 
 }
 
