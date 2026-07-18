@@ -43,6 +43,29 @@ position:relative;
 }
 
 /*=============================
+ÇİÇEKLİ KÖŞELER
+=============================*/
+
+.hero-card::before,
+.hero-card::after{
+
+content:"";
+
+position:absolute;
+
+width:140px;
+height:140px;
+
+opacity:.18;
+
+pointer-events:none;
+
+background-repeat:no-repeat;
+background-size:contain;
+
+}
+
+/*=============================
 MÜZİK
 =============================*/
 
@@ -357,15 +380,48 @@ position:relative;
 
 font-family:'Cinzel',serif;
 
-font-size:32px;
+font-size:24px;
 
 font-weight:600;
 
-color:#b78d32;
+color:#b4872d;
 
-letter-spacing:2px;
+letter-spacing:3px;
 
-margin-bottom:18px;
+text-transform:uppercase;
+
+text-align:center;
+
+margin:0 auto 30px;
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:18px;
+
+}
+
+.event-box h2::before,
+.event-box h2::after{
+
+content:"";
+
+display:block;
+
+width:80px;
+
+height:1px;
+
+background:linear-gradient(
+90deg,
+transparent,
+#d4af37,
+transparent);
 
 }
 
@@ -397,54 +453,98 @@ font-weight:600;
 }
 
 /*=============================
-GERİ SAYIM
+PREMIUM GERİ SAYIM
 =============================*/
 
 #countdown{
 
 display:flex;
-
 justify-content:center;
-
 align-items:center;
-
-gap:22px;
-
+gap:24px;
 flex-wrap:wrap;
 
-margin:35px 0 10px;
-
-padding:10px 0;
+margin:35px 0 20px;
 
 }
+
 .counter-box{
 
 position:relative;
 
-width:86px;
-height:86px;
+width:100px;
+height:100px;
 
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 
-background:radial-gradient(circle at center,#fffefb 55%,#f5ecdd 100%);
-
-border:2px solid #d6b15c;
-
-outline:1px solid rgba(255,255,255,.9);
-outline-offset:-6px;
-
 border-radius:50%;
 
+background:
+radial-gradient(circle at 35% 30%,
+#ffffff 0%,
+#fbf6ec 45%,
+#efe1c3 100%);
+
+border:2px solid #cfa64d;
+
 box-shadow:
-0 8px 20px rgba(0,0,0,.06),
-inset 0 2px 6px rgba(255,255,255,.8);
+0 10px 24px rgba(0,0,0,.08),
+inset 0 2px 4px rgba(255,255,255,.95),
+inset 0 -6px 12px rgba(190,150,70,.18);
 
 transition:.35s;
 
-overflow:hidden;
+}
+
+.counter-box:hover{
+
+transform:translateY(-4px);
+
+box-shadow:
+0 16px 30px rgba(0,0,0,.12),
+inset 0 2px 4px rgba(255,255,255,.95);
+
+}
+
+.counter-box::before{
+
+content:"";
+
+position:absolute;
+
+top:7px;
+left:7px;
+right:7px;
+bottom:7px;
+
+border:1px solid rgba(212,175,55,.55);
+
+border-radius:50%;
+
+}
+
+.counter-box::after{
+
+content:"❦";
+
+position:absolute;
+
+top:-10px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+font-size:14px;
+
+color:#d4af37;
+
+background:#fbf8f2;
+
+padding:0 5px;
 
 }
 
@@ -452,21 +552,21 @@ overflow:hidden;
 
 font-family:'Cinzel',serif;
 
-font-size:22px;
+font-size:28px;
 
-font-weight:600;
+font-weight:700;
 
 color:#b4872d;
 
 line-height:1;
 
-margin-bottom:4px;
+margin-bottom:8px;
 
 }
 
 .counter-box small{
 
-font-size:12px;
+font-size:11px;
 
 letter-spacing:3px;
 
@@ -474,38 +574,7 @@ font-weight:600;
 
 text-transform:uppercase;
 
-color:#7a756d;
-
-}
-
-.counter-box::before,
-.counter-box::after{
-
-display:none;
-
-}
-
-position:absolute;
-
-font-size:11px;
-
-color:#d8b15a;
-
-opacity:.7;
-
-}
-
-.counter-box::before{
-
-top:8px;
-left:8px;
-
-}
-
-.counter-box::after{
-
-bottom:8px;
-right:8px;
+color:#7d7362;
 
 }
 
@@ -837,14 +906,6 @@ class="screen">
 <div class="event-box">
 
     <h2>DÜĞÜNÜMÜZE KALAN SÜRE</h2>
-
-    <div class="event-date">
-        21 Ağustos 2026
-    </div>
-
-    <div class="event-time">
-        Saat 19:00
-    </div>
 
 </div>
     
