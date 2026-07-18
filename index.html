@@ -417,53 +417,90 @@ margin:0;
 }
 .counter-box{
 
-width:68px;
-height:76px;
+position:relative;
 
-background:rgba(255,255,255,.92);
+width:82px;
+height:92px;
 
-border:1px solid #d4af37;
+background:linear-gradient(
+180deg,
+#fffdf9 0%,
+#fbf5eb 100%);
 
-border-radius:16px;
+border:1px solid #d8b15a;
+
+border-radius:18px;
 
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 
-box-shadow:0 6px 18px rgba(0,0,0,.08);
+box-shadow:
+0 8px 20px rgba(0,0,0,.06);
 
-transition:.3s;
+transition:.35s ease;
+
+overflow:hidden;
 
 }
 
 .counter-box span{
 
-font-size:28px;
+font-family:'Cinzel',serif;
 
-font-weight:700;
+font-size:30px;
 
-color:#b78d32;
+font-weight:600;
+
+color:#b4872d;
 
 line-height:1;
 
-font-family:'Cinzel',serif;
+margin-bottom:6px;
 
 }
 
 .counter-box small{
 
-margin-top:8px;
+font-size:12px;
 
-font-size:11px;
+letter-spacing:3px;
 
 font-weight:600;
 
-color:#777;
-
-letter-spacing:2px;
-
 text-transform:uppercase;
+
+color:#7a756d;
+
+}
+
+.counter-box::before,
+.counter-box::after{
+
+content:"✦";
+
+position:absolute;
+
+font-size:11px;
+
+color:#d8b15a;
+
+opacity:.7;
+
+}
+
+.counter-box::before{
+
+top:8px;
+left:8px;
+
+}
+
+.counter-box::after{
+
+bottom:8px;
+right:8px;
 
 }
 
